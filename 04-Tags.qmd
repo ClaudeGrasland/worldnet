@@ -1,0 +1,639 @@
+---
+title: "Geo-tags"
+---
+
+```{r, echo=FALSE,message=FALSE,error = FALSE}
+library(knitr)
+library(dplyr)
+library(WikidataR)
+library(quanteda)
+library(tidytext)
+library(data.table)
+
+knitr::opts_chunk$set(cache = FALSE,
+                      echo = FALSE,
+                      comment = "")
+```
+
+## Procedure
+
+### Dictionary
+
+The dictionary elaborated by automatic procedures has been manually corrected and the new version is upload. As an example, the table below present the labels used for the recognition of the Mediterranean Sea.
+
+```{r}
+dict<-read.table("dict/worldgeo_dict_V6.csv", 
+                 header=T, 
+                 sep=";",
+                 encoding = "UTF-8",
+                 quote = '"')
+
+sel<-dict[dict$code=="SE_medit",]
+kable(sel)
+```
+
+### Function
+
+We have elaborated a function for the extraction of geographical units based on the dictionary elaborated in previous section (dict) according to the language (lang), the decision to split some tokens (split) to move or not to lower case (tolow) and the possibility to add a list of compounds to be realized (comps) in order to eliminate ambiguities.
+
+The code of the function is detailed below :
+
+```{r, echo=TRUE}
+extract_tags <- function(qd = qd,                      # the corpus of interest
+                         lang = "fr",                  # the language to be used
+                         dict = dict,                  # the dictionary of target 
+                         code = "id" ,                  # variable used for coding
+                         split  = c("'","’","-"),       # split list
+                         tolow = FALSE  ,                # Tokenize text
+                         comps = c("Afrique du sud")  # compounds
+                         )
+{ 
+
+
+  
+# Tokenize  
+x<-as.character(qd)
+
+
+if(length(split) > 0) { reg<-paste(split, collapse = '|')
+                       x <- gsub(reg," ",x)}  
+if(tolow) { x <- tolower(x)} 
+toks<-tokens(x)
+
+# compounds
+if(length(split) > 0) { reg<-paste(split, collapse = '|')
+                       comps<- gsub(reg," ",comps)}  
+if(tolow)       {comps <- tolower(comps)}  
+toks<-tokens_compound(toks,pattern=phrase(comps))
+
+  
+# Load dictionaries and create compounds
+
+  ## Target dictionary
+dict<-dict[dict$lang==lang & is.na(dict$label)==F,]
+target<-dict[ntoken(dict$label)>1,]
+labels <-dict$label
+if(length(split) > 0) { reg<-paste(split, collapse = '|')
+                       labels<- gsub(reg," ",labels)}  
+if(tolow)       {labels <- tolower(labels)}  
+toks<-tokens_compound(toks,pattern=phrase(labels))
+  
+ # create quanteda dictionary
+keys <-gsub(" ","_",labels)
+qd_dict<-as.list(keys)
+names(qd_dict)<-dict[[code]]
+qd_dict<-dictionary(qd_dict,tolower = FALSE)
+
+# Identify geo tags (states or reg or org ...)
+toks_tags <- tokens_lookup(toks, qd_dict, case_insensitive = F)
+toks_tags <- lapply(toks_tags, unique)
+toks_tags<-as.tokens(toks_tags)
+list_tags<-function(x){res<-paste(x, collapse=' ')}
+docvars(qd)[["tags"]]<-as.character(lapply(toks_tags,FUN=list_tags))
+docvars(qd)[["nbtags"]]<-ntoken(toks_tags)
+
+
+
+# Export results
+return(qd)
+ }
+ 
+
+            
+```
+
+### Tagging
+
+We apply the function to the case of *Le Figaro*. In the case of french language, we provide a list of compounds to be prepared before the application of the dictionary. We also add a supplementary tag that indicates if the news are international. News are considered as international whene at least one world region or foreign state is mentioned. The self reference to the country will not be consiidered as international if they are alone (e.g. a news mentioning only *France* or *Paris* in Le Figaro) but will be kept when the nation of the media is combine with another international element (e.g. a news mentioning *France* in Le Figaro will be kept if it mentions also *Europe* or *Germany* ) 
+
+```{r, eval=FALSE}
+
+
+qd <- readRDS("quanteda/fr_FRA_figaro.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+frcomps<-c("Europe 1", "Atlantic city", 
+           "Loire-Atlantique", "Pyrénées-Atlantique", "Pyrénées-Atlantiques",
+           "Alpes-de-Haute-Provence", "Hautes-Alpes", "Rhöne-Alpes","Alpes-Maritimes",
+           "Chantiers de l'Atlantique", "TGV Atlantique",
+           "Bourse de Paris", "Paris SG", "Ville de Paris", "Grand Paris")
+
+qd <- extract_tags (qd = qd,
+                     lang="fr",
+                     dict = dict,
+                     code = "code",
+                     split = c("'","’","-"),
+                     comps = frcomps,
+                     tolow = FALSE)
+
+## add international tag
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_FRA","CA_FRA", "ST_FRA CA_FRA", "CA_FRA ST_FRA")]<-FALSE
+
+saveRDS(qd,"quanteda/fr_FRA_figaro_geo.RDS")
+
+```
+
+### Check
+
+Then we examine the most frequent tags in international news order to check if results are not too different from expectations :
+
+```{r}
+qd <- readRDS("quanteda/fr_FRA_figaro_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+## Application
+
+### France
+
+#### Le Figaro (FRA)
+
+```{r, eval=FALSE}
+
+
+qd <- readRDS("quanteda/fr_FRA_figaro.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+frcomps<-c("Europe 1", "Atlantic city", 
+           "Loire-Atlantique", "Pyrénées-Atlantique", "Pyrénées-Atlantiques",
+           "Alpes-de-Haute-Provence", "Hautes-Alpes", "Rhöne-Alpes","Alpes-Maritimes",
+           "Chantiers de l'Atlantique", "TGV Atlantique",
+           "Bourse de Paris", "Paris SG", "Ville de Paris", "Grand Paris")
+
+qd <- extract_tags (qd = qd,
+                     lang="fr",
+                     dict = dict,
+                     code = "code",
+                     split = c("'","’","-"),
+                     comps = frcomps,
+                     tolow = FALSE)
+
+## add international tag
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_FRA","CA_FRA", "ST_FRA CA_FRA", "CA_FRA ST_FRA")]<-FALSE
+
+saveRDS(qd,"quanteda/fr_FRA_figaro_geo.RDS")
+```
+
+
+```{r}
+qd <- readRDS("quanteda/fr_FRA_figaro_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+
+#### Le Monde
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/fr_FRA_lmonde.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+qd <- extract_tags (qd = qd,
+                     lang="fr",
+                     dict = dict,
+                    code = "code",
+                    comps = frcomps,                   
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+## add international tag
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_FRA","CA_FRA", "ST_FRA CA_FRA", "CA_FRA ST_FRA")]<-FALSE
+
+saveRDS(qd,"quanteda/fr_FRA_lmonde_geo.RDS")
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/fr_FRA_lmonde_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+### Germany
+
+#### FAZ
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/de_DEU_frankf.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+decomps <- c("Europa League")
+qd <- extract_tags (qd = qd,
+                     lang="de",
+                     dict = dict,
+                     code = "code",
+                     comps = decomps,
+                     split = c("'","’","-"),
+                    tolow = FALSE)
+
+## add international tag
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_DEU","CA_DEU", "ST_DEU CA_DEU", "CA_DEU ST_DEU")]<-FALSE
+
+saveRDS(qd,"quanteda/de_DEU_frankf_geo.RDS")
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/de_DEU_frankf_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+#### Süddeutsche Zeitung
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/de_DEU_suddeu.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+qd <- extract_tags (qd = qd,
+                     lang="de",
+                     dict = dict,
+                     code = "code",
+                     comps = decomps,
+                     split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_DEU","CA_DEU", "ST_DEU CA_DEU", "CA_DEU ST_DEU")]<-FALSE
+
+
+saveRDS(qd,"quanteda/de_DEU_suddeu_geo.RDS")
+
+```
+
+
+
+```{r}
+qd <- readRDS("quanteda/de_DEU_suddeu_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+### United Kingdom
+
+#### Guardian
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/en_GBR_guardi.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+encomps<-c("Atlantic City", "Cathay Pacific", "Virgin Atlantic")
+
+qd <- extract_tags (qd = qd,
+                     lang="en",
+                     dict = dict,
+                    code = "code",
+                     comps = encomps,
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_GBR","CA_GBR", "ST_GBR CA_GBR", "CA_GBR ST_GBR")]<-FALSE
+
+saveRDS(qd,"quanteda/en_GBR_guardi_geo.RDS")
+
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/en_GBR_guardi_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) 
+kable(head(tk,10))
+
+```
+
+
+#### Daily Telegraph
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/en_GBR_telegr.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+qd <- extract_tags (qd = qd,
+                     lang="en",
+                     dict = dict,
+                    code = "code",
+                     comps = encomps,
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_GBR","CA_GBR", "ST_GBR CA_GBR", "CA_GBR ST_GBR")]<-FALSE
+
+saveRDS(qd,"quanteda/en_GBR_telegr_geo.RDS")
+
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/en_GBR_telegr_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+
+### Ireland & Ulster
+
+#### Belfast Telegraph
+
+In the particular case of a media located in Ulster, we decide to filter news speaking only from "Ireland" but to keep news speaking only from UK...
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/en_NIR_beltel.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+qd <- extract_tags (qd = qd,
+                     lang="en",
+                     dict = dict,
+                    code = "code",
+                     comps = encomps,
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_IRL","CA_IRL", "ST_IRL CA_IRL", "CA_IRL ST_IRL")]<-FALSE
+
+saveRDS(qd,"quanteda/en_NIR_beltel_geo.RDS")
+
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/en_NIR_beltel_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+#### Irish Times
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/en_IRL_irtime.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+qd <- extract_tags (qd = qd,
+                     lang="en",
+                     dict = dict,
+                    code = "code",
+                     comps = encomps,
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_IRL","CA_IRL", "ST_IRL CA_IRL", "CA_IRL ST_IRL")]<-FALSE
+
+saveRDS(qd,"quanteda/en_IRL_irtime_geo.RDS")
+
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/en_IRL_irtime_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+### Turkey
+
+#### Cumhuryet
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/tr_TUR_cumhur.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+trcomps <- c("Cathay Pacific")
+
+qd <- extract_tags (qd = qd,
+                     lang="tr",
+                     dict = dict,
+                    code = "code",
+                     comps = trcomps,
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_TUR","CA_TUR", "ST_TUR CA_TUR", "CA_TUR ST_TUR")]<-FALSE
+
+saveRDS(qd,"quanteda/tr_TUR_cumhur_geo.RDS")
+
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/tr_TUR_cumhur_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+
+#### Yeni Safak
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/tr_TUR_yenisa.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+qd <- extract_tags (qd = qd,
+                     lang="tr",
+                     dict = dict,
+                    code = "code",
+                     comps = trcomps,
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_TUR","CA_TUR", "ST_TUR CA_TUR", "CA_TUR ST_TUR")]<-FALSE
+
+saveRDS(qd,"quanteda/tr_TUR_yenisa_geo.RDS")
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/tr_TUR_yenisa_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+
+### Algeria
+
+#### El Khabar
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/ar_DZA_elkahb.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+# Sahara occidental
+arcomps=c("الصحراء الغربية")
+qd <- extract_tags (qd = qd,
+                     lang="ar",
+                     dict = dict,
+                    code = "code",
+                    comps = arcomps,
+                   split = c("'","’","-"),
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_DZA","CA_DZA", "ST_DZA CA_DZA", "CA_DZA ST_DZA")]<-FALSE
+
+saveRDS(qd,"quanteda/ar_DZA_elkahb_geo.RDS")
+
+```
+
+
+```{r}
+qd <- readRDS("quanteda/ar_DZA_elkahb_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+
+#### Al Nahar (DZA)
+
+```{r, eval=FALSE}
+
+qd <- readRDS("quanteda/ar_DZA_alnaha.RDS")
+docvars(qd)<-docvars(qd)[c("source","date")]
+qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
+
+qd <- extract_tags (qd = qd,
+                     lang="ar",
+                     dict = dict,
+                    code = "code",
+                   split = c("'","’","-"),
+                    comps = arcomps,
+                     tolow = FALSE)
+
+qd$inter<-qd$tags !=""
+qd$inter[qd$tags %in% c("ST_DZA","CA_DZA", "ST_DZA CA_DZA", "CA_DZA ST_DZA")]<-FALSE
+
+
+saveRDS(qd,"quanteda/ar_DZA_alnaha_geo.RDS")
+
+```
+
+```{r}
+qd <- readRDS("quanteda/ar_DZA_alnaha_geo.RDS")
+td<-tidy(qd) %>% filter(inter)
+tk<-unnest_tokens(td,word,tags, to_lower=F) %>% 
+         group_by(word) %>%
+         count() %>%
+         arrange(-n) %>% head(10)
+kable(head(tk,10))
+
+```
+
+
+### Global corpus
+
+```{r, eval=FALSE}
+qd1<-readRDS("quanteda/fr_FRA_figaro_geo.RDS")
+qd2<-readRDS("quanteda/fr_FRA_lmonde_geo.RDS")
+qd3<-readRDS("quanteda/de_DEU_suddeu_geo.RDS")
+qd4<-readRDS("quanteda/de_DEU_frankf_geo.RDS")
+qd5<-readRDS("quanteda/en_GBR_guardi_geo.RDS")
+qd6<-readRDS("quanteda/en_GBR_telegr_geo.RDS")
+qd7<-readRDS("quanteda/en_NIR_beltel_geo.RDS")
+qd8<-readRDS("quanteda/en_IRL_irtime_geo.RDS")
+qd9<-readRDS("quanteda/tr_TUR_cumhur_geo.RDS")
+qd10<-readRDS("quanteda/tr_TUR_yenisa_geo.RDS")
+qd11<-readRDS("quanteda/ar_DZA_elkahb_geo.RDS")
+qd12<-readRDS("quanteda/ar_DZA_alnaha_geo.RDS")
+
+qd <- c(qd1,qd2,qd3,qd4,qd5,qd6,qd7,qd8,qd9,qd10,qd11,qd12)
+saveRDS(qd,"quanteda/corpus_worldgeo_V3.RDS")
+table(qd$nbtags)
+
+```

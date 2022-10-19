@@ -1,0 +1,356 @@
+---
+title: "MacroRegions"
+---
+
+```{r, echo=FALSE,message=FALSE,error = FALSE}
+library(knitr)
+library(dplyr, quietly=TRUE)
+library(data.table)
+library(FactoMineR)
+
+knitr::opts_chunk$set(cache = FALSE,
+                      echo = FALSE,
+                      comment = "")
+```
+
+
+
+## Data
+
+We laod an **hypercube** where the text of news has been removed and where we keep only the number of *tags* or proportion of *news* speaking from one or several regions (*where1*, *where2*), by media (*who*) and by time period (*when*)
+
+```{r}
+# Load Hypercube and select period
+hc_reg<-readRDS("hypercube/hc_reg_reg_month.RDS") %>% filter(where1 !="_no_")
+hc_reg %>% filter(is.na(when)==F, when < as.Date("2021-01-01"))
+
+
+# Define weights correction for equal contribution of media
+wgt<-hc_reg[,list(coeff = sum(tags)), list(who)]  %>% 
+      mutate(coeff=mean(coeff)/coeff)
+hc_reg<-left_join(hc_reg,wgt)
+hc_reg$news_wgt<-hc_reg$news*hc_reg$coeff
+
+# Load table of label and choose language
+reg_def<-read.table("dict/worldgeo_def_V2.csv", sep=";",quote = '"', encoding = "UTF-8",header=T)
+tab_def<-reg_def %>% filter(lang=="en") %>% select(code,type,label)
+tab_def<-tab_def[duplicated(tab_def$label)==F,]
+```
+
+## Top 50 regions in full corpus
+
+
+### Unweighted
+
+We can propose firstly a table of top entities in the whole corpus of newspapers with index 100 for the first entity.
+
+```{r}
+# Compute
+df<-hc_reg[where1 !="_no_",list(nb = sum(news)), list(where1)] 
+df<-merge(tab_def,df,by.x="code",by.y="where1",all.x=F,all.y=T)
+df<-df[order(df$nb, decreasing = T),]
+row.names(df)<-1:dim(df)[1]
+df$index<-100*df$nb/max(df$nb)
+
+kable(head(df,50), digits=c(NA,NA,NA,0,2),row.names = T)
+```
+
+### Weighted
+
+
+```{r}
+df<-hc_reg[where1 !="_no_",list(nb = sum(news_wgt)), list(where1)] 
+df<-merge(tab_def,df,by.x="code",by.y="where1",all.x=F,all.y=T)
+df<-df[order(df$nb, decreasing = T),]
+row.names(df)<-1:dim(df)[1]
+df$index<-100*df$nb/max(df$nb)
+
+kable(head(df,50), digits=c(NA,NA,NA,0,2),row.names = T)
+```
+
+
+## Top 10 regions by media
+
+### German newspapers - Top 10 regions
+
+```{r}
+
+# Compute
+df<-hc_reg[where1 !="_no_",list(nb = sum(news)), list(who, where1)] %>% 
+     group_by(who) %>%
+     filter(where1 != "Q828")%>%
+     mutate(pct = 100*nb/max(nb),
+            rnk = rank(-nb))
+
+df_sel <- df %>% filter(substr(who,4,6)=="DEU", rnk < 11)
+df_sel<-merge(df_sel,tab_def,by.x="where1",by.y="code")
+
+res <- df_sel %>% filter(rnk < 11) %>% select(who, rnk,label, pct) %>% mutate(who=substr(who,4,12))
+res<-res[order(res$who, res$rnk),]
+tab1<-res[1:10,2]
+names(tab1) <- c("Rank")
+tab2<-res[1:10,c(3,4)]
+names(tab2)<-c(paste("FAZ","Region",sep="_"),paste("FAZ","pct",sep=" "))
+tab3<-res[11:20,c(3,4)]
+names(tab3)<-c(paste("Süd. Zeit.","Region",sep="_"),paste("Süd. Zeit.","pct",sep=" "))
+tab<-cbind(tab1,tab2,tab3)
+
+kable(tab,digits=1, row.names = F)
+
+```
+
+### French newspapers - Top 10 regions
+
+```{r}
+
+# Compute
+df<-hc_reg[where1 !="_no_",list(nb = sum(news)), list(who, where1)] %>% 
+     group_by(who) %>%
+     filter(where1 != "Q828")%>%
+     mutate(pct = 100*nb/max(nb),
+            rnk = rank(-nb))
+
+df_sel <- df %>% filter(substr(who,4,6)=="FRA", rnk < 11)
+df_sel<-merge(df_sel,tab_def,by.x="where1",by.y="code")
+
+res <- df_sel %>% filter(rnk < 11) %>% select(who, rnk,label, pct) %>% mutate(who=substr(who,4,12))
+res<-res[order(res$who, res$rnk),]
+tab1<-res[1:10,2]
+names(tab1) <- c("Rank")
+tab2<-res[1:10,c(3,4)]
+names(tab2)<-c(paste("Figaro","Region",sep="_"),paste("Figaro","pct",sep=" "))
+tab3<-res[11:20,c(3,4)]
+names(tab3)<-c(paste("Le Monde","Region",sep="_"),paste("Le Monde","pct",sep=" "))
+tab<-cbind(tab1,tab2,tab3)
+
+kable(tab,digits=1, row.names = F)
+
+```
+
+### UK newspapers - Top 10 regions
+
+```{r}
+
+# Compute
+df<-hc_reg[where1 !="_no_",list(nb = sum(news)), list(who, where1)] %>% 
+     group_by(who) %>%
+     filter(where1 != "Q828")%>%
+     mutate(pct = 100*nb/max(nb),
+            rnk = rank(-nb))
+
+df_sel <- df %>% filter(substr(who,4,6)=="GBR", rnk < 11)
+df_sel<-merge(df_sel,tab_def,by.x="where1",by.y="code")
+
+res <- df_sel %>% filter(rnk < 11) %>% select(who, rnk,label, pct) %>% mutate(who=substr(who,4,12))
+res<-res[order(res$who, res$rnk),]
+tab1<-res[1:10,2]
+names(tab1) <- c("Rank")
+tab2<-res[1:10,c(3,4)]
+names(tab2)<-c(paste("Guardian","Region",sep="_"),paste("Guardian","pct",sep=" "))
+tab3<-res[11:20,c(3,4)]
+names(tab3)<-c(paste("Daily Telegraph","Region",sep="_"),paste("Daily Telegraph","pct",sep=" "))
+tab<-cbind(tab1,tab2,tab3)
+
+kable(tab,digits=1, row.names = F)
+
+```
+
+### Irish newspapers - Top 10 regions
+
+```{r}
+
+# Compute
+df<-hc_reg[where1 !="_no_",list(nb = sum(news)), list(who, where1)] %>% 
+     group_by(who) %>%
+     filter(where1 != "Q828")%>%
+     mutate(pct = 100*nb/max(nb),
+            rnk = rank(-nb))
+
+df_sel <- df %>% filter(substr(who,4,6) %in% c("IRL","NIR"), rnk < 11)
+df_sel<-merge(df_sel,tab_def,by.x="where1",by.y="code")
+
+res <- df_sel %>% filter(rnk < 11) %>% select(who, rnk,label, pct) %>% mutate(who=substr(who,4,12))
+res<-res[order(res$who, res$rnk),]
+tab1<-res[1:10,2]
+names(tab1) <- c("Rank")
+tab2<-res[1:10,c(3,4)]
+names(tab2)<-c(paste("Irish Times","Region",sep="_"),paste("Irish Times","pct",sep=" "))
+tab3<-res[11:20,c(3,4)]
+names(tab3)<-c(paste("Belfast Telegraph","Region",sep="_"),paste("Belfast Telegraph","pct",sep=" "))
+tab<-cbind(tab1,tab2,tab3)
+
+kable(tab,digits=1, row.names = F)
+
+```
+
+
+
+
+
+### Turkish newspapers - Top 10 regions
+
+
+```{r}
+
+# Compute
+df<-hc_reg[where1 !="_no_",list(nb = sum(news)), list(who, where1)] %>% 
+     group_by(who) %>%
+#     filter(where1 != "Q828")%>%
+     mutate(pct = 100*nb/max(nb),
+            rnk = rank(-nb))
+
+df_sel <- df %>% filter(substr(who,4,6)=="TUR", rnk < 11)
+df_sel<-merge(df_sel,tab_def,by.x="where1",by.y="code")
+
+
+res <- df_sel %>% filter(rnk < 11) %>% select(who, rnk,label, pct) %>% mutate(who=substr(who,4,12))
+res<-res[order(res$who, res$rnk),]
+tab1<-res[1:10,2]
+names(tab1) <- c("Rank")
+tab2<-res[1:10,c(3,4)]
+names(tab2)<-c(paste("Cumhuryet","Region",sep="_"),paste("Cumhuryet","pct",sep=" "))
+tab3<-res[11:20,c(3,4)]
+names(tab3)<-c(paste("Yeni Savak","Region",sep="_"),paste("Yeni Savak","pct",sep=" "))
+tab<-cbind(tab1,tab2,tab3)
+
+kable(tab,digits=1, row.names = F)
+
+```
+
+### Algerian newspapers
+
+```{r}
+
+# Compute
+df<-hc_reg[where1 !="_no_",list(nb = sum(news)), list(who, where1)] %>% 
+     group_by(who) %>%
+     filter(where1 != "LA_sahara")%>%
+     mutate(pct = 100*nb/max(nb),
+            rnk = rank(-nb))
+
+df_sel <- df %>% filter(substr(who,4,6)=="DZA", rnk < 11)
+df_sel<-merge(df_sel,tab_def,by.x="where1",by.y="code")
+
+res <- df_sel %>% filter(rnk < 11) %>% select(who, rnk,label, pct) %>% mutate(who=substr(who,4,12))
+res<-res[order(res$who, res$rnk),]
+tab1<-res[1:11,2]
+names(tab1) <- c("Rank")
+tab2<-res[1:11,c(3,4)]
+names(tab2)<-c("Al Nahar ","pct1")
+tab3<-res[12:22,c(3,4)]
+names(tab3)<-c("El Kahbar","pct2")
+
+
+tab<-cbind(tab1,tab2,tab3)
+
+
+kable(tab,digits=c(0,1,1,1,1,1), row.names = F)
+
+```
+
+
+
+
+## Synthesis by correspondance analysis and Hierarchical Clustering
+
+The synthesis is realized with regions
+
+### Factor 1-2
+
+
+```{r}
+# Matrix
+reg_med <-hc_reg[where1 !="_no_",list(nb = sum(news_wgt)), list(where1, who)] %>%
+  dcast(formula = where1~who, value.var = "nb",fill = 0) 
+reg_med<-merge(reg_med,tab_def, by.x="where1",by.y="code",all.x=T,all.y=F)
+reg_med$label[reg_med$label=="Machrek"]<-"Maghreb"
+mat<-as.matrix(reg_med[,2:13])
+row.names(mat)<-reg_med$label
+
+# Filter ambiguous units
+#mat<-mat[row.names(mat) != "Sahara",]
+##mat<-mat[row.names(mat) != "Asia Minor",]
+#mat<-mat[row.names(mat) != "Southern Africa",]
+#mat<-mat[row.names(mat) != "Europe",]
+#mat<-mat[row.names(mat) != "European Union",]
+
+
+# Select units 
+sel<-mat[apply(mat,1,sum)>10,]
+
+# Exclude units mentionned by less than 3 media
+sel <- sel[apply(sel>3,1,sum)>2,]
+
+
+afc <- CA(sel, graph = F)
+#library(explor)
+#explor(afc)
+res <- explor::prepare_results(afc)
+explor::CA_var_plot(res, xax = 1, yax = 2, lev_sup = FALSE, var_sup = FALSE,
+    var_sup_choice = , var_hide = "None", var_lab_min_contrib = 4, col_var = "Position",
+    symbol_var = NULL, size_var = "Contrib", size_range = c(52.5, 700), labels_size = 10,
+    point_size = 56, transitions = FALSE, labels_positions = "auto", xlim = c(-2,
+        1), ylim = c(-1, 2))
+
+```
+
+### Factors 3-4
+
+```{r}
+res <- explor::prepare_results(afc)
+explor::CA_var_plot(res, xax = 3, yax = 4, lev_sup = FALSE, var_sup = FALSE,
+    var_sup_choice = , var_hide = "None", var_lab_min_contrib = 4, col_var = "Position",
+    symbol_var = NULL, size_var = "Contrib", size_range = c(52.5, 700), labels_size = 10,
+    point_size = 56, transitions = FALSE, labels_positions = "auto", xlim = c(-0.924,
+        2.01), ylim = c(-1.5, 1.43))
+```
+
+### Cluster analysis (world regions)
+
+```{r}
+cah1 <- HCPC(afc,nb.clust = 5,graph = FALSE)
+plot.HCPC(cah1,choice="tree")
+```
+
+### Cluster analysis (medias)
+
+```{r}
+cah2 <- HCPC(afc,nb.clust = 4,graph = FALSE,cluster.CA = "columns")
+plot.HCPC(cah2,choice="tree")
+```
+
+## Synthesis by chi-square & heatmap
+
+An alternative approach based on the computation of chi-square and the classification of residuals (censoredd between -3 and +3)
+
+```{r,fig.height=8, fig.width =6}
+library(pheatmap)
+# Select units 
+sel<-mat[apply(mat,1,sum)>24,]
+
+# Exclude units mentionned by less than 5 media
+sel <- sel[apply(sel>3,1,sum)>3,]
+
+x<-chisq.test(sel)
+res<-as.matrix(x$residuals)
+exp<-as.matrix(x$expected)
+res[exp<2]<-0
+res[res>3]<-3
+res[res< -3]<- -3
+
+pheatmap(res, cutree_rows = 6,cutree_cols = 6)
+
+
+```
+
+
+
+
+ 
+
+
+
+
+
+
+

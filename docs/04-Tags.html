@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>IMAGEUN Media Group - 6&nbsp; Geo-tags</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./05-HyperCubes.html" rel="next">
+<link href="./03-Dictionary.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Geo-tags</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">IMAGEUN Media Group</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">About</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-Mediacloud.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Mediacloud</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-Quanteda.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Quanteda</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-Dictionary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Geo-dictionary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-Tags.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Geo-tags</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-HyperCubes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HyperCubes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-Macroregions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">MacroRegions</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#procedure" id="toc-procedure" class="nav-link active" data-scroll-target="#procedure"><span class="toc-section-number">6.1</span>  Procedure</a>
+  <ul class="collapse">
+  <li><a href="#dictionary" id="toc-dictionary" class="nav-link" data-scroll-target="#dictionary"><span class="toc-section-number">6.1.1</span>  Dictionary</a></li>
+  <li><a href="#function" id="toc-function" class="nav-link" data-scroll-target="#function"><span class="toc-section-number">6.1.2</span>  Function</a></li>
+  <li><a href="#tagging" id="toc-tagging" class="nav-link" data-scroll-target="#tagging"><span class="toc-section-number">6.1.3</span>  Tagging</a></li>
+  <li><a href="#check" id="toc-check" class="nav-link" data-scroll-target="#check"><span class="toc-section-number">6.1.4</span>  Check</a></li>
+  </ul></li>
+  <li><a href="#application" id="toc-application" class="nav-link" data-scroll-target="#application"><span class="toc-section-number">6.2</span>  Application</a>
+  <ul class="collapse">
+  <li><a href="#france" id="toc-france" class="nav-link" data-scroll-target="#france"><span class="toc-section-number">6.2.1</span>  France</a></li>
+  <li><a href="#germany" id="toc-germany" class="nav-link" data-scroll-target="#germany"><span class="toc-section-number">6.2.2</span>  Germany</a></li>
+  <li><a href="#united-kingdom" id="toc-united-kingdom" class="nav-link" data-scroll-target="#united-kingdom"><span class="toc-section-number">6.2.3</span>  United Kingdom</a></li>
+  <li><a href="#ireland-ulster" id="toc-ireland-ulster" class="nav-link" data-scroll-target="#ireland-ulster"><span class="toc-section-number">6.2.4</span>  Ireland &amp; Ulster</a></li>
+  <li><a href="#turkey" id="toc-turkey" class="nav-link" data-scroll-target="#turkey"><span class="toc-section-number">6.2.5</span>  Turkey</a></li>
+  <li><a href="#algeria" id="toc-algeria" class="nav-link" data-scroll-target="#algeria"><span class="toc-section-number">6.2.6</span>  Algeria</a></li>
+  <li><a href="#global-corpus" id="toc-global-corpus" class="nav-link" data-scroll-target="#global-corpus"><span class="toc-section-number">6.2.7</span>  Global corpus</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Geo-tags</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="procedure" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="procedure"><span class="header-section-number">6.1</span> Procedure</h2>
+<section id="dictionary" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="dictionary"><span class="header-section-number">6.1.1</span> Dictionary</h3>
+<p>The dictionary elaborated by automatic procedures has been manually corrected and the new version is upload. As an example, the table below present the labels used for the recognition of the Mediterranean Sea.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">lang</th>
+<th style="text-align: left;">label</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: left;">code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">3109</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">ar</td>
+<td style="text-align: left;">البحر الأبيض المتوسط</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3110</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">ar</td>
+<td style="text-align: left;">البحر المتوسط</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3111</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">ar</td>
+<td style="text-align: left;">بحر الروم</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3112</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">de</td>
+<td style="text-align: left;">Mittelländisches Meer</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3113</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">de</td>
+<td style="text-align: left;">Mittelmeer</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3114</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">en</td>
+<td style="text-align: left;">Mediterranean</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3115</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">en</td>
+<td style="text-align: left;">Mediterranean Sea</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3116</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">fr</td>
+<td style="text-align: left;">Méditerranée</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3117</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">fr</td>
+<td style="text-align: left;">mer Méditerranée</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3118</td>
+<td style="text-align: left;">Q4918</td>
+<td style="text-align: left;">tr</td>
+<td style="text-align: left;">Akdeniz</td>
+<td style="text-align: left;">sea</td>
+<td style="text-align: left;">SE_medit</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="function" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="function"><span class="header-section-number">6.1.2</span> Function</h3>
+<p>We have elaborated a function for the extraction of geographical units based on the dictionary elaborated in previous section (dict) according to the language (lang), the decision to split some tokens (split) to move or not to lower case (tolow) and the possibility to add a list of compounds to be realized (comps) in order to eliminate ambiguities.</p>
+<p>The code of the function is detailed below :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>extract_tags <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">qd =</span> qd,                      <span class="co"># the corpus of interest</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">lang =</span> <span class="st">"fr"</span>,                  <span class="co"># the language to be used</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">dict =</span> dict,                  <span class="co"># the dictionary of target </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">code =</span> <span class="st">"id"</span> ,                  <span class="co"># variable used for coding</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">split  =</span> <span class="fu">c</span>(<span class="st">"'"</span>,<span class="st">"’"</span>,<span class="st">"-"</span>),       <span class="co"># split list</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">tolow =</span> <span class="cn">FALSE</span>  ,                <span class="co"># Tokenize text</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">comps =</span> <span class="fu">c</span>(<span class="st">"Afrique du sud"</span>)  <span class="co"># compounds</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                         )</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>{ </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Tokenize  </span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">as.character</span>(qd)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(split) <span class="sc">&gt;</span> <span class="dv">0</span>) { reg<span class="ot">&lt;-</span><span class="fu">paste</span>(split, <span class="at">collapse =</span> <span class="st">'|'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                       x <span class="ot">&lt;-</span> <span class="fu">gsub</span>(reg,<span class="st">" "</span>,x)}  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(tolow) { x <span class="ot">&lt;-</span> <span class="fu">tolower</span>(x)} </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>toks<span class="ot">&lt;-</span><span class="fu">tokens</span>(x)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># compounds</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(split) <span class="sc">&gt;</span> <span class="dv">0</span>) { reg<span class="ot">&lt;-</span><span class="fu">paste</span>(split, <span class="at">collapse =</span> <span class="st">'|'</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                       comps<span class="ot">&lt;-</span> <span class="fu">gsub</span>(reg,<span class="st">" "</span>,comps)}  </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(tolow)       {comps <span class="ot">&lt;-</span> <span class="fu">tolower</span>(comps)}  </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>toks<span class="ot">&lt;-</span><span class="fu">tokens_compound</span>(toks,<span class="at">pattern=</span><span class="fu">phrase</span>(comps))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Load dictionaries and create compounds</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Target dictionary</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>dict<span class="ot">&lt;-</span>dict[dict<span class="sc">$</span>lang<span class="sc">==</span>lang <span class="sc">&amp;</span> <span class="fu">is.na</span>(dict<span class="sc">$</span>label)<span class="sc">==</span>F,]</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>target<span class="ot">&lt;-</span>dict[<span class="fu">ntoken</span>(dict<span class="sc">$</span>label)<span class="sc">&gt;</span><span class="dv">1</span>,]</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span>dict<span class="sc">$</span>label</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(split) <span class="sc">&gt;</span> <span class="dv">0</span>) { reg<span class="ot">&lt;-</span><span class="fu">paste</span>(split, <span class="at">collapse =</span> <span class="st">'|'</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                       labels<span class="ot">&lt;-</span> <span class="fu">gsub</span>(reg,<span class="st">" "</span>,labels)}  </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(tolow)       {labels <span class="ot">&lt;-</span> <span class="fu">tolower</span>(labels)}  </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>toks<span class="ot">&lt;-</span><span class="fu">tokens_compound</span>(toks,<span class="at">pattern=</span><span class="fu">phrase</span>(labels))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a> <span class="co"># create quanteda dictionary</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>keys <span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">" "</span>,<span class="st">"_"</span>,labels)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>qd_dict<span class="ot">&lt;-</span><span class="fu">as.list</span>(keys)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(qd_dict)<span class="ot">&lt;-</span>dict[[code]]</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>qd_dict<span class="ot">&lt;-</span><span class="fu">dictionary</span>(qd_dict,<span class="at">tolower =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify geo tags (states or reg or org ...)</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>toks_tags <span class="ot">&lt;-</span> <span class="fu">tokens_lookup</span>(toks, qd_dict, <span class="at">case_insensitive =</span> F)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>toks_tags <span class="ot">&lt;-</span> <span class="fu">lapply</span>(toks_tags, unique)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>toks_tags<span class="ot">&lt;-</span><span class="fu">as.tokens</span>(toks_tags)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>list_tags<span class="ot">&lt;-</span><span class="cf">function</span>(x){res<span class="ot">&lt;-</span><span class="fu">paste</span>(x, <span class="at">collapse=</span><span class="st">' '</span>)}</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(qd)[[<span class="st">"tags"</span>]]<span class="ot">&lt;-</span><span class="fu">as.character</span>(<span class="fu">lapply</span>(toks_tags,<span class="at">FUN=</span>list_tags))</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(qd)[[<span class="st">"nbtags"</span>]]<span class="ot">&lt;-</span><span class="fu">ntoken</span>(toks_tags)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Export results</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(qd)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="tagging" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="tagging"><span class="header-section-number">6.1.3</span> Tagging</h3>
+<p>We apply the function to the case of <em>Le Figaro</em>. In the case of french language, we provide a list of compounds to be prepared before the application of the dictionary. We also add a supplementary tag that indicates if the news are international. News are considered as international whene at least one world region or foreign state is mentioned. The self reference to the country will not be consiidered as international if they are alone (e.g.&nbsp;a news mentioning only <em>France</em> or <em>Paris</em> in Le Figaro) but will be kept when the nation of the media is combine with another international element (e.g.&nbsp;a news mentioning <em>France</em> in Le Figaro will be kept if it mentions also <em>Europe</em> or <em>Germany</em> )</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="check" class="level3" data-number="6.1.4">
+<h3 data-number="6.1.4" class="anchored" data-anchor-id="check"><span class="header-section-number">6.1.4</span> Check</h3>
+<p>Then we examine the most frequent tags in international news order to check if results are not too different from expectations :</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">2250</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">1117</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">1014</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">1001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_DEU</td>
+<td style="text-align: right;">937</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">851</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">792</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_IRN</td>
+<td style="text-align: right;">776</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_RUS</td>
+<td style="text-align: right;">729</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CA_USA</td>
+<td style="text-align: right;">719</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="application" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="application"><span class="header-section-number">6.2</span> Application</h2>
+<section id="france" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="france"><span class="header-section-number">6.2.1</span> France</h3>
+<section id="le-figaro-fra" class="level4" data-number="6.2.1.1">
+<h4 data-number="6.2.1.1" class="anchored" data-anchor-id="le-figaro-fra"><span class="header-section-number">6.2.1.1</span> Le Figaro (FRA)</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">2250</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">1117</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">1014</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">1001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_DEU</td>
+<td style="text-align: right;">937</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">851</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">792</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_IRN</td>
+<td style="text-align: right;">776</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_RUS</td>
+<td style="text-align: right;">729</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CA_USA</td>
+<td style="text-align: right;">719</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="le-monde" class="level4" data-number="6.2.1.2">
+<h4 data-number="6.2.1.2" class="anchored" data-anchor-id="le-monde"><span class="header-section-number">6.2.1.2</span> Le Monde</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">1123</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">565</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">540</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">386</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_DEU</td>
+<td style="text-align: right;">384</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_DZA</td>
+<td style="text-align: right;">347</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_GBR</td>
+<td style="text-align: right;">338</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_ISR</td>
+<td style="text-align: right;">302</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">287</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">285</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="germany" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="germany"><span class="header-section-number">6.2.2</span> Germany</h3>
+<section id="faz" class="level4" data-number="6.2.2.1">
+<h4 data-number="6.2.2.1" class="anchored" data-anchor-id="faz"><span class="header-section-number">6.2.2.1</span> FAZ</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">1183</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">1099</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">732</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">566</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">454</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_RUS</td>
+<td style="text-align: right;">384</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">377</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_AFG</td>
+<td style="text-align: right;">319</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CA_FRA</td>
+<td style="text-align: right;">281</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_ISR</td>
+<td style="text-align: right;">264</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="süddeutsche-zeitung" class="level4" data-number="6.2.2.2">
+<h4 data-number="6.2.2.2" class="anchored" data-anchor-id="süddeutsche-zeitung"><span class="header-section-number">6.2.2.2</span> Süddeutsche Zeitung</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">936</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">636</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">292</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_GBR</td>
+<td style="text-align: right;">278</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">257</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_AUT</td>
+<td style="text-align: right;">240</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">240</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_RUS</td>
+<td style="text-align: right;">212</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">199</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_TUR</td>
+<td style="text-align: right;">180</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="united-kingdom" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="united-kingdom"><span class="header-section-number">6.2.3</span> United Kingdom</h3>
+<section id="guardian" class="level4" data-number="6.2.3.1">
+<h4 data-number="6.2.3.1" class="anchored" data-anchor-id="guardian"><span class="header-section-number">6.2.3.1</span> Guardian</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">1532</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">1368</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">713</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_AUS</td>
+<td style="text-align: right;">662</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">546</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_IRN</td>
+<td style="text-align: right;">539</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_IND</td>
+<td style="text-align: right;">479</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_RUS</td>
+<td style="text-align: right;">438</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">420</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_BRA</td>
+<td style="text-align: right;">414</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="daily-telegraph" class="level4" data-number="6.2.3.2">
+<h4 data-number="6.2.3.2" class="anchored" data-anchor-id="daily-telegraph"><span class="header-section-number">6.2.3.2</span> Daily Telegraph</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">534</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">487</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">375</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CA_JPN</td>
+<td style="text-align: right;">358</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">330</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">289</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_IND</td>
+<td style="text-align: right;">279</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">259</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_AUS</td>
+<td style="text-align: right;">192</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_GBR</td>
+<td style="text-align: right;">179</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="ireland-ulster" class="level3" data-number="6.2.4">
+<h3 data-number="6.2.4" class="anchored" data-anchor-id="ireland-ulster"><span class="header-section-number">6.2.4</span> Ireland &amp; Ulster</h3>
+<section id="belfast-telegraph" class="level4" data-number="6.2.4.1">
+<h4 data-number="6.2.4.1" class="anchored" data-anchor-id="belfast-telegraph"><span class="header-section-number">6.2.4.1</span> Belfast Telegraph</h4>
+<p>In the particular case of a media located in Ulster, we decide to filter news speaking only from “Ireland” but to keep news speaking only from UK…</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CA_GBR</td>
+<td style="text-align: right;">772</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">749</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_IRL</td>
+<td style="text-align: right;">649</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_IND</td>
+<td style="text-align: right;">387</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">342</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_GBR</td>
+<td style="text-align: right;">336</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">328</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">282</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_ISL</td>
+<td style="text-align: right;">281</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">232</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="irish-times" class="level4" data-number="6.2.4.2">
+<h4 data-number="6.2.4.2" class="anchored" data-anchor-id="irish-times"><span class="header-section-number">6.2.4.2</span> Irish Times</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">1471</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_IRL</td>
+<td style="text-align: right;">925</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">606</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">525</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">462</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CA_JPN</td>
+<td style="text-align: right;">424</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">421</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_GBR</td>
+<td style="text-align: right;">407</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">394</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CA_GBR</td>
+<td style="text-align: right;">338</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="turkey" class="level3" data-number="6.2.5">
+<h3 data-number="6.2.5" class="anchored" data-anchor-id="turkey"><span class="header-section-number">6.2.5</span> Turkey</h3>
+<section id="cumhuryet" class="level4" data-number="6.2.5.1">
+<h4 data-number="6.2.5.1" class="anchored" data-anchor-id="cumhuryet"><span class="header-section-number">6.2.5.1</span> Cumhuryet</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">2908</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_TUR</td>
+<td style="text-align: right;">1363</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_RUS</td>
+<td style="text-align: right;">1004</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">891</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">672</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">562</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OR_EU</td>
+<td style="text-align: right;">558</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_DEU</td>
+<td style="text-align: right;">546</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_IRN</td>
+<td style="text-align: right;">532</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_ITA</td>
+<td style="text-align: right;">486</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="yeni-safak" class="level4" data-number="6.2.5.2">
+<h4 data-number="6.2.5.2" class="anchored" data-anchor-id="yeni-safak"><span class="header-section-number">6.2.5.2</span> Yeni Safak</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">3052</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_TUR</td>
+<td style="text-align: right;">1622</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_ISR</td>
+<td style="text-align: right;">1191</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_RUS</td>
+<td style="text-align: right;">819</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_IRN</td>
+<td style="text-align: right;">790</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CO_EUR</td>
+<td style="text-align: right;">743</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">727</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">660</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_GRC</td>
+<td style="text-align: right;">654</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_AZE</td>
+<td style="text-align: right;">619</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="algeria" class="level3" data-number="6.2.6">
+<h3 data-number="6.2.6" class="anchored" data-anchor-id="algeria"><span class="header-section-number">6.2.6</span> Algeria</h3>
+<section id="el-khabar" class="level4" data-number="6.2.6.1">
+<h4 data-number="6.2.6.1" class="anchored" data-anchor-id="el-khabar"><span class="header-section-number">6.2.6.1</span> El Khabar</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">462</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_DZA</td>
+<td style="text-align: right;">436</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_AFR</td>
+<td style="text-align: right;">286</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_TUN</td>
+<td style="text-align: right;">278</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CA_TUN</td>
+<td style="text-align: right;">276</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_LBY</td>
+<td style="text-align: right;">276</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_SAU</td>
+<td style="text-align: right;">246</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_MAR</td>
+<td style="text-align: right;">231</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">156</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_EGY</td>
+<td style="text-align: right;">153</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="al-nahar-dza" class="level4" data-number="6.2.6.2">
+<h4 data-number="6.2.6.2" class="anchored" data-anchor-id="al-nahar-dza"><span class="header-section-number">6.2.6.2</span> Al Nahar (DZA)</h4>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">word</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CA_TUN</td>
+<td style="text-align: right;">353</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_TUN</td>
+<td style="text-align: right;">353</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_DZA</td>
+<td style="text-align: right;">339</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_FRA</td>
+<td style="text-align: right;">324</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_LBY</td>
+<td style="text-align: right;">279</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_MAR</td>
+<td style="text-align: right;">239</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO_AFR</td>
+<td style="text-align: right;">210</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_SAU</td>
+<td style="text-align: right;">207</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ST_USA</td>
+<td style="text-align: right;">202</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ST_CHN</td>
+<td style="text-align: right;">159</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="global-corpus" class="level3" data-number="6.2.7">
+<h3 data-number="6.2.7" class="anchored" data-anchor-id="global-corpus"><span class="header-section-number">6.2.7</span> Global corpus</h3>
+<div class="cell">
+
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./03-Dictionary.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Geo-dictionary</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./05-HyperCubes.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">HyperCubes</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

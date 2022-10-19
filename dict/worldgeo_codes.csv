@@ -1,0 +1,500 @@
+id;label;type;code
+Q15;Africa;cont;CO_AFR
+Q828;Americas;cont;CO_AMR
+Q48;Asia;cont;CO_ASI
+Q46;Europe;cont;CO_EUR
+Q538;Insular Oceania;cont;CO_OCE
+Q51;Antarctica;cont;CO_ANT
+Q5401;Eurasia;cont;CO_ERA
+Q1070940;Asia-Pacific;cont;CO_ASI_pacif
+Q2271241;Euroméditerranée;cont;CO_EUR_medit
+Q60140;Indian subcontinent;cont;CO_ASI_ind
+Q27433;Central Africa;cont;CO_AFR_centr
+Q27407;East Africa;cont;CO_AFR_east
+Q27381;North Africa;cont;CO_AFR_north
+Q4412;West Africa;cont;CO_AFR_west
+Q210682;French West Africa;cont;CO_AFR_frenc
+Q132959;Sub-Saharan Africa;cont;CO_AFR_ssahr
+Q27394;Southern Africa;cont;CO_AFR_south
+Q27611;Central America;cont;CO_AMR_centr
+Q12585;Latin America;cont;CO_AMR_latin
+Q49;North America;cont;CO_AMR_north
+Q2017699;Northern America;cont;CO_AMR_north
+Q18;South America;cont;CO_AMR_south
+Q27275;Central Asia;cont;CO_ASI_centr
+Q27231;East Asia;cont;CO_ASI_east
+Q12824780;Asia Minor;cont;CO_ASI_minor
+Q27293;Western Asia;cont;CO_ASI_south_west
+Q771405;South Asia;cont;CO_ASI_south
+Q11708;Southeast Asia;cont;CO_ASI_south_east
+Q27509;Central Europe;cont;CO_EUR_centr
+Q900636;Central and Eastern Europe;cont;CO_EUR_centr_east
+Q16389571;East-Central Europe;cont;CO_EUR_east
+Q27468;Eastern Europe;cont;CO_EUR_east_centr
+Q27479;Northern Europe;cont;CO_EUR_north
+Q27496;Western Europe;cont;CO_EUR_west
+Q27449;Southern Europe;cont;CO_EUR_south
+Q263686;Southeast Europe;cont;CO_EUR_south_east
+Q66065;Sahel;land;LA_sahel
+Q6583;Sahara;land;LA_sahara
+Q2841453;Amazonia;land;LA_amazon
+Q5456;Andes;land;LA_anden
+Q1286;Alps;land;LA_alpen
+Q5463;Rocky Mountains;land;LA_rocky
+Q18869;Caucasus;land;LA_cauca
+Q5451;Himalayas;land;LA_himal
+Q23522;Balkans;land;LA_balka
+Q503282;Mashriq;land;LA_maghr
+Q28227;Maghreb;land;LA_mashr
+Q7204;Middle East;land;LA_east_middle
+Q48214;Near East;land;LA_east_near
+Q21195;Scandinavia;land;LA_scand
+Q664609;Caribbean;sea;SE_carai
+Q166131;Antilles;sea;SE_antil
+Q93259;Lesser Antilles;sea;SE_antil_small
+Q128011;Greater Antilles;sea;SE_antil_great
+Q37394;Melanesia;sea;SE_melan
+Q35942;Polynesia;sea;SE_polyn
+Q3359409;Micronesia;sea;SE_micro
+Q97;Atlantic Ocean;sea;SE_atlan
+Q98;Pacific Ocean;sea;SE_pacif
+Q1239;Indian Ocean;sea;SE_india
+Q37660;South China Sea;sea;SE_china_south
+Q45341;East China Sea;sea;SE_china_east
+Q4918;Mediterranean Sea;sea;SE_medit
+Q34675;Persian Gulf;sea;SE_persi
+Q166;Black Sea;sea;SE_black
+Q25322;Arctic;sea;SE_arcti
+Q7159;African Union;org;OR_AfrUn
+Q7172;Arab League;org;OR_ArLig
+Q7768;ASEAN;org;OR_Asean
+Q776874;Asia Cooperation Dialogue;org;OR_ACD
+Q170481;Asia-Pacific Economic Cooperation;org;OR_APEC
+Q1147937;Association of Caribbean States;org;OR_ACS
+Q795985;Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation;org;OR_Benga
+Q2655795;British–Irish Council;org;OR_BrIri
+Q96053693;Bucharest Nine;org;OR_Buc9
+Q205995;Caribbean Community;org;OR_Caric
+Q190028;Central American Integration System;org;OR_CAIS
+Q7779;Commonwealth of Independent States;org;OR_CIS
+Q7785;Commonwealth of Nations;org;OR_comwl
+Q1045401;Community of Latin American and Caribbean States;org;OR_CLACS
+Q8908;Council of Europe;org;OR_CoEur
+Q20036753;Craiova Group;org;OR_Craio
+Q337456;East African Community;org;OR_EAC
+Q193272;Economic Community of West African States;org;OR_ECWAS
+Q225950;Economic Cooperation Organization;org;OR_ECO
+Q4173083;Eurasian Economic Union;org;OR_EEU
+Q458;European Union;org;OR_EU
+Q62005941;Prosur;org;OR_XXX
+Q326816;GUAM Organization for Democracy and Economic Development;org;OR_Guam
+Q217172;Cooperation Council for the Arab States of the Gulf;org;OR_CCASG
+Q2297691;Indian Ocean Rim Association;org;OR_IORA
+Q499151;Latin American Parliament;org;OR_LAP
+Q97994672;Lublin Triangle;org;OR_Lubli
+Q1918937;Melanesian Spearhead Group;org;OR_Melan
+Q4264;Mercosur;org;OR_Merco
+Q7184;NATO;org;OR_NATO
+Q146165;Nordic Council;org;OR_Norco
+Q123759;Organization of American States;org;OR_OAS
+Q757276;Pacific Islands Forum;org;OR_PIF
+Q3117794;Polynesian Leaders Group;org;OR_Polyn
+Q11523819;Regional Comprehensive Economic Partnership;org;OR_RCEP
+Q485207;Shanghai Cooperation Organisation;org;OR_Shang
+Q145700;South Asian Association for Regional Cooperation;org;OR_SAARC
+Q3935730;TAKM;org;OR_TAKM
+Q32069506;Three Seas Initiative;org;OR_3seas
+Q13231715;Trilateral Cooperation Secretariat;org;OR_Trila
+Q596850;Turkic Council;org;OR_TurCo
+Q4230;Union of South American Nations;org;OR_USAN
+Q244323;Visegrád Group;org;OR_Viseg
+Q1642145;West Nordic Council;org;OR_WNC
+Q889;Afghanistan;sta;ST_AFG
+Q916;Angola;sta;ST_AGO
+Q222;Albania;sta;ST_ALB
+Q228;Andorra;sta;ST_AND
+Q878;United Arab Emirates;sta;ST_ARE
+Q414;Argentina;sta;ST_ARG
+Q399;Armenia;sta;ST_ARM
+Q781;Antigua and Barbuda;sta;ST_ATG
+Q408;Australia;sta;ST_AUS
+Q40;Austria;sta;ST_AUT
+Q227;Azerbaijan;sta;ST_AZE
+Q967;Burundi;sta;ST_BDI
+Q31;Belgium;sta;ST_BEL
+Q962;Benin;sta;ST_BEN
+Q965;Burkina Faso;sta;ST_BFA
+Q902;Bangladesh;sta;ST_BGD
+Q219;Bulgaria;sta;ST_BGR
+Q398;Bahrain;sta;ST_BHR
+Q778;The Bahamas;sta;ST_BHS
+Q225;Bosnia and Herzegovina;sta;ST_BIH
+Q184;Belarus;sta;ST_BLR
+Q242;Belize;sta;ST_BLZ
+Q750;Bolivia;sta;ST_BOL
+Q155;Brazil;sta;ST_BRA
+Q244;Barbados;sta;ST_BRB
+Q921;Brunei;sta;ST_BRN
+Q917;Bhutan;sta;ST_BTN
+Q963;Botswana;sta;ST_BWA
+Q929;Central African Republic;sta;ST_CAF
+Q16;Canada;sta;ST_CAN
+Q39;Switzerland;sta;ST_CHE
+Q298;Chile;sta;ST_CHL
+Q148;China;sta;ST_CHN
+Q1008;Côte d Ivoire;sta;ST_CIV
+Q1009;Cameroon;sta;ST_CMR
+Q974;Democratic Republic of the Congo;sta;ST_COD
+Q971;Republic of the Congo;sta;ST_COG
+Q739;Colombia;sta;ST_COL
+Q970;Comoros;sta;ST_COM
+Q1011;Cape Verde;sta;ST_CPV
+Q800;Costa Rica;sta;ST_CRI
+Q241;Cuba;sta;ST_CUB
+Q229;Cyprus;sta;ST_CYP
+Q213;Czech Republic;sta;ST_CZE
+Q183;Germany;sta;ST_DEU
+Q977;Djibouti;sta;ST_DJI
+Q784;Dominica;sta;ST_DMA
+Q35;Denmark;sta;ST_DNK
+Q786;Dominican Republic;sta;ST_DOM
+Q262;Algeria;sta;ST_DZA
+Q736;Ecuador;sta;ST_ECU
+Q79;Egypt;sta;ST_EGY
+Q986;Eritrea;sta;ST_ERI
+Q29;Spain;sta;ST_ESP
+Q191;Estonia;sta;ST_EST
+Q115;Ethiopia;sta;ST_ETH
+Q33;Finland;sta;ST_FIN
+Q712;Fiji;sta;ST_FJI
+Q142;France;sta;ST_FRA
+Q702;Federated States of Micronesia;sta;ST_FSM
+Q1000;Gabon;sta;ST_GAB
+Q145;United Kingdom;sta;ST_GBR
+Q230;Georgia;sta;ST_GEO
+Q117;Ghana;sta;ST_GHA
+Q1006;Guinea;sta;ST_GIN
+Q1005;The Gambia;sta;ST_GMB
+Q1007;Guinea-Bissau;sta;ST_GNB
+Q983;Equatorial Guinea;sta;ST_GNQ
+Q41;Greece;sta;ST_GRC
+Q769;Grenada;sta;ST_GRD
+Q774;Guatemala;sta;ST_GTM
+Q734;Guyana;sta;ST_GUY
+Q783;Honduras;sta;ST_HND
+Q224;Croatia;sta;ST_HRV
+Q790;Haiti;sta;ST_HTI
+Q28;Hungary;sta;ST_HUN
+Q252;Indonesia;sta;ST_IDN
+Q668;India;sta;ST_IND
+Q27;Ireland;sta;ST_IRL
+Q794;Iran;sta;ST_IRN
+Q796;Iraq;sta;ST_IRQ
+Q189;Iceland;sta;ST_ISL
+Q801;Israel;sta;ST_ISR
+Q38;Italy;sta;ST_ITA
+Q766;Jamaica;sta;ST_JAM
+Q810;Jordan;sta;ST_JOR
+Q17;Japan;sta;ST_JPN
+Q232;Kazakhstan;sta;ST_KAZ
+Q114;Kenya;sta;ST_KEN
+Q813;Kyrgyzstan;sta;ST_KGZ
+Q424;Cambodia;sta;ST_KHM
+Q710;Kiribati;sta;ST_KIR
+Q763;Saint Kitts and Nevis;sta;ST_KNA
+Q884;South Korea;sta;ST_KOR
+Q817;Kuwait;sta;ST_KWT
+Q819;Laos;sta;ST_LAO
+Q822;Lebanon;sta;ST_LBN
+Q1014;Liberia;sta;ST_LBR
+Q1016;Libya;sta;ST_LBY
+Q760;Saint Lucia;sta;ST_LCA
+Q347;Liechtenstein;sta;ST_LIE
+Q854;Sri Lanka;sta;ST_LKA
+Q1013;Lesotho;sta;ST_LSO
+Q37;Lithuania;sta;ST_LTU
+Q32;Luxembourg;sta;ST_LUX
+Q211;Latvia;sta;ST_LVA
+Q1028;Morocco;sta;ST_MAR
+Q235;Monaco;sta;ST_MCO
+Q217;Moldova;sta;ST_MDA
+Q1019;Madagascar;sta;ST_MDG
+Q826;Maldives;sta;ST_MDV
+Q96;Mexico;sta;ST_MEX
+Q709;Marshall Islands;sta;ST_MHL
+Q221;North Macedonia;sta;ST_MKD
+Q912;Mali;sta;ST_MLI
+Q233;Malta;sta;ST_MLT
+Q836;Myanmar;sta;ST_MMR
+Q236;Montenegro;sta;ST_MNE
+Q711;Mongolia;sta;ST_MNG
+Q1029;Mozambique;sta;ST_MOZ
+Q1025;Mauritania;sta;ST_MRT
+Q1027;Mauritius;sta;ST_MUS
+Q1020;Malawi;sta;ST_MWI
+Q833;Malaysia;sta;ST_MYS
+Q1030;Namibia;sta;ST_NAM
+Q1032;Niger;sta;ST_NER
+Q1033;Nigeria;sta;ST_NGA
+Q811;Nicaragua;sta;ST_NIC
+Q29999;Kingdom of the Netherlands;sta;ST_NLD
+Q20;Norway;sta;ST_NOR
+Q837;Nepal;sta;ST_NPL
+Q697;Nauru;sta;ST_NRU
+Q664;New Zealand;sta;ST_NZL
+Q842;Oman;sta;ST_OMN
+Q843;Pakistan;sta;ST_PAK
+Q804;Panama;sta;ST_PAN
+Q419;Peru;sta;ST_PER
+Q928;Philippines;sta;ST_PHL
+Q695;Palau;sta;ST_PLW
+Q691;Papua New Guinea;sta;ST_PNG
+Q36;Poland;sta;ST_POL
+Q423;North Korea;sta;ST_PRK
+Q45;Portugal;sta;ST_PRT
+Q733;Paraguay;sta;ST_PRY
+Q846;Qatar;sta;ST_QAT
+Q218;Romania;sta;ST_ROU
+Q159;Russia;sta;ST_RUS
+Q1037;Rwanda;sta;ST_RWA
+Q851;Saudi Arabia;sta;ST_SAU
+Q1049;Sudan;sta;ST_SDN
+Q1041;Senegal;sta;ST_SEN
+Q334;Singapore;sta;ST_SGP
+Q685;Solomon Islands;sta;ST_SLB
+Q1044;Sierra Leone;sta;ST_SLE
+Q792;El Salvador;sta;ST_SLV
+Q238;San Marino;sta;ST_SMR
+Q1045;Somalia;sta;ST_SOM
+Q403;Serbia;sta;ST_SRB
+Q958;South Sudan;sta;ST_SSD
+Q1039;São Tomé and Príncipe;sta;ST_STP
+Q730;Suriname;sta;ST_SUR
+Q214;Slovakia;sta;ST_SVK
+Q215;Slovenia;sta;ST_SVN
+Q34;Sweden;sta;ST_SWE
+Q1050;Eswatini;sta;ST_SWZ
+Q1042;Seychelles;sta;ST_SYC
+Q858;Syria;sta;ST_SYR
+Q657;Chad;sta;ST_TCD
+Q945;Togo;sta;ST_TGO
+Q869;Thailand;sta;ST_THA
+Q863;Tajikistan;sta;ST_TJK
+Q874;Turkmenistan;sta;ST_TKM
+Q574;Timor-Leste;sta;ST_TLS
+Q678;Tonga;sta;ST_TON
+Q754;Trinidad and Tobago;sta;ST_TTO
+Q948;Tunisia;sta;ST_TUN
+Q43;Turkey;sta;ST_TUR
+Q672;Tuvalu;sta;ST_TUV
+Q865;Taiwan;sta;ST_TWN
+Q924;Tanzania;sta;ST_TZA
+Q1036;Uganda;sta;ST_UGA
+Q212;Ukraine;sta;ST_UKR
+Q77;Uruguay;sta;ST_URY
+Q30;United States of America;sta;ST_USA
+Q265;Uzbekistan;sta;ST_UZB
+Q237;Vatican City;sta;ST_VAT
+Q757;Saint Vincent and the Grenadines;sta;ST_VCT
+Q717;Venezuela;sta;ST_VEN
+Q881;Vietnam;sta;ST_VNM
+Q686;Vanuatu;sta;ST_VUT
+Q683;Samoa;sta;ST_WSM
+Q805;Yemen;sta;ST_YEM
+Q258;South Africa;sta;ST_ZAF
+Q953;Zambia;sta;ST_ZMB
+Q954;Zimbabwe;sta;ST_ZWE
+Q5838;Kabul;cap;CA_AFG
+Q3897;Luanda;cap;CA_AGO
+Q19689;Tirana;cap;CA_ALB
+Q1863;Andorra la Vella;cap;CA_AND
+Q1519;Abu Dhabi;cap;CA_ARE
+Q1486;Buenos Aires;cap;CA_ARG
+Q1953;Yerevan;cap;CA_ARM
+Q36262;Saint John s;cap;CA_ATG
+Q3114;Canberra;cap;CA_AUS
+Q1741;Vienna;cap;CA_AUT
+Q9248;Baku;cap;CA_AZE
+Q167551;Gitega;cap;CA_BDI
+Q239;Brussels;cap;CA_BEL
+Q3799;Porto-Novo;cap;CA_BEN
+Q3777;Ouagadougou;cap;CA_BFA
+Q1354;Dhaka;cap;CA_BGD
+Q472;Sofia;cap;CA_BGR
+Q3882;Manama;cap;CA_BHR
+Q2467;Nassau;cap;CA_BHS
+Q11194;Sarajevo;cap;CA_BIH
+Q2280;Minsk;cap;CA_BLR
+Q3043;Belmopan;cap;CA_BLZ
+Q1491;La Paz;cap;CA_BOL
+Q2844;Brasília;cap;CA_BRA
+Q36168;Bridgetown;cap;CA_BRB
+Q9279;Bandar Seri Begawan;cap;CA_BRN
+Q9270;Thimphu;cap;CA_BTN
+Q3919;Gaborone;cap;CA_BWA
+Q3832;Bangui;cap;CA_CAF
+Q1930;Ottawa;cap;CA_CAN
+Q70;Bern;cap;CA_CHE
+Q2887;Santiago;cap;CA_CHL
+Q956;Beijing;cap;CA_CHN
+Q3768;Yamoussoukro;cap;CA_CIV
+Q3808;Yaoundé;cap;CA_CMR
+Q3838;Kinshasa;cap;CA_COD
+Q3844;Brazzaville;cap;CA_COG
+Q2841;Bogotá;cap;CA_COL
+Q3901;Moroni;cap;CA_COM
+Q3751;Praia;cap;CA_CPV
+Q3070;San José;cap;CA_CRI
+Q1563;Havana;cap;CA_CUB
+Q3856;Nicosia;cap;CA_CYP
+Q1085;Prague;cap;CA_CZE
+Q64;Berlin;cap;CA_DEU
+Q3604;Djibouti;cap;CA_DJI
+Q36281;Roseau;cap;CA_DMA
+Q1748;Copenhagen;cap;CA_DNK
+Q34820;Santo Domingo;cap;CA_DOM
+Q3561;Algiers;cap;CA_DZA
+Q2900;Quito;cap;CA_ECU
+Q85;Cairo;cap;CA_EGY
+Q3642;Asmara;cap;CA_ERI
+Q2807;Madrid;cap;CA_ESP
+Q1770;Tallinn;cap;CA_EST
+Q3624;Addis Ababa;cap;CA_ETH
+Q1757;Helsinki;cap;CA_FIN
+Q38807;Suva;cap;CA_FJI
+Q90;Paris;cap;CA_FRA
+Q42751;Palikir;cap;CA_FSM
+Q3825;Libreville;cap;CA_GAB
+Q84;London;cap;CA_GBR
+Q994;Tbilisi;cap;CA_GEO
+Q3761;Accra;cap;CA_GHA
+Q3733;Conakry;cap;CA_GIN
+Q3726;Banjul;cap;CA_GMB
+Q3739;Bissau;cap;CA_GNB
+Q3818;Malabo;cap;CA_GNQ
+Q1524;Athens;cap;CA_GRC
+Q41547;St. George s;cap;CA_GRD
+Q1555;Guatemala City;cap;CA_GTM
+Q10717;Georgetown;cap;CA_GUY
+Q3238;Tegucigalpa;cap;CA_HND
+Q1435;Zagreb;cap;CA_HRV
+Q34261;Port-au-Prince;cap;CA_HTI
+Q1781;Budapest;cap;CA_HUN
+Q3630;Jakarta;cap;CA_IDN
+Q987;New Delhi;cap;CA_IND
+Q1761;Dublin;cap;CA_IRL
+Q3616;Tehran;cap;CA_IRN
+Q1530;Baghdad;cap;CA_IRQ
+Q1764;Reykjavík;cap;CA_ISL
+Q1218;Jerusalem;cap;CA_ISR
+Q220;Rome;cap;CA_ITA
+Q34692;Kingston;cap;CA_JAM
+Q3805;Amman;cap;CA_JOR
+Q1490;Tokyo;cap;CA_JPN
+Q1520;Nur-Sultan;cap;CA_KAZ
+Q3870;Nairobi;cap;CA_KEN
+Q9361;Bishkek;cap;CA_KGZ
+Q1850;Phnom Penh;cap;CA_KHM
+Q131233;South Tarawa;cap;CA_KIR
+Q41295;Basseterre;cap;CA_KNA
+Q8684;Seoul;cap;CA_KOR
+Q35178;Kuwait City;cap;CA_KWT
+Q9326;Vientiane;cap;CA_LAO
+Q3820;Beirut;cap;CA_LBN
+Q3748;Monrovia;cap;CA_LBR
+Q3579;Tripoli;cap;CA_LBY
+Q41699;Castries;cap;CA_LCA
+Q1844;Vaduz;cap;CA_LIE
+Q35381;Colombo;cap;CA_LKA
+Q3909;Maseru;cap;CA_LSO
+Q216;Vilnius;cap;CA_LTU
+Q1842;Luxembourg;cap;CA_LUX
+Q1773;Riga;cap;CA_LVA
+Q3551;Rabat;cap;CA_MAR
+Q55115;Monaco City;cap;CA_MCO
+Q21197;Chișinău;cap;CA_MDA
+Q3915;Antananarivo;cap;CA_MDG
+Q9347;Malé;cap;CA_MDV
+Q1489;Mexico City;cap;CA_MEX
+Q12919;Majuro;cap;CA_MHL
+Q384;Skopje;cap;CA_MKD
+Q3703;Bamako;cap;CA_MLI
+Q23800;Valletta;cap;CA_MLT
+Q37400;Naypyidaw;cap;CA_MMR
+Q23564;Podgorica;cap;CA_MNE
+Q23430;Ulaanbaatar;cap;CA_MNG
+Q3889;Maputo;cap;CA_MOZ
+Q3688;Nouakchott;cap;CA_MRT
+Q3929;Port Louis;cap;CA_MUS
+Q3876;Lilongwe;cap;CA_MWI
+Q1865;Kuala Lumpur;cap;CA_MYS
+Q3935;Windhoek;cap;CA_NAM
+Q3674;Niamey;cap;CA_NER
+Q3787;Abuja;cap;CA_NGA
+Q3274;Managua;cap;CA_NIC
+Q727;Amsterdam;cap;CA_NLD
+Q585;Oslo;cap;CA_NOR
+Q3037;Kathmandu;cap;CA_NPL
+Q31026;Yaren District;cap;CA_NRU
+Q23661;Wellington;cap;CA_NZL
+Q3826;Muscat;cap;CA_OMN
+Q1362;Islamabad;cap;CA_PAK
+Q3306;Panama City;cap;CA_PAN
+Q2868;Lima;cap;CA_PER
+Q1461;Manila;cap;CA_PHL
+Q515229;Ngerulmud;cap;CA_PLW
+Q36526;Port Moresby;cap;CA_PNG
+Q270;Warsaw;cap;CA_POL
+Q18808;Pyongyang;cap;CA_PRK
+Q597;Lisbon;cap;CA_PRT
+Q2933;Asunción;cap;CA_PRY
+Q3861;Doha;cap;CA_QAT
+Q19660;Bucharest;cap;CA_ROU
+Q649;Moscow;cap;CA_RUS
+Q3859;Kigali;cap;CA_RWA
+Q3692;Riyadh;cap;CA_SAU
+Q1963;Khartoum;cap;CA_SDN
+Q3718;Dakar;cap;CA_SEN
+Q334;Singapore;cap;CA_SGP
+Q40921;Honiara;cap;CA_SLB
+Q3780;Freetown;cap;CA_SLE
+Q3110;San Salvador;cap;CA_SLV
+Q1848;San Marino;cap;CA_SMR
+Q2449;Mogadishu;cap;CA_SOM
+Q3711;Belgrade;cap;CA_SRB
+Q1947;Juba;cap;CA_SSD
+Q3932;São Tomé;cap;CA_STP
+Q3001;Paramaribo;cap;CA_SUR
+Q1780;Bratislava;cap;CA_SVK
+Q437;Ljubljana;cap;CA_SVN
+Q1754;Stockholm;cap;CA_SWE
+Q3904;Mbabane;cap;CA_SWZ
+Q3940;Victoria;cap;CA_SYC
+Q3766;Damascus;cap;CA_SYR
+Q3659;N Djamena;cap;CA_TCD
+Q3792;Lomé;cap;CA_TGO
+Q1861;Bangkok;cap;CA_THA
+Q9365;Dushanbe;cap;CA_TJK
+Q23438;Ashgabat;cap;CA_TKM
+Q9310;Dili;cap;CA_TLS
+Q38834;Nuku alofa;cap;CA_TON
+Q39178;Port of Spain;cap;CA_TTO
+Q3572;Tunis;cap;CA_TUN
+Q3640;Ankara;cap;CA_TUR
+Q34126;Funafuti;cap;CA_TUV
+Q1867;Taipei;cap;CA_TWN
+Q3866;Dodoma;cap;CA_TZA
+Q3894;Kampala;cap;CA_UGA
+Q1899;Kyiv;cap;CA_UKR
+Q1335;Montevideo;cap;CA_URY
+Q61;Washington, D.C.;cap;CA_USA
+Q269;Tashkent;cap;CA_UZB
+Q41474;Kingstown;cap;CA_VCT
+Q1533;Caracas;cap;CA_VEN
+Q1858;Hanoi;cap;CA_VNM
+Q37806;Port Vila;cap;CA_VUT
+Q36260;Apia;cap;CA_WSM
+Q2471;Sanaa;cap;CA_YEM
+Q3926;Pretoria;cap;CA_ZAF
+Q3881;Lusaka;cap;CA_ZMB
+Q3921;Harare;cap;CA_ZWE
