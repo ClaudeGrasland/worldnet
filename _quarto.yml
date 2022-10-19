@@ -1,19 +1,26 @@
 project:
-  type: website
+  type: book
+  output-dir: docs
 
-website:
-  title: "worldnet"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
+book:
+  title: "IMAGEUN Media Group"
+  subtitle: "Toolbox for the analysis of international news"
+  author: "Claude GRASLAND & Etienne TOUREILLE"
+  date: "19/10/2022"
+  chapters:
+      - index.qmd
       - about.qmd
+      - 01-Mediacloud.qmd
+      - 02-Quanteda.qmd
 
-format:
-  html:
-    theme: cosmo
-    css: styles.css
-    toc: true
+knitr:
+  opts_chunk: 
+    comment: ">" 
+    warning: false
+    error: false
+    message: false
 
-editor: visual
+
+
+
 

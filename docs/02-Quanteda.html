@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>IMAGEUN Media Group - 4&nbsp; Quanteda</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./01-Mediacloud.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Quanteda</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">IMAGEUN Media Group</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">About</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-Mediacloud.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Mediacloud</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-Quanteda.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Quanteda</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#procédure-dimportation" id="toc-procédure-dimportation" class="nav-link active" data-scroll-target="#procédure-dimportation"><span class="toc-section-number">4.1</span>  Procédure d’importation</a>
+  <ul class="collapse">
+  <li><a href="#importation-of-text-to-r" id="toc-importation-of-text-to-r" class="nav-link" data-scroll-target="#importation-of-text-to-r"><span class="toc-section-number">4.1.1</span>  Importation of text to R</a></li>
+  <li><a href="#encoding-problems" id="toc-encoding-problems" class="nav-link" data-scroll-target="#encoding-problems"><span class="toc-section-number">4.1.2</span>  encoding problems</a></li>
+  <li><a href="#transformation-in-quanteda-format" id="toc-transformation-in-quanteda-format" class="nav-link" data-scroll-target="#transformation-in-quanteda-format"><span class="toc-section-number">4.1.3</span>  Transformation in quanteda format</a></li>
+  <li><a href="#storage-of-the-quanteda-object" id="toc-storage-of-the-quanteda-object" class="nav-link" data-scroll-target="#storage-of-the-quanteda-object"><span class="toc-section-number">4.1.4</span>  Storage of the quanteda object</a></li>
+  <li><a href="#backtransformation-of-quanteda-to-data.table-or-tibble" id="toc-backtransformation-of-quanteda-to-data.table-or-tibble" class="nav-link" data-scroll-target="#backtransformation-of-quanteda-to-data.table-or-tibble"><span class="toc-section-number">4.1.5</span>  Backtransformation of quanteda to data.table or tibble</a></li>
+  </ul></li>
+  <li><a href="#corpus" id="toc-corpus" class="nav-link" data-scroll-target="#corpus"><span class="toc-section-number">4.2</span>  Corpus</a>
+  <ul class="collapse">
+  <li><a href="#germany" id="toc-germany" class="nav-link" data-scroll-target="#germany"><span class="toc-section-number">4.2.1</span>  Germany</a></li>
+  <li><a href="#france" id="toc-france" class="nav-link" data-scroll-target="#france"><span class="toc-section-number">4.2.2</span>  France</a></li>
+  <li><a href="#royaume-uni" id="toc-royaume-uni" class="nav-link" data-scroll-target="#royaume-uni"><span class="toc-section-number">4.2.3</span>  Royaume-Uni</a></li>
+  <li><a href="#ireland" id="toc-ireland" class="nav-link" data-scroll-target="#ireland"><span class="toc-section-number">4.2.4</span>  Ireland</a></li>
+  <li><a href="#turkey" id="toc-turkey" class="nav-link" data-scroll-target="#turkey"><span class="toc-section-number">4.2.5</span>  Turkey</a></li>
+  <li><a href="#algeria" id="toc-algeria" class="nav-link" data-scroll-target="#algeria"><span class="toc-section-number">4.2.6</span>  Algeria</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Quanteda</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p>In the previous section (ref…) whe have obtained a .csv file of news collected from MediaCloud. We will try now to put this data in a standard form and we have chosen the format of the <code>quanteda</code> package as reference for data organization and storage.</p>
+<p>But of course the researchers involved in the project can prefer to use other R packages like <code>tm</code> or <code>tidytext</code>. And they can also prefer to use another programming language for Python. It is the reason why we explain how to transform and export the data that has been prepared and harmonized with quanteda in various format like .csv or JSON.</p>
+<section id="procédure-dimportation" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="procédure-dimportation"><span class="header-section-number">4.1</span> Procédure d’importation</h2>
+<p>We detail here an example of importation with the example of the newspaper “L’économiste maghrebin”</p>
+<section id="importation-of-text-to-r" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="importation-of-text-to-r"><span class="header-section-number">4.1.1</span> Importation of text to R</h3>
+<p>This step is not always obvious because many problems of encoding can appear that are more or less easy to solve. In principle , the data from Media Cloud are exported in standard <code>UTF-8</code> but as we will see it is not necessary the case.</p>
+<p>We try firstly to use the standard R function <code>read.csv()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>store <span class="ot">&lt;-</span> <span class="st">"corpus/TUN/"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>media <span class="ot">&lt;-</span> <span class="st">"fr_TUN_ecomag"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span><span class="st">".csv"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>fic <span class="ot">&lt;-</span> <span class="fu">paste</span>(store,media,type,<span class="at">sep=</span><span class="st">""</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">read.csv</span>(fic,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">sep=</span><span class="st">","</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">header=</span>T,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">encoding =</span> <span class="st">"UTF-8"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">stringsAsFactors =</span> F)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  stories_id        publish_date
+1 1129295780 2019-01-02 03:42:46
+2 1129295771 2019-01-02 04:06:27
+3 1129295760 2019-01-02 06:05:08
+4 1129578051 2019-01-02 10:05:06
+5 1129461662 2019-01-02 07:52:36
+6 1129461636 2019-01-02 08:57:54
+                                                                            title
+1                 Les tarifs de l&amp;#8217;ADSL réduits à partir du 1er janvier 2019
+2                                   6ème Sfax Marathon International des Oliviers
+3                        Télécharger la version finale de la Loi de finances 2019
+4 Chawki Tabib : 245 dossiers de corruption présumée transmis au ministère public
+5                       Panoro Energy finalise l&amp;#8217;acquisition de OMV Tunisia
+6              La partie syndicale maintient le boycott des examens du secondaire
+                                                                                                        url
+1                       https://www.leconomistemaghrebin.com/2019/01/02/tarifs-adsl-reduits-1-janvier-2019/
+2                     https://www.leconomistemaghrebin.com/2019/01/02/sfax-marathon-international-oliviers/
+3 https://www.leconomistemaghrebin.com/2019/01/02/telecharger-la-version-finale-de-la-loi-de-finances-2019/
+4 https://www.leconomistemaghrebin.com/2019/01/02/chawki-tabib-245-dossiers-transferes-au-ministere-public/
+5       https://www.leconomistemaghrebin.com/2019/01/02/panoro-energy-finalise-lacquisition-de-omv-tunisia/
+6              https://www.leconomistemaghrebin.com/2019/01/02/partie-syndicale-boycott-examens-secondaire/
+  language ap_syndicated themes media_id             media_name
+1       fr         False          623820 L'Economiste Maghrebin
+2       fr         False          623820 L'Economiste Maghrebin
+3       en         False          623820 L'Economiste Maghrebin
+4       fr         False          623820 L'Economiste Maghrebin
+5       fr         False          623820 L'Economiste Maghrebin
+6       fr         False          623820 L'Economiste Maghrebin
+                             media_url
+1 http://www.leconomistemaghrebin.com/
+2 http://www.leconomistemaghrebin.com/
+3 http://www.leconomistemaghrebin.com/
+4 http://www.leconomistemaghrebin.com/
+5 http://www.leconomistemaghrebin.com/
+6 http://www.leconomistemaghrebin.com/</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   12794 obs. of  10 variables:
+ $ stories_id   : int  1129295780 1129295771 1129295760 1129578051 1129461662 1129461636 1130259352 1131673651 1132241460 1132432991 ...
+ $ publish_date : chr  "2019-01-02 03:42:46" "2019-01-02 04:06:27" "2019-01-02 06:05:08" "2019-01-02 10:05:06" ...
+ $ title        : chr  "Les tarifs de l&amp;#8217;ADSL réduits à partir du 1er janvier 2019" "6ème Sfax Marathon International des Oliviers" "Télécharger la version finale de la Loi de finances 2019" "Chawki Tabib : 245 dossiers de corruption présumée transmis au ministère public" ...
+ $ url          : chr  "https://www.leconomistemaghrebin.com/2019/01/02/tarifs-adsl-reduits-1-janvier-2019/" "https://www.leconomistemaghrebin.com/2019/01/02/sfax-marathon-international-oliviers/" "https://www.leconomistemaghrebin.com/2019/01/02/telecharger-la-version-finale-de-la-loi-de-finances-2019/" "https://www.leconomistemaghrebin.com/2019/01/02/chawki-tabib-245-dossiers-transferes-au-ministere-public/" ...
+ $ language     : chr  "fr" "fr" "en" "fr" ...
+ $ ap_syndicated: chr  "False" "False" "False" "False" ...
+ $ themes       : chr  "" "" "" "" ...
+ $ media_id     : int  623820 623820 623820 623820 623820 623820 623820 623820 623820 623820 ...
+ $ media_name   : chr  "L'Economiste Maghrebin" "L'Economiste Maghrebin" "L'Economiste Maghrebin" "L'Economiste Maghrebin" ...
+ $ media_url    : chr  "http://www.leconomistemaghrebin.com/" "http://www.leconomistemaghrebin.com/" "http://www.leconomistemaghrebin.com/" "http://www.leconomistemaghrebin.com/" ...</code></pre>
+</div>
+</div>
+<p>The importation was successfull for 13623 news but message of errors appeared for 3 news where R sent a message of error telling :</p>
+<p><code>Error in gregexpr(calltext, singleline, fixed = TRUE) : regular expression is invalid UTF-8</code></p>
+<p>Looking in more details, we discover also some problems of encoding in news like in the following example where the text of the news appears differently if we apply the standard functions <code>paste()</code> o0 the specialized function r <code>knitr::kable</code> for printing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(df[<span class="dv">9</span>, <span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Néji Jalloul : &amp;#8220;Nidaa Tounes peut revenir si&amp;#8230;&amp;#8221;"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>((df[<span class="dv">9</span>,<span class="dv">3</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Néji Jalloul : “Nidaa Tounes peut revenir si…”</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="encoding-problems" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="encoding-problems"><span class="header-section-number">4.1.2</span> encoding problems</h3>
+<p>It is sometime possible to adapt manually the encoding problem whan they are not too much as in present example.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span>df<span class="sc">$</span>title</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># standardize apostrophe</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"&amp;#8217;"</span>,<span class="st">"'"</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># standardize punct</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#8230;'</span>,<span class="st">'.'</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># standardize hyphens</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#8211;'</span>,<span class="st">'-'</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove quotation marks</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#171;&amp;#160;'</span>,<span class="st">''</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#160;&amp;#187;'</span>,<span class="st">''</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#8220;'</span>,<span class="st">''</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#8221;'</span>,<span class="st">''</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#8216;'</span>,<span class="st">''</span>,df<span class="sc">$</span>text)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>text<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">'&amp;#8243;'</span>,<span class="st">''</span>,df<span class="sc">$</span>text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can introduce othr cleaning procedures here or keep it for later analysis</p>
+</section>
+<section id="transformation-in-quanteda-format" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="transformation-in-quanteda-format"><span class="header-section-number">4.1.3</span> Transformation in quanteda format</h3>
+<p>We propose a storage based on <code>quanteda</code> format by just transforming the data that has been produced by readtext. We keep only the name of the source and the date of publication.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Quanteda corpus</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>qd<span class="ot">&lt;-</span><span class="fu">corpus</span>(df,<span class="at">docid_field =</span> <span class="st">"stories_id"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Select docvar fields and rename media</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>date <span class="ot">&lt;-</span><span class="fu">as.Date</span>(qd<span class="sc">$</span>publish_date)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>source <span class="ot">&lt;-</span>media</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(qd)<span class="ot">&lt;-</span><span class="fu">docvars</span>(qd)[,<span class="fu">c</span>(<span class="st">"source"</span>,<span class="st">"date"</span>)]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add global meta</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">meta</span>(qd,<span class="st">"meta_source"</span>)<span class="ot">&lt;-</span><span class="st">"Media Cloud "</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="fu">meta</span>(qd,<span class="st">"meta_time"</span>)<span class="ot">&lt;-</span><span class="st">"Download the 2021-09-30"</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">meta</span>(qd,<span class="st">"meta_author"</span>)<span class="ot">&lt;-</span><span class="st">"Elaborated by Claude Grasland"</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="fu">meta</span>(qd,<span class="st">"project"</span>)<span class="ot">&lt;-</span><span class="st">"ANR-DFG Project IMAGEUN"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We have created a quanteda object with a lot of information stored in various fields. The structure of the object is the following one</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(qd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 'corpus' Named chr [1:12794] "Les tarifs de l'ADSL réduits à partir du 1er janvier 2019" ...
+ - attr(*, "names")= chr [1:12794] "1129295780" "1129295771" "1129295760" "1129578051" ...
+ - attr(*, "docvars")='data.frame': 12794 obs. of  5 variables:
+  ..$ docname_: chr [1:12794] "1129295780" "1129295771" "1129295760" "1129578051" ...
+  ..$ docid_  : Factor w/ 12794 levels "1129295780","1129295771",..: 1 2 3 4 5 6 7 8 9 10 ...
+  ..$ segid_  : int [1:12794] 1 1 1 1 1 1 1 1 1 1 ...
+  ..$ source  : chr [1:12794] "fr_TUN_ecomag" "fr_TUN_ecomag" "fr_TUN_ecomag" "fr_TUN_ecomag" ...
+  ..$ date    : Date[1:12794], format: "2019-01-02" "2019-01-02" ...
+ - attr(*, "meta")=List of 3
+  ..$ system:List of 6
+  .. ..$ package-version:Classes 'package_version', 'numeric_version'  hidden list of 1
+  .. .. ..$ : int [1:3] 3 0 0
+  .. ..$ r-version      :Classes 'R_system_version', 'package_version', 'numeric_version'  hidden list of 1
+  .. .. ..$ : int [1:3] 4 0 2
+  .. ..$ system         : Named chr [1:3] "Darwin" "x86_64" "claudegrasland1"
+  .. .. ..- attr(*, "names")= chr [1:3] "sysname" "machine" "user"
+  .. ..$ directory      : chr "/Users/claudegrasland1/git/worldnet"
+  .. ..$ created        : Date[1:1], format: "2022-10-19"
+  .. ..$ source         : chr "data.frame"
+  ..$ object:List of 2
+  .. ..$ unit   : chr "documents"
+  .. ..$ summary:List of 2
+  .. .. ..$ hash: chr(0) 
+  .. .. ..$ data: NULL
+  ..$ user  :List of 4
+  .. ..$ meta_source: chr "Media Cloud "
+  .. ..$ meta_time  : chr "Download the 2021-09-30"
+  .. ..$ meta_author: chr "Elaborated by Claude Grasland"
+  .. ..$ project    : chr "ANR-DFG Project IMAGEUN"</code></pre>
+</div>
+</div>
+<p>We can look at the first titles with <em>head()</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(qd,<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1129295780</td>
+<td style="text-align: left;">Les tarifs de l’ADSL réduits à partir du 1er janvier 2019</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1129295771</td>
+<td style="text-align: left;">6ème Sfax Marathon International des Oliviers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1129295760</td>
+<td style="text-align: left;">Télécharger la version finale de la Loi de finances 2019</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can get meta information on each stories with <em>summary()</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">head</span>(qd,<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 3 documents, showing 3 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1129295780    11     11         1 fr_TUN_ecomag 2019-01-02
+ 1129295771     6      6         1 fr_TUN_ecomag 2019-01-02
+ 1129295760     8     10         1 fr_TUN_ecomag 2019-01-02</code></pre>
+</div>
+</div>
+<p>We can get meta information about the full document</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">meta</span>(qd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$meta_source
+[1] "Media Cloud "
+
+$meta_time
+[1] "Download the 2021-09-30"
+
+$meta_author
+[1] "Elaborated by Claude Grasland"
+
+$project
+[1] "ANR-DFG Project IMAGEUN"</code></pre>
+</div>
+</div>
+</section>
+<section id="storage-of-the-quanteda-object" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="storage-of-the-quanteda-object"><span class="header-section-number">4.1.4</span> Storage of the quanteda object</h3>
+<p>We can finally save the object in .RDS format in a directory dedicated to our quanteda files. It can be usefull to give some information in the name of the file</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>store <span class="ot">&lt;-</span> <span class="st">"quanteda/"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>type<span class="ot">&lt;-</span> <span class="st">".RDS"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>myfile <span class="ot">&lt;-</span> <span class="fu">paste</span>(store,media,type,<span class="at">sep=</span><span class="st">""</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>myfile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "quanteda/fr_TUN_ecomag.RDS"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(qd,myfile)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>qd[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 3 documents and 2 docvars.
+1129295780 :
+"Les tarifs de l'ADSL réduits à partir du 1er janvier 2019"
+
+1129295771 :
+"6ème Sfax Marathon International des Oliviers"
+
+1129295760 :
+"Télécharger la version finale de la Loi de finances 2019"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(qd,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 12794 documents, showing 3 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1129295780    11     11         1 fr_TUN_ecomag 2019-01-02
+ 1129295771     6      6         1 fr_TUN_ecomag 2019-01-02
+ 1129295760     8     10         1 fr_TUN_ecomag 2019-01-02</code></pre>
+</div>
+</div>
+<p>We have kept all the information present in the initial file, but also added specific metadata of interest for us. The size of the storage is now equal to 0.6 Mb which means a division by 6 as compared to the initial .csv file downloaded from Media Cloud.</p>
+</section>
+<section id="backtransformation-of-quanteda-to-data.table-or-tibble" class="level3" data-number="4.1.5">
+<h3 data-number="4.1.5" class="anchored" data-anchor-id="backtransformation-of-quanteda-to-data.table-or-tibble"><span class="header-section-number">4.1.5</span> Backtransformation of quanteda to data.table or tibble</h3>
+<p>In the following steps, we will make an intensive use of quanteda, but sometimes it can be usefull to export the results in a more practical format or to use other packages. For this reasons, it is important to know that the <code>tidytext</code>package can easily transform quanteda object in tibbles which are more classical and easy to manage</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>td <span class="ot">&lt;-</span> <span class="fu">tidy</span>(qd)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(td)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  text                                                         source date      
+  &lt;chr&gt;                                                        &lt;chr&gt;  &lt;date&gt;    
+1 Les tarifs de l'ADSL réduits à partir du 1er janvier 2019    fr_TU… 2019-01-02
+2 6ème Sfax Marathon International des Oliviers                fr_TU… 2019-01-02
+3 Télécharger la version finale de la Loi de finances 2019     fr_TU… 2019-01-02
+4 Chawki Tabib : 245 dossiers de corruption présumée transmis… fr_TU… 2019-01-02
+5 Panoro Energy finalise l'acquisition de OMV Tunisia          fr_TU… 2019-01-02
+6 La partie syndicale maintient le boycott des examens du sec… fr_TU… 2019-01-02</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(td)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [12,794 × 3] (S3: tbl_df/tbl/data.frame)
+ $ text  : chr [1:12794] "Les tarifs de l'ADSL réduits à partir du 1er janvier 2019" "6ème Sfax Marathon International des Oliviers" "Télécharger la version finale de la Loi de finances 2019" "Chawki Tabib : 245 dossiers de corruption présumée transmis au ministère public" ...
+ $ source: chr [1:12794] "fr_TUN_ecomag" "fr_TUN_ecomag" "fr_TUN_ecomag" "fr_TUN_ecomag" ...
+ $ date  : Date[1:12794], format: "2019-01-02" "2019-01-02" ...</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="corpus" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="corpus"><span class="header-section-number">4.2</span> Corpus</h2>
+<section id="germany" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="germany"><span class="header-section-number">4.2.1</span> Germany</h3>
+<section id="frankfurter-allgemeine-zeitung" class="level4" data-number="4.2.1.1">
+<h4 data-number="4.2.1.1" class="anchored" data-anchor-id="frankfurter-allgemeine-zeitung"><span class="header-section-number">4.2.1.1</span> Frankfurter Allgemeine Zeitung</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 88313 documents, showing 3 documents:
+
+       Text Types Tokens Sentences        source       date
+  930016745     5      5         1 de_DEU_frankf 2020-09-06
+ 1118202030    10     10         1 de_DEU_frankf 2021-07-06
+ 1128764967    14     14         1 de_DEU_frankf 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Bundestagswahl: Durchmarsch der AfD"                                                         
+[2] "Kahl folgt auf Schindler: CSU kritisiert Wechsel an BND-Spitze"                              
+[3] "Dramatisches Ende einer Bergtour: Drei Deutsche nach eisiger Nacht in Tiroler Alpen gerettet"
+[4] "Trotz Gelbwesten-Protesten: Macron kündigt für 2019 weitere Reformen an"                     
+[5] "May wirbt in Neujahrsansprache für Brexit-Abkommen"                                          </code></pre>
+</div>
+</div>
+</section>
+<section id="süddeutsche-zeitung" class="level4" data-number="4.2.1.2">
+<h4 data-number="4.2.1.2" class="anchored" data-anchor-id="süddeutsche-zeitung"><span class="header-section-number">4.2.1.2</span> Süddeutsche Zeitung</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 35444 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+  931884497     4      4         1 de_DEU_suddeu 2019-06-17
+ 1128842071     8      8         1 de_DEU_suddeu 2019-01-01
+ 1128842047     8      8         1 de_DEU_suddeu 2019-01-01
+ 1128842007     4      4         1 de_DEU_suddeu 2019-01-01
+ 1128842024     5      5         1 de_DEU_suddeu 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "EU setzt Russland Ultimatum"                                   
+[2] "Flüchtlinge : Großbritannien verlegt Schiffe in den Ärmelkanal"
+[3] "Zugang zum Internet : Buena Vista Netz&nbsp;Club"                   
+[4] "Brasilien: Bolsonaros Plan"                                    
+[5] "Dirty Dancing: Getanzter Dreck"                                </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="france" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="france"><span class="header-section-number">4.2.2</span> France</h3>
+<section id="le-figaro" class="level4" data-number="4.2.2.1">
+<h4 data-number="4.2.2.1" class="anchored" data-anchor-id="le-figaro"><span class="header-section-number">4.2.2.1</span> Le Figaro</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 128807 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1128863317    12     12         1 fr_FRA_figaro 2019-01-01
+ 1128915698    11     11         1 fr_FRA_figaro 2019-01-01
+ 1128915693     8      8         1 fr_FRA_figaro 2019-01-01
+ 1128915594     8      8         1 fr_FRA_figaro 2019-01-01
+ 1128915683     8      8         1 fr_FRA_figaro 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Légion d'honneur : autant de femmes distinguées que d'hommes ce 1er janvier"
+[2] "Tokyo : une voiture fonce dans la foule, 9 blessés"                         
+[3] "Thaïlande : le roi sera couronné en mai"                                    
+[4] "Ces joueurs qui pourraient enflammer le mercato hivernal"                   
+[5] "Strasbourg : 9 blessés à cause des pétards"                                 </code></pre>
+</div>
+</div>
+</section>
+<section id="le-monde" class="level4" data-number="4.2.2.2">
+<h4 data-number="4.2.2.2" class="anchored" data-anchor-id="le-monde"><span class="header-section-number">4.2.2.2</span> Le Monde</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 49731 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1128825289    12     12         1 fr_FRA_lmonde 2019-01-01
+ 1128864671    11     11         1 fr_FRA_lmonde 2019-01-01
+ 1128864634     9      9         1 fr_FRA_lmonde 2019-01-01
+ 1128864655    13     13         1 fr_FRA_lmonde 2019-01-01
+ 1128908122    11     11         1 fr_FRA_lmonde 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Les pesticides de synthèse interdits aux particuliers à partir du 1er&nbsp;janvier" 
+[2] "Mauritanie&nbsp;: un député antiesclavagiste libéré après cinq mois de prison"      
+[3] "Jeanne Calment était-elle vraiment la doyenne de l’humanité&nbsp;?"                 
+[4] "Italie&nbsp;: après l’adoption du budget, 2019 commence dans une ambiance chaotique"
+[5] "Pérou&nbsp;: destitution de deux procureurs qui enquêtaient sur l’affaire Odebrecht"</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="royaume-uni" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="royaume-uni"><span class="header-section-number">4.2.3</span> Royaume-Uni</h3>
+<section id="the-guardian" class="level4" data-number="4.2.3.1">
+<h4 data-number="4.2.3.1" class="anchored" data-anchor-id="the-guardian"><span class="header-section-number">4.2.3.1</span> The Guardian</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 77875 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1128777161    12     12         1 en_GBR_guardi 2019-01-01
+ 1128777148    10     10         1 en_GBR_guardi 2019-01-01
+ 1128795880    11     11         1 en_GBR_guardi 2019-01-01
+ 1128795872     9      9         1 en_GBR_guardi 2019-01-01
+ 1128795860    12     13         1 en_GBR_guardi 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Toxic legacy taints ANC as it nears 25-year rule in South Africa"     
+[2] "Why Trump’s Middle East peace plan is just a sideshow"                
+[3] "Preparations for the Harbin ice and snow festival – in pictures"      
+[4] "Turning air into drinking water: Africa's inspired inventors"         
+[5] "'Resign from Facebook': experts offer Mark Zuckerberg advice for 2019"</code></pre>
+</div>
+</div>
+</section>
+<section id="the-daily-telegraph" class="level4" data-number="4.2.3.2">
+<h4 data-number="4.2.3.2" class="anchored" data-anchor-id="the-daily-telegraph"><span class="header-section-number">4.2.3.2</span> The Daily Telegraph</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 41803 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1001621055    10     13         2 en_GBR_telegr 2020-03-15
+  794012047     6      7         1 en_GBR_telegr 2021-04-15
+ 1020025042    11     11         1 en_GBR_telegr 2020-07-06
+ 1071998286     7      7         1 en_GBR_telegr 2021-06-26
+ 1080057597    11     12         1 en_GBR_telegr 2020-06-15</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Guant?namo 'suicides' were at secret 'black' site"                             
+[2] "IKEA founder 'was Nazi recruiter'"                                             
+[3] "Europe tells Britain to justify itself over fingerprinting children in schools"
+[4] "Sumo champion Asashoryu outrages sport with celebration"                       
+[5] "Barack Obama meets Jewish leaders over 'tough line' on Israel"                 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="ireland" class="level3" data-number="4.2.4">
+<h3 data-number="4.2.4" class="anchored" data-anchor-id="ireland"><span class="header-section-number">4.2.4</span> Ireland</h3>
+<section id="the-irish-time" class="level4" data-number="4.2.4.1">
+<h4 data-number="4.2.4.1" class="anchored" data-anchor-id="the-irish-time"><span class="header-section-number">4.2.4.1</span> The Irish Time</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 108479 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1003842232     8      9         1 en_IRL_irtime 2020-01-15
+ 1128791232     8      8         1 en_IRL_irtime 2019-01-01
+ 1128791226     7      7         1 en_IRL_irtime 2019-01-01
+ 1128803852    10     10         1 en_IRL_irtime 2019-01-01
+ 1128874798    11     11         1 en_IRL_irtime 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Strong corporate tax receipts ‘sustainable’ until 2020"      
+[2] "Number of British people becoming Irish citizens surges"     
+[3] "7 tips to build your physical stamina"                       
+[4] "Having a baby abroad changed my perspective on living away"  
+[5] "New Year’s Eve celebrations around the world to ring in 2019"</code></pre>
+</div>
+</div>
+</section>
+<section id="the-belfast-telegraph" class="level4" data-number="4.2.4.2">
+<h4 data-number="4.2.4.2" class="anchored" data-anchor-id="the-belfast-telegraph"><span class="header-section-number">4.2.4.2</span> The Belfast Telegraph</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 99932 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1128845104     8      8         1 en_NIR_beltel 2019-01-01
+ 1128845083    11     11         1 en_NIR_beltel 2019-01-01
+ 1128845064     9      9         1 en_NIR_beltel 2019-01-01
+ 1128845042    11     11         1 en_NIR_beltel 2019-01-01
+ 1128905097    10     10         1 en_NIR_beltel 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Officer disarmed knifeman in Foyleside Centre court told"               
+[2] "Hoaxers are putting lives at risk, warns fire service officer"          
+[3] "The volunteers providing a lifeline to elderly Belfast residents"       
+[4] "Tributes to Northern Ireland man Christopher Donnelly after death in US"
+[5] "Belfast bar to build rooftop terrace in £350k extension"                </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="turkey" class="level3" data-number="4.2.5">
+<h3 data-number="4.2.5" class="anchored" data-anchor-id="turkey"><span class="header-section-number">4.2.5</span> Turkey</h3>
+<section id="yeni-sati" class="level4" data-number="4.2.5.1">
+<h4 data-number="4.2.5.1" class="anchored" data-anchor-id="yeni-sati"><span class="header-section-number">4.2.5.1</span> Yeni Sati</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 97638 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1128735746     4      4         1 tr_TUR_yenisa 2019-01-01
+ 1128760707     5      5         1 tr_TUR_yenisa 2019-01-01
+ 1128776505     7      7         1 tr_TUR_yenisa 2019-01-01
+ 1128776514     7      7         1 tr_TUR_yenisa 2019-01-01
+ 1128796514     4      4         1 tr_TUR_yenisa 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Bingöl'de 4.2 şiddetinde deprem"                     
+[2] "Pentagon'da deprem: Görevden alındı"                 
+[3] "Cumhurbaşkanı Erdoğan en seçkin dünya lideri seçildi"
+[4] "Japonya'da araçlı saldırı: Yayaların arasında daldı" 
+[5] "Almanya'da Mekke'nin fethi kutlandı"                 </code></pre>
+</div>
+</div>
+</section>
+<section id="cumhuryet" class="level4" data-number="4.2.5.2">
+<h4 data-number="4.2.5.2" class="anchored" data-anchor-id="cumhuryet"><span class="header-section-number">4.2.5.2</span> Cumhuryet</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 133713 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1129020777     7      7         1 tr_TUR_cumhur 2019-01-01
+ 1129020771     8      8         1 tr_TUR_cumhur 2019-01-01
+ 1129020761     5      5         1 tr_TUR_cumhur 2019-01-01
+ 1129000336     6      6         1 tr_TUR_cumhur 2019-01-01
+ 1129020744     4      4         1 tr_TUR_cumhur 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Hakkari-Şırnak kara yolunda çığ düşmesi sonucu kapandı"
+[2] "Adana'da 10 araç birbirine girdi: Yaralılar var"       
+[3] "CHP binasında  partililerden oturma eylemi"            
+[4] "Suriye sınırına askeri sevkiyat devam ediyor"          
+[5] "İsveç'te camiye silahlı saldırı"                       </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="algeria" class="level3" data-number="4.2.6">
+<h3 data-number="4.2.6" class="anchored" data-anchor-id="algeria"><span class="header-section-number">4.2.6</span> Algeria</h3>
+<section id="al-nahar" class="level4" data-number="4.2.6.1">
+<h4 data-number="4.2.6.1" class="anchored" data-anchor-id="al-nahar"><span class="header-section-number">4.2.6.1</span> Al Nahar</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 36341 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1128917505     4      4         1 ar_DZA_alnaha 2019-01-01
+ 1128917491     7      7         1 ar_DZA_alnaha 2019-01-01
+ 1128917468     7      7         1 ar_DZA_alnaha 2019-01-01
+ 1128917411     5      5         1 ar_DZA_alnaha 2019-01-01
+ 1128917432     5      5         1 ar_DZA_alnaha 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "غول يستبعد تأجيل الرئاسيات"                 
+[2] "حصيلة الجيش لمختلف العمليات المنفذة في 2018"
+[3] "الكاف تُسقط  محرز كأفضل لاعب إفريقي!"        
+[4] "صلاح يتفوق على محرز إفريقيا "               
+[5] "اتحاد بلعباس في مفترق الطرق "               </code></pre>
+</div>
+</div>
+</section>
+<section id="el-kahber" class="level4" data-number="4.2.6.2">
+<h4 data-number="4.2.6.2" class="anchored" data-anchor-id="el-kahber"><span class="header-section-number">4.2.6.2</span> El Kahber</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Corpus consisting of 57230 documents, showing 5 documents:
+
+       Text Types Tokens Sentences        source       date
+ 1128760341    10     10         1 ar_DZA_elkahb 2019-01-01
+ 1128777970    11     12         2 ar_DZA_elkahb 2019-01-01
+ 1128790442     7      7         1 ar_DZA_elkahb 2019-01-01
+ 1128804378    11     11         1 ar_DZA_elkahb 2019-01-01
+ 1128804373     8      8         1 ar_DZA_elkahb 2019-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "وهران: تأكيد حكم الإعدام لقاتل الطفلة سلسبيل و شريكه"                 
+[2] "بونجاح.. الجزائري الوحيد في التشكيلة المثالية للقارة السمراء لـ2018&nbsp;!"
+[3] "إدارة فنربخشة توافق على طلب سليماني&nbsp;!"                                
+[4] "وفاة مهندسة في ورشة عدل ببوينان بعد سقوط مواد بناء عليها"             
+[5] "إقالة المتحدثة باسم البنتاغون بسبب معاملتها السيئة للموظفين"          </code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-Mediacloud.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Mediacloud</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

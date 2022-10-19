@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>IMAGEUN Media Group - 3&nbsp; Mediacloud</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02-Quanteda.html" rel="next">
+<link href="./about.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Mediacloud</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">IMAGEUN Media Group</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">About</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-Mediacloud.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Mediacloud</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-Quanteda.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Quanteda</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#selection-of-media-with-source-manager" id="toc-selection-of-media-with-source-manager" class="nav-link active" data-scroll-target="#selection-of-media-with-source-manager"><span class="toc-section-number">3.1</span>  Selection of media with source manager</a></li>
+  <li><a href="#checking-the-stability-through-time" id="toc-checking-the-stability-through-time" class="nav-link" data-scroll-target="#checking-the-stability-through-time"><span class="toc-section-number">3.2</span>  Checking the stability through time</a></li>
+  <li><a href="#selection-of-news-specifically-related-to-a-topic-option" id="toc-selection-of-news-specifically-related-to-a-topic-option" class="nav-link" data-scroll-target="#selection-of-news-specifically-related-to-a-topic-option"><span class="toc-section-number">3.3</span>  Selection of news specifically related to a topic (option)</a></li>
+  <li><a href="#download-and-storage-of-news" id="toc-download-and-storage-of-news" class="nav-link" data-scroll-target="#download-and-storage-of-news"><span class="toc-section-number">3.4</span>  Download and storage of news</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Mediacloud</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p>(tbd : presentation of the MediaCloud project)</p>
+<p>Mediacloud can be freely used by researchers. All you have to do is to create an account at the following adress :</p>
+<p>https://explorer.mediacloud.org</p>
+<p>You have different ways to get title of news. We will focus here on a simple example of data obtained through the mediacloud interface. We suppose that you want to extract news from the Tunisian newspapers speaking from Europe.</p>
+<section id="selection-of-media-with-source-manager" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="selection-of-media-with-source-manager"><span class="header-section-number">3.1</span> Selection of media with source manager</h2>
+<p>We use the application called <em>Source Manager</em> and we introduce a research by collection which is the most convenient to explore what is available in a country. In our example, the target country is Tunisia and we have three collections that are propsed :</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/mc_source_001.png" class="img-fluid" width="1228"></p>
+</div>
+</div>
+<p>We have selected the collection named “Tunisia National” because we are interested in the most important newspapers of the country.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/mc_source_002.png" class="img-fluid" width="1208"></p>
+</div>
+</div>
+<p>The buble graphic on the right indicates immediately the media that has produced the highest number of news, but it is wise to explore in more details the list on the left which indicates for each media the statting date of data collection.</p>
+<p>When a media appears interesting, we click on its name to obtain a brief summary of the metadata. For example, in the case of <em>L’économiste Maghrebin</em> the metadata indicates :</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/mc_source_003.png" class="img-fluid" width="1195"></p>
+</div>
+</div>
+<p>The media looks promising, but before to go further, it can be better to have a look at the website of the media to have a more concrete idea of the content if we don’t know in advance what it is about in terms of content, what is the ideological orientation, etc.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/ecomag.png" class="img-fluid" width="1013"></p>
+</div>
+</div>
+<p>Here we can see that this is an ecnomic journal, published in french, with news organized in concentric geographic circles (Nation &gt; Maghreb &gt; Africa &gt; World) which is precisely what we are looking for in the IMAGEUN project. We will further complete the informations about this, but before to do that we have to check in more details if the production of the media is regular through time with another tool offered by mediacloud, the explorer.</p>
+</section>
+<section id="checking-the-stability-through-time" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="checking-the-stability-through-time"><span class="header-section-number">3.2</span> Checking the stability through time</h2>
+<p>We have clicked on <em>search in explorer</em> on the metadata page of the Source Manager and obtain a news interfacce where we modify the date to cover the full period of collection of the media (or our period of interest). In the research field, we let the search term <code>*</code> which indicates a research on all news.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/mc_explo_001.png" class="img-fluid" width="1344"></p>
+</div>
+</div>
+<p>Below your request, you obtain a graphic entitled <em>Attention Over Time</em> with the distribution of the number of news published per day which help you to verify if the distribution of news is regular through time. You just have to modify the type of graphic in order to visualize <em>Story Count</em> and you can choose the time span you want (day, week or month) for the evaluation of the regularity of news flow. In our example, we notice that at daily level they are some brief period of break in 2019, but the flow is reasonnabely regular with approximatively 5 news per day at the beginning and 10 to 20 in the final period. We also notice a classical week cycle with a decrease of news published during the week-end.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/mc_explo_002.png" class="img-fluid" width="1344"></p>
+</div>
+</div>
+<p>Going down, you will find a news panel entitled <em>Total Attention</em> which gives you the total number of stories found. In our example, we have a total of 13626 stories produced by our media over the period.</p>
+</section>
+<section id="selection-of-news-specifically-related-to-a-topic-option" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="selection-of-news-specifically-related-to-a-topic-option"><span class="header-section-number">3.3</span> Selection of news specifically related to a topic (option)</h2>
+<p>You can eventually use Mediacloud to check the number of news produced about a specific topic, for example Europe or European Union or EU. The request shouldbe put in lower case with “” for compounds. Detailed explanation are available in the <a href="https://mediacloud.org/support/query-guide">query guide</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/mc_explo_003.png" class="img-fluid" width="1338"></p>
+</div>
+</div>
+<p>This time you can use the graphic option <em>Stories percentage</em> rather than <em>Story count</em> if you want to viusalize the salience of the topic through time.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="pics/mc_explo_004.png" class="img-fluid" width="1331"></p>
+</div>
+</div>
+<p>In our example, we have 369 news that appears to be related to our request about Europe or EU with a relatively regular pattern at month level of 1 to 3 % of news and exceptionaly 5 to 7 %.</p>
+</section>
+<section id="download-and-storage-of-news" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="download-and-storage-of-news"><span class="header-section-number">3.4</span> Download and storage of news</h2>
+<p>According to your selection (all news or a specific topic) you will download more or less title. Here, me make the choice to get all news, which means that we have to repeat the original request with <code>*</code>.</p>
+<p>Finally, by clicking on the button <em>Download all story URLS</em>, you can get a .csv file that you can easily load in your favorite programming language as we will see in the next section.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./about.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">About</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./02-Quanteda.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Quanteda</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

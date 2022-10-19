@@ -1,0 +1,872 @@
+---
+title: "Quanteda"
+---
+
+
+```{r, echo=FALSE,message=FALSE,error = FALSE}
+library(quanteda)
+library(dplyr)
+library(ggplot2)
+library(tidytext)
+library(knitr)
+library(readtext)
+
+knitr::opts_chunk$set(cache = FALSE,
+                      echo = TRUE,
+                      comment = "")
+
+
+```
+
+
+In the previous section (ref...) whe have obtained a .csv file of news collected from MediaCloud. We will try now to put this data in a standard form and we have chosen the format of the `quanteda` package as reference for data organization and storage. 
+
+But of course the researchers involved in the project can prefer to use other R packages like `tm` or `tidytext`. And they can also prefer to use another programming language for Python. It is the reason why we explain how to transform and export the data that has been prepared and harmonized with quanteda in various format like .csv or JSON. 
+
+
+
+## Procédure d'importation
+
+We detail here an example of importation with the example of the newspaper "L'économiste maghrebin"
+
+### Importation of text to R
+
+This step is not always obvious because many problems of encoding can appear that are more or less easy to solve. In principle , the data from Media Cloud are exported in standard `UTF-8` but as we will see it is not necessary the case. 
+
+We try firstly to use the standard R function `read.csv()`: 
+
+```{r loadcsv, echo=TRUE}
+store <- "corpus/TUN/"
+media <- "fr_TUN_ecomag"
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+head(df)
+str(df)
+```
+
+The importation was successfull for 13623 news but message of errors appeared for 3 news where R sent a message of error telling :
+
+`Error in gregexpr(calltext, singleline, fixed = TRUE) : regular expression is invalid UTF-8`
+
+Looking in more details, we discover also some problems of encoding in news like in the following example where the text of the news appears differently if we apply the standard functions `paste()` o0 the specialized function r `knitr::kable` for printing. 
+
+```{r}
+paste(df[9, 3])
+kable((df[9,3]))
+```
+
+ 
+### encoding problems
+
+It is sometime possible to adapt manually the encoding problem whan they are not too much as in present example. 
+
+```{r}
+df$text<-df$title
+# standardize apostrophe
+df$text<-gsub("&#8217;","'",df$text)
+
+# standardize punct
+df$text<-gsub('&#8230;','.',df$text)
+
+# standardize hyphens
+df$text<-gsub('&#8211;','-',df$text)
+
+# Remove quotation marks
+df$text<-gsub('&#171;&#160;','',df$text)
+df$text<-gsub('&#160;&#187;','',df$text)
+df$text<-gsub('&#8220;','',df$text)
+df$text<-gsub('&#8221;','',df$text)
+df$text<-gsub('&#8216;','',df$text)
+df$text<-gsub('&#8243;','',df$text)
+
+```
+
+
+We can introduce othr cleaning procedures here or keep it for later analysis
+
+
+### Transformation in quanteda format
+
+We propose  a storage based on `quanteda` format by just transforming the data that has been produced by readtext. We keep only the name of the source and the date of publication. 
+
+```{r create quanteda, echo=T}
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+
+
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+```
+
+
+We have created a quanteda object with a lot of information stored in various fields. The structure of the object is the following one
+
+```{r, echo=TRUE}
+str(qd)
+```
+
+We can look at the first titles with *head()*
+
+```{r, echo=TRUE}
+kable(head(qd,3))
+```
+
+
+We can get meta information on each stories with *summary()*
+
+```{r, echo=TRUE}
+summary(head(qd,3))
+```
+
+We can get meta information about the full document
+
+```{r, echo=TRUE}
+meta(qd)
+```
+
+
+
+### Storage of the quanteda object
+
+We can finally save the object in .RDS format in a directory dedicated to our quanteda files. It can be usefull to give some information in the name of the file
+
+```{r, echo=TRUE}
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+myfile
+saveRDS(qd,myfile)
+qd[1:3]
+summary(qd,3)
+
+```
+
+We have kept all the information present in the initial file, but also added specific metadata of interest for us. The size of the storage is now equal to 0.6 Mb which means a division by 6 as compared to the initial .csv file downloaded from Media Cloud.
+
+### Backtransformation of quanteda to data.table or tibble
+
+In the following steps, we will make an intensive use of quanteda, but sometimes it can be usefull to export the results in a more practical format or to use other packages. For this reasons, it is important to know that the `tidytext`package can easily transform quanteda object in tibbles which are more classical and easy to manage 
+
+```{r}
+td <- tidy(qd)
+head(td)
+str(td)
+```
+
+
+## Corpus
+
+### Germany
+
+#### Frankfurter Allgemeine Zeitung 
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/DEU/"
+media <- "de_DEU_frankf"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/de_DEU_frankf.RDS")
+summary(qd,3)
+paste(qd[1:5])
+
+```
+
+
+
+
+#### Süddeutsche Zeitung
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/DEU/"
+media <- "de_DEU_suddeu"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+
+```
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/de_DEU_suddeu.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+
+### France
+
+#### Le Figaro
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/FRA/"
+media <- "fr_FRA_figaro"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/fr_FRA_figaro.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+#### Le Monde
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/FRA/"
+media <- "fr_FRA_lmonde"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/fr_FRA_lmonde.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+### Royaume-Uni
+
+#### The Guardian
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/GBR/"
+media <- "en_GBR_guardi"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/en_GBR_guardi.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+#### The Daily Telegraph
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/GBR/"
+media <- "en_GBR_telegr"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/en_GBR_telegr.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+
+### Ireland
+
+#### The Irish Time
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/IRL/"
+media <- "en_IRL_irtime"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/en_IRL_irtime.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+#### The Belfast Telegraph
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/IRL/"
+media <- "en_NIR_beltel"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/en_NIR_beltel.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+
+### Turkey
+
+#### Yeni Sati
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/TUR/"
+media <- "tr_TUR_yenisa"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/tr_TUR_yenisa.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+#### Cumhuryet
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/TUR/"
+media <- "tr_TUR_cumhur"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/tr_TUR_cumhur.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+
+
+
+### Algeria
+
+#### Al Nahar
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/DZA/"
+media <- "ar_DZA_alnaha"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/ar_DZA_alnaha.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+#### El Kahber
+
+```{r, eval=FALSE, include=FALSE}
+
+store <- "corpus/DZA/"
+media <- "ar_DZA_elkahb"
+
+### (1) Load .csv file
+type <-".csv"
+
+fic <- paste(store,media,type,sep="")
+
+df<-read.csv(fic,
+             sep=",",
+             header=T,
+             encoding = "UTF-8",
+             stringsAsFactors = F)
+
+### (2) solve encoding problems
+
+df$text<-df$title
+
+df$text<-gsub('&#171;&#160;','',df$text)
+df$text<-gsub('&#160;&#187;','',df$text)
+df$text<-gsub('&#8220;','',df$text)
+df$text<-gsub('&#8221;','',df$text)
+df$text<-gsub('&#8216;','',df$text)
+df$text<-gsub('&#8243;','',df$text)
+
+
+
+### (3) transform in quanteda
+
+# Create Quanteda corpus
+qd<-corpus(df,docid_field = "stories_id")
+
+# Select docvar fields and rename media
+qd$date <-as.Date(qd$publish_date)
+qd$source <-media
+docvars(qd)<-docvars(qd)[,c("source","date")]
+
+# Add global meta
+meta(qd,"meta_source")<-"Media Cloud "
+meta(qd,"meta_time")<-"Download the 2021-09-30"
+meta(qd,"meta_author")<-"Elaborated by Claude Grasland"
+meta(qd,"project")<-"ANR-DFG Project IMAGEUN"
+
+### (4) Store as quanteda object
+store <- "quanteda/"
+type<- ".RDS"
+myfile <- paste(store,media,type,sep="")
+saveRDS(qd,myfile)
+
+
+```
+
+
+```{r, echo=FALSE}
+qd<-readRDS("quanteda/ar_DZA_elkahb.RDS")
+summary(qd,5)
+paste(qd[1:5])
+
+```
+
+
+
+
