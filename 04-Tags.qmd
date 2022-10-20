@@ -633,7 +633,7 @@ qd11<-readRDS("quanteda/ar_DZA_elkahb_geo.RDS")
 qd12<-readRDS("quanteda/ar_DZA_alnaha_geo.RDS")
 
 qd <- c(qd1,qd2,qd3,qd4,qd5,qd6,qd7,qd8,qd9,qd10,qd11,qd12)
-saveRDS(qd,"quanteda/corpus_worldgeo_V3.RDS")
+saveRDS(qd,"quanteda/corpus_worldgeo.RDS")
 table(qd$nbtags)
 
 ```

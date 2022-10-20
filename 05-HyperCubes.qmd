@@ -19,17 +19,21 @@ knitr::opts_chunk$set(cache = FALSE,
 
 
 
-## Objectives
+
 
 The aim of this section is to build hypercubes crossing states and regions together or separately and to check their number and share in foreign news.
 
 
-## Prepare data
+## Methods
+
+### Separate states and macroregions
+
+We proceed firstly to the creation of new columns of geotags where we introduce a distinction between geotags related to states and geotags related to world regions. In the case of states, we merge the geotags obtained by name of the country and the tags obtained by the capital city of the country.
 
 
-```{r, warning=F, eval=FALSE}
-qd<-readRDS("quanteda/corpus_worldgeo_V3.RDS")
-qd<- qd[qd$inter==T]
+```{r, warning=F, eval=FALSE, echo=TRUE}
+qd<-readRDS("quanteda/corpus_worldgeo.RDS")
+
 
 # Extract regs
 qd$regs<-qd$tags
@@ -48,8 +52,30 @@ qd$sta<-str_replace_all(qd$sta, "ST_", "")
 qd$sta<-str_replace_all(qd$sta, "CA_", "")
 
 qd$nbsta<-ntoken(tokens(as.character(qd$sta)))
-td<-tidy(qd)
+saveRDS(qd,"quanteda/corpus_worldgeo.RDS")
 
+head(docvars(qd))
+
+```
+
+The result of the transformation is a table where we can analyze separately the geotags related to states and the geotags related to macroregions : 
+
+```{r, echo=FALSE, eval=TRUE}
+qd<-readRDS("quanteda/corpus_worldgeo.RDS")
+qd<-qd[qd$nbregs>1 & qd$nbsta >1,]
+
+kable(head(docvars(qd),3))
+```
+
+
+
+
+
+### Hypercube function
+
+The hypercube fonction produce an agregation of individual news toward a table of count crossing the time period, the media responsible from the news and two spatial dimensions that can be the same dimensions (e.g. state x state or worldregions x worldregions) or two different dimensions (e.g. state x worldregions). The user can choose the level of time agregation (day, week, month, quarter, year), producing a more or less detailed hypercube (with more or less important size)
+
+```{r, echo=TRUE, eval = FALSE}
 
 hypercube <-function(qd = qd,
                      when = "date",
@@ -98,7 +124,16 @@ df$where2[df$where2==""]<-"_no_"
   return(hc)
 
 }
+```
 
+
+### Geotags x Geotags
+
+We can fistly cross the geotags without any modifications in order to keep the maximum of information : 
+
+
+```{r, eval=FALSE, echo=TRUE}
+#qd<-readRDS("quanteda/corpus_worldgeo.RDS")
 # Create Global hypercube
 hc_geo <- hypercube(qd = qd,
                      when = "date",
@@ -109,15 +144,21 @@ hc_geo <- hypercube(qd = qd,
 
 saveRDS(hc_geo,"hypercube/hc_geo_geo_day.RDS")
 
-# Create Regional hypercube
-hc_reg <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "day",
-                     who = "source",
-                     where1 = "regs",
-                     where2 = "regs")
+```
+We obtain an hypercube where it is for example possible to identify title of news crossing "Moscow" (`CA_RUS`) and "European Union" (`OR_UE`). In this case we can still distinguish the cases where Russia is identified by the name of the capital (Moscow) or the name of the country (Russia). This distinction can be very useful when the capital of a state is also the capital of a macroregion. For example, the case of "Bruxelles" is a good example where the word can be interpreted as the capital city of Belgium (`CA_BEL`) or a metaphoric way to name European Union (`OR_EU`).
 
-saveRDS(hc_reg,"hypercube/hc_reg_reg_day.RDS")
+```{r, eval=TRUE, echo=FALSE}
+hc<-readRDS("hypercube/hc_geo_geo_day.RDS")
+hc<-hc %>% filter(where1 %in% c("CA_RUS") ,where2 %in% c("OR_EU"))
+head(hc)
+```
+
+
+### State x State
+
+In this second table we do not consider the macroregion but we just analyze the associations of statesn without any distinction between the case where the state is identified by the name of the city or the name of the country
+
+```{r, eval=FALSE, echo=TRUE}
 
 # Create State hypercube
 hc_sta <- hypercube(qd = qd,
@@ -128,6 +169,51 @@ hc_sta <- hypercube(qd = qd,
                      where2 = "sta")
 
 saveRDS(hc_sta,"hypercube/hc_sta_sta_day.RDS")
+```
+
+We obtain an hypercube where it is possible to identify precisely the number of time where Russia (`CA_RUS` or `ST_RUS`) has been associated to Ukraine (`CA_UKR` or `ST_UKR`) in the same title of news. This hypercube will be very usefull if we want to examine the network of association between countries and build a model of dominant flows, backbones, Louvain communities, etc... The simplification of the code to ISO3 make also possible to produce easily maps of the country the most mentionned. 
+
+
+```{r, eval=TRUE, echo=FALSE}
+hc<-readRDS("hypercube/hc_sta_sta_day.RDS")
+hc<-hc %>% filter(where1 %in% c("RUS") ,where2 %in% c("UKR"))
+head(hc)
+```
+
+
+
+### Worldregion x Worldegion
+
+We follow here exactly the same procedure but using only worldregions and excluding states.
+
+```{r, eval=FALSE, echo=TRUE}
+
+# Create Regional hypercube
+hc_reg <- hypercube(qd = qd,
+                     when = "date",
+                     when_cut = "day",
+                     who = "source",
+                     where1 = "regs",
+                     where2 = "regs")
+
+saveRDS(hc_reg,"hypercube/hc_reg_reg_day.RDS")
+```
+
+We obtain an hypercube where it is possible to identify precisely the number of time where "NATO" (`OR_NATO`) has been associated to "Europe" (`CO_EUR`) in the same title of news. We can therefore analyze cases of preferential linkage between macroregions. And we could for example answer to the question : is NATO more frequently associated to Europe (*continent*) or European Union (*organization*) ?
+
+
+```{r, eval=TRUE, echo=FALSE}
+hc<-readRDS("hypercube/hc_reg_reg_day.RDS")
+hc<-hc %>% filter(where1 %in% c("OR_NATO") ,where2 %in% c("CO_EUR"))
+head(hc)
+```
+
+
+### Worlregion x States
+
+This final case where we combine states on the one hand and organizations on the other hand is particularly interesting if our target is to discover process than can contribut to the construction of mental maps and representations. They are indeed many reasons that can produce the association between a state and a world region in the title of a news. But the repetition of the same associations produce a structural pattern that can shape to some extent the imagination.  
+
+```{r, eval=FALSE, echo=TRUE}
 
 # Create State x Reg hypercube
 hc_sta_reg <- hypercube(qd = qd,
@@ -138,124 +224,60 @@ hc_sta_reg <- hypercube(qd = qd,
                      where2 = "regs")
 
 saveRDS(hc_sta_reg,"hypercube/hc_sta_reg_day.RDS")
-
-# Create Global hypercube
-hc_geo <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "week",
-                     who = "source",
-                     where1 = "tags",
-                     where2 = "tags")
-
-saveRDS(hc_geo,"hypercube/hc_geo_geo_week.RDS")
-
-# Create Regional hypercube
-hc_reg <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "week",
-                     who = "source",
-                     where1 = "regs",
-                     where2 = "regs")
-
-saveRDS(hc_reg,"hypercube/hc_reg_reg_week.RDS")
-
-# Create State hypercube
-hc_sta <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "week",
-                     who = "source",
-                     where1 = "sta",
-                     where2 = "sta")
-
-saveRDS(hc_sta,"hypercube/hc_sta_sta_week.RDS")
-
-# Create State x Reg hypercube
-hc_sta_reg <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "week",
-                     who = "source",
-                     where1 = "sta",
-                     where2 = "regs")
-
-saveRDS(hc_sta_reg,"hypercube/hc_sta_reg_week.RDS")
-
-# Create Global hypercube
-hc_geo <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "month",
-                     who = "source",
-                     where1 = "tags",
-                     where2 = "tags")
-
-saveRDS(hc_geo,"hypercube/hc_geo_geo_month.RDS")
-
-# Create Regional hypercube
-hc_reg <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "month",
-                     who = "source",
-                     where1 = "regs",
-                     where2 = "regs")
-
-saveRDS(hc_reg,"hypercube/hc_reg_reg_month.RDS")
-
-# Create State hypercube
-hc_sta <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "month",
-                     who = "source",
-                     where1 = "sta",
-                     where2 = "sta")
-
-saveRDS(hc_sta,"hypercube/hc_sta_sta_month.RDS")
-
-# Create State x Reg hypercube
-hc_sta_reg <- hypercube(qd = qd,
-                     when = "date",
-                     when_cut = "month",
-                     who = "source",
-                     where1 = "sta",
-                     where2 = "regs")
-
-saveRDS(hc_sta_reg,"hypercube/hc_sta_reg_month.RDS")
 ```
 
-## International news by week / media
+With this type of hypercube, we can for example examine how many time, when and by whom, the titles of news has associated Turkey (`TUR`) identified by its name (`ST_TUR`) or its capital Ankara (`CA_TUR`) with European Union (`OR_EU`) or Europe (`CO_EUR`) and what is the most frequent pattern. 
+
+```{r, eval=TRUE, echo=FALSE}
+hc<-readRDS("hypercube/hc_sta_reg_day.RDS")
+hc<-hc %>% filter(where1 %in% c("TUR") ,where2 %in% c("OR_EU"))
+head(hc)
+```
+
+
+
+## Agregation 
+
+The hypercubes are objects of relatively small size as compared to quanteda object because the text of news has been removed and we keep only the count of news. Hypercubes are very efficient for the production of simple table or cross tables. Here we use the package `data.table`which is very fast and efficient for large data sets. But it is generally sufficient to use the tools of the package `tidyverse` and in particular `dplyr`to obtain the same results. 
+
+
+### International news
+
+How many news can be considered as *international* ? We use here the presence of either a country or a macroregion in the title as criterium of identification of what is "international" and what is not. This proxy is certainly not perfect (especially considering the fact that for the moment we do not take into account the fact that the country mentionned can be the state where the media is located) but it is sufficient to get a raw approximation. 
 
 ```{r, warnings=F, message=FALSE}
-hc<-readRDS("hypercube/hc_reg_reg_week.RDS")
+hc<-readRDS("hypercube/hc_geo_geo_day.RDS")
 
-hc$OK<-as.factor(hc$where1!="_no_") 
+hc$OK<-as.factor(hc$where1!="_no_" | hc$where2!="_no_") 
 levels(hc$OK)<-c("Non","Oui")
 
-week<-hc[,.(nb<-sum(news)),.(when,who,OK)] %>%
-  dcast(formula = who+when~OK, value.var = "V1",fill = 0) %>%
-  mutate(Media=who,
-         Date = when,
+med<-hc[,.(nb<-sum(news)),.(who,OK)] %>%
+  dcast(formula = who~OK, value.var = "V1") %>% 
+  mutate(Media = who,
          Total=Non+Oui,
          Frequence = Oui,
          Pourcentage = 100*Frequence/Total) %>%
-  select(Media,Date, Total,Frequence, Pourcentage) %>%
-  filter(is.na(Date)==F, Date < as.Date("2021-07-01"))
+  select(Media, Total,Frequence, Pourcentage)
 
+tot<-med[1,]
+tot$Media<-"Total"
+tot$Total<-sum(med$Total)
+tot$Frequence<-sum(med$Frequence)
+tot$Pourcentage<-100*tot$Frequence/tot$Total
 
-#kable(month,digits=c(0,0,0,2),caption = "Parts des nouvelles mentionnant une macro-région")
-
-ggplot(week,aes(x=Date,y=Total,color=Media)) + 
-       geom_line(lwd=0.5) + scale_y_log10()+
-
-ggtitle("Number of international news by week(Jan. 2019-  Juin 2021)",
-               subtitle = "source : Mediacloud)" )
+tabres<-rbind(med,tot)
+kable(tabres,digits=c(0,0,0,2),caption = "Share of international news")
 ```
+- **Comment** : We have found 188542 international news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 20 % but with important variations between the newspapers, from 13 to 32%. 
 
 
+###  Macroregional news
 
-
-
-## Percentage of macroregions in foreign news
+A news will be defined as  *macroregional* if we can find at less a name of macroregion (continent, organization, ocean) in the title. 
 
 ```{r, warnings=F, message=FALSE}
-hc<-readRDS("hypercube/hc_reg_reg_week.RDS")
+hc<-readRDS("hypercube/hc_reg_reg_day.RDS")
+
 
 hc$OK<-as.factor(hc$where1!="_no_") 
 levels(hc$OK)<-c("Non","Oui")
@@ -275,21 +297,25 @@ tot$Frequence<-sum(med$Frequence)
 tot$Pourcentage<-100*tot$Frequence/tot$Total
 
 tabres<-rbind(med,tot)
-kable(tabres,digits=c(0,0,0,2),caption = "Share of international news mentionning a macroregion")
+kable(tabres,digits=c(0,0,0,2),caption = "Share of  news mentionning a macroregion")
 ```
 
  
+- **Comment** : We have found 20953 macroregional news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 2.3 % but with important variations between the newspapers, from 0.9 to 3.7%. 
 
 
+### State news
 
-## Percentage of countries in foreign news
+We will define a  *state news* as a news where at less one name of country or capital of country is present in the title. For the moment we do not control the fact that the country mentioned is the country where the media is located or not. 
 
 ```{r, warnings=F, message=FALSE}
-hc<-readRDS("hypercube/hc_sta_sta_week.RDS")
+hc<-readRDS("hypercube/hc_sta_sta_day.RDS")
 
 hc$OK<-as.factor(hc$where1!="_no_" & substr(hc$who,4,6)!=hc$where1) 
 levels(hc$OK)<-c("Non","Oui")
 
+
+
 med<-hc[,.(nb<-sum(news)),.(who,OK)] %>%
   dcast(formula = who~OK, value.var = "V1") %>% 
   mutate(Media = who,
@@ -305,14 +331,17 @@ tot$Frequence<-sum(med$Frequence)
 tot$Pourcentage<-100*tot$Frequence/tot$Total
 
 tabres<-rbind(med,tot)
-kable(tabres,digits=c(0,0,0,2),caption = "Share of international news mentioning a country")
+kable(tabres,digits=c(0,0,0,2),caption = "Share of news mentioning a state")
 ```
 
+- **Comment** : We have found 136181 state news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 14.5 % but with important variations between the newspapers, from 7.7 to 22.2%. 
 
-## Joint probability
+
+
+### State & macroregional news
 
 ```{r, warnings=F, message=FALSE}
-hc<-readRDS("hypercube/hc_sta_reg_week.RDS")
+hc<-readRDS("hypercube/hc_sta_reg_day.RDS")
 
 hc$OK<-as.factor(hc$where1!="_no_" & hc$where2!="_no_" ) 
 levels(hc$OK)<-c("Non","Oui")
@@ -332,8 +361,9 @@ tot$Frequence<-sum(med$Frequence)
 tot$Pourcentage<-100*tot$Frequence/tot$Total
 
 tabres<-rbind(med,tot)
-kable(tabres,digits=c(0,0,0,2),caption = "Share of international news mentioning a macroregion and a state")
+kable(tabres,digits=c(0,0,0,2),caption = "Share of 
+      news mentioning a macroregion and a state")
 ```
 
-
+- **Comment** : We have found only 5943 news that fulfill both conditions of mentioning a state and a macroregion. The proportion is therefore equal to 0.65 % but with important variations between the newspapers, from 0.19 to 1.1%. 
 

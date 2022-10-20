@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -142,12 +205,22 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives"><span class="toc-section-number">7.1</span>  Objectives</a></li>
-  <li><a href="#prepare-data" id="toc-prepare-data" class="nav-link" data-scroll-target="#prepare-data"><span class="toc-section-number">7.2</span>  Prepare data</a></li>
-  <li><a href="#international-news-by-week-media" id="toc-international-news-by-week-media" class="nav-link" data-scroll-target="#international-news-by-week-media"><span class="toc-section-number">7.3</span>  International news by week / media</a></li>
-  <li><a href="#percentage-of-macroregions-in-foreign-news" id="toc-percentage-of-macroregions-in-foreign-news" class="nav-link" data-scroll-target="#percentage-of-macroregions-in-foreign-news"><span class="toc-section-number">7.4</span>  Percentage of macroregions in foreign news</a></li>
-  <li><a href="#percentage-of-countries-in-foreign-news" id="toc-percentage-of-countries-in-foreign-news" class="nav-link" data-scroll-target="#percentage-of-countries-in-foreign-news"><span class="toc-section-number">7.5</span>  Percentage of countries in foreign news</a></li>
-  <li><a href="#joint-probability" id="toc-joint-probability" class="nav-link" data-scroll-target="#joint-probability"><span class="toc-section-number">7.6</span>  Joint probability</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods"><span class="toc-section-number">7.1</span>  Methods</a>
+  <ul class="collapse">
+  <li><a href="#separate-states-and-macroregions" id="toc-separate-states-and-macroregions" class="nav-link" data-scroll-target="#separate-states-and-macroregions"><span class="toc-section-number">7.1.1</span>  Separate states and macroregions</a></li>
+  <li><a href="#hypercube-function" id="toc-hypercube-function" class="nav-link" data-scroll-target="#hypercube-function"><span class="toc-section-number">7.1.2</span>  Hypercube function</a></li>
+  <li><a href="#geotags-x-geotags" id="toc-geotags-x-geotags" class="nav-link" data-scroll-target="#geotags-x-geotags"><span class="toc-section-number">7.1.3</span>  Geotags x Geotags</a></li>
+  <li><a href="#state-x-state" id="toc-state-x-state" class="nav-link" data-scroll-target="#state-x-state"><span class="toc-section-number">7.1.4</span>  State x State</a></li>
+  <li><a href="#worldregion-x-worldegion" id="toc-worldregion-x-worldegion" class="nav-link" data-scroll-target="#worldregion-x-worldegion"><span class="toc-section-number">7.1.5</span>  Worldregion x Worldegion</a></li>
+  <li><a href="#worlregion-x-states" id="toc-worlregion-x-states" class="nav-link" data-scroll-target="#worlregion-x-states"><span class="toc-section-number">7.1.6</span>  Worlregion x States</a></li>
+  </ul></li>
+  <li><a href="#agregation" id="toc-agregation" class="nav-link" data-scroll-target="#agregation"><span class="toc-section-number">7.2</span>  Agregation</a>
+  <ul class="collapse">
+  <li><a href="#international-news" id="toc-international-news" class="nav-link" data-scroll-target="#international-news"><span class="toc-section-number">7.2.1</span>  International news</a></li>
+  <li><a href="#macroregional-news" id="toc-macroregional-news" class="nav-link" data-scroll-target="#macroregional-news"><span class="toc-section-number">7.2.2</span>  Macroregional news</a></li>
+  <li><a href="#state-news" id="toc-state-news" class="nav-link" data-scroll-target="#state-news"><span class="toc-section-number">7.2.3</span>  State news</a></li>
+  <li><a href="#state-macroregional-news" id="toc-state-macroregional-news" class="nav-link" data-scroll-target="#state-macroregional-news"><span class="toc-section-number">7.2.4</span>  State &amp; macroregional news</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -173,30 +246,277 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 
 </div>
-<section id="objectives" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="objectives"><span class="header-section-number">7.1</span> Objectives</h2>
 <p>The aim of this section is to build hypercubes crossing states and regions together or separately and to check their number and share in foreign news.</p>
-</section>
-<section id="prepare-data" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="prepare-data"><span class="header-section-number">7.2</span> Prepare data</h2>
+<section id="methods" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="methods"><span class="header-section-number">7.1</span> Methods</h2>
+<section id="separate-states-and-macroregions" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="separate-states-and-macroregions"><span class="header-section-number">7.1.1</span> Separate states and macroregions</h3>
+<p>We proceed firstly to the creation of new columns of geotags where we introduce a distinction between geotags related to states and geotags related to world regions. In the case of states, we merge the geotags obtained by name of the country and the tags obtained by the capital city of the country.</p>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>qd<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">"quanteda/corpus_worldgeo.RDS"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract regs</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span>qd<span class="sc">$</span>tags</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"ST_..."</span>,<span class="st">""</span>,qd<span class="sc">$</span>tags)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"CA_..."</span>,<span class="st">""</span>,qd<span class="sc">$</span>regs)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>nbregs<span class="ot">&lt;-</span><span class="fu">ntoken</span>(<span class="fu">tokens</span>(<span class="fu">as.character</span>(qd<span class="sc">$</span>regs)))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract states</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span>qd<span class="sc">$</span>tags</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"RE_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"CO_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"OR_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"LA_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"SE_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"ST_"</span>, <span class="st">""</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"CA_"</span>, <span class="st">""</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>nbsta<span class="ot">&lt;-</span><span class="fu">ntoken</span>(<span class="fu">tokens</span>(<span class="fu">as.character</span>(qd<span class="sc">$</span>sta)))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(qd,<span class="st">"quanteda/corpus_worldgeo.RDS"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">docvars</span>(qd))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="international-news-by-week-media" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="international-news-by-week-media"><span class="header-section-number">7.3</span> International news by week / media</h2>
-<div class="cell" data-warnings="false">
+<p>The result of the transformation is a table where we can analyze separately the geotags related to states and the geotags related to macroregions :</p>
+<div class="cell">
 <div class="cell-output-display">
-<p><img src="05-HyperCubes_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 28%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 17%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">source</th>
+<th style="text-align: left;">date</th>
+<th style="text-align: left;">tags</th>
+<th style="text-align: right;">nbtags</th>
+<th style="text-align: left;">inter</th>
+<th style="text-align: left;">regs</th>
+<th style="text-align: right;">nbregs</th>
+<th style="text-align: left;">sta</th>
+<th style="text-align: right;">nbsta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">fr_FRA_figaro</td>
+<td style="text-align: left;">2019-02-27</td>
+<td style="text-align: left;">CA_VNM ST_USA CO_EUR CO_ASI</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">CO_EUR CO_ASI</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">VNM USA</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fr_FRA_figaro</td>
+<td style="text-align: left;">2020-08-13</td>
+<td style="text-align: left;">SE_medit CO_EUR ST_GRC ST_TUR</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">SE_medit CO_EUR</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">GRC TUR</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fr_FRA_figaro</td>
+<td style="text-align: left;">2020-09-03</td>
+<td style="text-align: left;">SE_medit ST_GRC ST_TUR OR_NATO</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">SE_medit OR_NATO</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">GRC TUR</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
-<section id="percentage-of-macroregions-in-foreign-news" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="percentage-of-macroregions-in-foreign-news"><span class="header-section-number">7.4</span> Percentage of macroregions in foreign news</h2>
+<section id="hypercube-function" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="hypercube-function"><span class="header-section-number">7.1.2</span> Hypercube function</h3>
+<p>The hypercube fonction produce an agregation of individual news toward a table of count crossing the time period, the media responsible from the news and two spatial dimensions that can be the same dimensions (e.g.&nbsp;state x state or worldregions x worldregions) or two different dimensions (e.g.&nbsp;state x worldregions). The user can choose the level of time agregation (day, week, month, quarter, year), producing a more or less detailed hypercube (with more or less important size)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hypercube <span class="ot">&lt;-</span><span class="cf">function</span>(<span class="at">qd =</span> qd,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when =</span> <span class="st">"date"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when_cut =</span> <span class="st">"year"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">who =</span> <span class="st">"source"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where1 =</span> <span class="st">"tags"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where2 =</span> <span class="st">"tags"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                     </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  {   </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create data.table accroding to parameter chosen</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  don<span class="ot">&lt;-</span><span class="fu">docvars</span>(qd)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span><span class="fu">data.table</span>(<span class="at">id =</span> <span class="fu">docid</span>(qd),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">who =</span> don[,who],</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                 <span class="at">when =</span> <span class="fu">as.character</span>(<span class="fu">cut</span>(don[,when],<span class="at">breaks=</span>when_cut)),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">where1 =</span> don[,where1],</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">where2 =</span> don[,where2])</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># add code _no_ for empty fields</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>where1[df<span class="sc">$</span>where1<span class="sc">==</span><span class="st">""</span>]<span class="ot">&lt;-</span><span class="st">"_no_"</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>where2[df<span class="sc">$</span>where2<span class="sc">==</span><span class="st">""</span>]<span class="ot">&lt;-</span><span class="st">"_no_"</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># unnest where1</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span><span class="fu">unnest_tokens</span>(df,where1,where1,<span class="at">to_lower=</span>F)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># unnest where2</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span><span class="fu">unnest_tokens</span>(df,where2,where2,<span class="at">to_lower=</span>F)  </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># define number of occurence by id</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  nb<span class="ot">&lt;-</span>df[,.N,<span class="fu">list</span>(id)] <span class="sc">%&gt;%</span>  <span class="fu">mutate</span>(<span class="at">wgt =</span> <span class="dv">1</span><span class="sc">/</span>N) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>N)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span>df <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(nb) </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span>(nb)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  hc<span class="ot">&lt;-</span> df[,.( <span class="at">tags =</span> .N, <span class="at">news=</span><span class="fu">sum</span>(wgt)) ,.(who, when,where1,where2)]</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert date to time</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  hc<span class="sc">$</span>when<span class="ot">&lt;-</span><span class="fu">as.Date</span>(hc<span class="sc">$</span>when)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co"># return hypercube</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(hc)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="geotags-x-geotags" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="geotags-x-geotags"><span class="header-section-number">7.1.3</span> Geotags x Geotags</h3>
+<p>We can fistly cross the geotags without any modifications in order to keep the maximum of information :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#qd&lt;-readRDS("quanteda/corpus_worldgeo.RDS")</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Global hypercube</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>hc_geo <span class="ot">&lt;-</span> <span class="fu">hypercube</span>(<span class="at">qd =</span> qd,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when =</span> <span class="st">"date"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when_cut =</span> <span class="st">"day"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">who =</span> <span class="st">"source"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where1 =</span> <span class="st">"tags"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where2 =</span> <span class="st">"tags"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(hc_geo,<span class="st">"hypercube/hc_geo_geo_day.RDS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We obtain an hypercube where it is for example possible to identify title of news crossing “Moscow” (<code>CA_RUS</code>) and “European Union” (<code>OR_UE</code>). In this case we can still distinguish the cases where Russia is identified by the name of the capital (Moscow) or the name of the country (Russia). This distinction can be very useful when the capital of a state is also the capital of a macroregion. For example, the case of “Bruxelles” is a good example where the word can be interpreted as the capital city of Belgium (<code>CA_BEL</code>) or a metaphoric way to name European Union (<code>OR_EU</code>).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>             who       when where1 where2 tags      news
+1: fr_FRA_figaro 2019-01-21 CA_RUS  OR_EU    1 0.2500000
+2: fr_FRA_figaro 2019-04-25 CA_RUS  OR_EU    1 0.1111111
+3: fr_FRA_figaro 2019-06-20 CA_RUS  OR_EU    1 0.2500000
+4: fr_FRA_figaro 2020-07-02 CA_RUS  OR_EU    1 0.1111111
+5: fr_FRA_figaro 2020-08-28 CA_RUS  OR_EU    1 0.1111111
+6: fr_FRA_figaro 2020-09-04 CA_RUS  OR_EU    1 0.2500000</code></pre>
+</div>
+</div>
+</section>
+<section id="state-x-state" class="level3" data-number="7.1.4">
+<h3 data-number="7.1.4" class="anchored" data-anchor-id="state-x-state"><span class="header-section-number">7.1.4</span> State x State</h3>
+<p>In this second table we do not consider the macroregion but we just analyze the associations of statesn without any distinction between the case where the state is identified by the name of the city or the name of the country</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create State hypercube</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>hc_sta <span class="ot">&lt;-</span> <span class="fu">hypercube</span>(<span class="at">qd =</span> qd,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when =</span> <span class="st">"date"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when_cut =</span> <span class="st">"day"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">who =</span> <span class="st">"source"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where1 =</span> <span class="st">"sta"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where2 =</span> <span class="st">"sta"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(hc_sta,<span class="st">"hypercube/hc_sta_sta_day.RDS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We obtain an hypercube where it is possible to identify precisely the number of time where Russia (<code>CA_RUS</code> or <code>ST_RUS</code>) has been associated to Ukraine (<code>CA_UKR</code> or <code>ST_UKR</code>) in the same title of news. This hypercube will be very usefull if we want to examine the network of association between countries and build a model of dominant flows, backbones, Louvain communities, etc… The simplification of the code to ISO3 make also possible to produce easily maps of the country the most mentionned.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>             who       when where1 where2 tags      news
+1: fr_FRA_figaro 2019-01-31    RUS    UKR    1 0.2500000
+2: fr_FRA_figaro 2019-03-28    RUS    UKR    1 0.2500000
+3: fr_FRA_figaro 2019-04-22    RUS    UKR    1 0.2500000
+4: fr_FRA_figaro 2019-04-25    RUS    UKR    2 0.5000000
+5: fr_FRA_figaro 2019-05-20    RUS    UKR    1 0.2500000
+6: fr_FRA_figaro 2019-06-04    RUS    UKR    2 0.2222222</code></pre>
+</div>
+</div>
+</section>
+<section id="worldregion-x-worldegion" class="level3" data-number="7.1.5">
+<h3 data-number="7.1.5" class="anchored" data-anchor-id="worldregion-x-worldegion"><span class="header-section-number">7.1.5</span> Worldregion x Worldegion</h3>
+<p>We follow here exactly the same procedure but using only worldregions and excluding states.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Regional hypercube</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hc_reg <span class="ot">&lt;-</span> <span class="fu">hypercube</span>(<span class="at">qd =</span> qd,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when =</span> <span class="st">"date"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when_cut =</span> <span class="st">"day"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">who =</span> <span class="st">"source"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where1 =</span> <span class="st">"regs"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where2 =</span> <span class="st">"regs"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(hc_reg,<span class="st">"hypercube/hc_reg_reg_day.RDS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We obtain an hypercube where it is possible to identify precisely the number of time where “NATO” (<code>OR_NATO</code>) has been associated to “Europe” (<code>CO_EUR</code>) in the same title of news. We can therefore analyze cases of preferential linkage between macroregions. And we could for example answer to the question : is NATO more frequently associated to Europe (<em>continent</em>) or European Union (<em>organization</em>) ?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>             who       when  where1 where2 tags      news
+1: fr_FRA_figaro 2019-07-05 OR_NATO CO_EUR    1 0.2500000
+2: fr_FRA_figaro 2020-11-02 OR_NATO CO_EUR    1 0.1111111
+3: fr_FRA_figaro 2020-12-09 OR_NATO CO_EUR    1 0.2500000
+4: fr_FRA_figaro 2021-06-23 OR_NATO CO_EUR    1 0.2500000
+5: fr_FRA_lmonde 2021-09-13 OR_NATO CO_EUR    1 0.2500000
+6: de_DEU_suddeu 2019-02-12 OR_NATO CO_EUR    1 0.2500000</code></pre>
+</div>
+</div>
+</section>
+<section id="worlregion-x-states" class="level3" data-number="7.1.6">
+<h3 data-number="7.1.6" class="anchored" data-anchor-id="worlregion-x-states"><span class="header-section-number">7.1.6</span> Worlregion x States</h3>
+<p>This final case where we combine states on the one hand and organizations on the other hand is particularly interesting if our target is to discover process than can contribut to the construction of mental maps and representations. They are indeed many reasons that can produce the association between a state and a world region in the title of a news. But the repetition of the same associations produce a structural pattern that can shape to some extent the imagination.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create State x Reg hypercube</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hc_sta_reg <span class="ot">&lt;-</span> <span class="fu">hypercube</span>(<span class="at">qd =</span> qd,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when =</span> <span class="st">"date"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">when_cut =</span> <span class="st">"day"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">who =</span> <span class="st">"source"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where1 =</span> <span class="st">"sta"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">where2 =</span> <span class="st">"regs"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(hc_sta_reg,<span class="st">"hypercube/hc_sta_reg_day.RDS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With this type of hypercube, we can for example examine how many time, when and by whom, the titles of news has associated Turkey (<code>TUR</code>) identified by its name (<code>ST_TUR</code>) or its capital Ankara (<code>CA_TUR</code>) with European Union (<code>OR_EU</code>) or Europe (<code>CO_EUR</code>) and what is the most frequent pattern.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>             who       when where1 where2 tags news
+1: fr_FRA_figaro 2019-06-18    TUR  OR_EU    1  0.5
+2: fr_FRA_figaro 2019-07-16    TUR  OR_EU    1  0.5
+3: fr_FRA_figaro 2019-10-19    TUR  OR_EU    1  0.5
+4: fr_FRA_figaro 2020-02-28    TUR  OR_EU    1  1.0
+5: fr_FRA_figaro 2020-03-03    TUR  OR_EU    1  0.5
+6: fr_FRA_figaro 2020-03-04    TUR  OR_EU    1  1.0</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="agregation" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="agregation"><span class="header-section-number">7.2</span> Agregation</h2>
+<p>The hypercubes are objects of relatively small size as compared to quanteda object because the text of news has been removed and we keep only the count of news. Hypercubes are very efficient for the production of simple table or cross tables. Here we use the package <code>data.table</code>which is very fast and efficient for large data sets. But it is generally sufficient to use the tools of the package <code>tidyverse</code> and in particular <code>dplyr</code>to obtain the same results.</p>
+<section id="international-news" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="international-news"><span class="header-section-number">7.2.1</span> International news</h3>
+<p>How many news can be considered as <em>international</em> ? We use here the presence of either a country or a macroregion in the title as criterium of identification of what is “international” and what is not. This proxy is certainly not perfect (especially considering the fact that for the moment we do not take into account the fact that the country mentionned can be the state where the media is located) but it is sufficient to get a raw approximation.</p>
 <div class="cell" data-warnings="false">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
-<caption>Share of international news mentionning a macroregion</caption>
+<caption>Share of international news</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Media</th>
@@ -208,93 +528,199 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ar_DZA_alnaha</td>
-<td style="text-align: right;">3744</td>
-<td style="text-align: right;">525</td>
-<td style="text-align: right;">14.02</td>
+<td style="text-align: right;">35152</td>
+<td style="text-align: right;">6187</td>
+<td style="text-align: right;">17.60</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ar_DZA_elkahb</td>
-<td style="text-align: right;">4173</td>
+<td style="text-align: right;">56836</td>
+<td style="text-align: right;">7586</td>
+<td style="text-align: right;">13.35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">de_DEU_frankf</td>
+<td style="text-align: right;">88071</td>
+<td style="text-align: right;">13601</td>
+<td style="text-align: right;">15.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">de_DEU_suddeu</td>
+<td style="text-align: right;">35397</td>
+<td style="text-align: right;">7110</td>
+<td style="text-align: right;">20.09</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">en_GBR_guardi</td>
+<td style="text-align: right;">77046</td>
+<td style="text-align: right;">17602</td>
+<td style="text-align: right;">22.85</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">en_GBR_telegr</td>
+<td style="text-align: right;">37904</td>
+<td style="text-align: right;">7682</td>
+<td style="text-align: right;">20.27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">en_IRL_irtime</td>
+<td style="text-align: right;">106753</td>
+<td style="text-align: right;">19761</td>
+<td style="text-align: right;">18.51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">en_NIR_beltel</td>
+<td style="text-align: right;">99060</td>
+<td style="text-align: right;">15712</td>
+<td style="text-align: right;">15.86</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fr_FRA_figaro</td>
+<td style="text-align: right;">128289</td>
+<td style="text-align: right;">36332</td>
+<td style="text-align: right;">28.32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fr_FRA_lmonde</td>
+<td style="text-align: right;">49555</td>
+<td style="text-align: right;">15773</td>
+<td style="text-align: right;">31.83</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tr_TUR_cumhur</td>
+<td style="text-align: right;">131449</td>
+<td style="text-align: right;">19572</td>
+<td style="text-align: right;">14.89</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tr_TUR_yenisa</td>
+<td style="text-align: right;">96171</td>
+<td style="text-align: right;">21624</td>
+<td style="text-align: right;">22.48</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total</td>
+<td style="text-align: right;">941683</td>
+<td style="text-align: right;">188542</td>
+<td style="text-align: right;">20.02</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li><strong>Comment</strong> : We have found 188542 international news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 20 % but with important variations between the newspapers, from 13 to 32%.</li>
+</ul>
+</section>
+<section id="macroregional-news" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="macroregional-news"><span class="header-section-number">7.2.2</span> Macroregional news</h3>
+<p>A news will be defined as <em>macroregional</em> if we can find at less a name of macroregion (continent, organization, ocean) in the title.</p>
+<div class="cell" data-warnings="false">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Share of news mentionning a macroregion</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Media</th>
+<th style="text-align: right;">Total</th>
+<th style="text-align: right;">Frequence</th>
+<th style="text-align: right;">Pourcentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ar_DZA_alnaha</td>
+<td style="text-align: right;">34214</td>
+<td style="text-align: right;">525</td>
+<td style="text-align: right;">1.53</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ar_DZA_elkahb</td>
+<td style="text-align: right;">56010</td>
 <td style="text-align: right;">509</td>
-<td style="text-align: right;">12.20</td>
+<td style="text-align: right;">0.91</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">de_DEU_frankf</td>
-<td style="text-align: right;">10621</td>
+<td style="text-align: right;">86881</td>
 <td style="text-align: right;">2148</td>
-<td style="text-align: right;">20.22</td>
+<td style="text-align: right;">2.47</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">de_DEU_suddeu</td>
-<td style="text-align: right;">5841</td>
+<td style="text-align: right;">34885</td>
 <td style="text-align: right;">1170</td>
-<td style="text-align: right;">20.03</td>
+<td style="text-align: right;">3.35</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_GBR_guardi</td>
-<td style="text-align: right;">15113</td>
+<td style="text-align: right;">75146</td>
 <td style="text-align: right;">1693</td>
-<td style="text-align: right;">11.20</td>
+<td style="text-align: right;">2.25</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_GBR_telegr</td>
-<td style="text-align: right;">5975</td>
+<td style="text-align: right;">37164</td>
 <td style="text-align: right;">964</td>
-<td style="text-align: right;">16.13</td>
+<td style="text-align: right;">2.59</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_IRL_irtime</td>
-<td style="text-align: right;">9830</td>
+<td style="text-align: right;">104998</td>
 <td style="text-align: right;">2211</td>
-<td style="text-align: right;">22.49</td>
+<td style="text-align: right;">2.11</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_NIR_beltel</td>
-<td style="text-align: right;">8265</td>
+<td style="text-align: right;">97915</td>
 <td style="text-align: right;">1169</td>
-<td style="text-align: right;">14.14</td>
+<td style="text-align: right;">1.19</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: right;">25669</td>
+<td style="text-align: right;">124101</td>
 <td style="text-align: right;">3404</td>
-<td style="text-align: right;">13.26</td>
+<td style="text-align: right;">2.74</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_lmonde</td>
-<td style="text-align: right;">11166</td>
+<td style="text-align: right;">47936</td>
 <td style="text-align: right;">1791</td>
-<td style="text-align: right;">16.04</td>
+<td style="text-align: right;">3.74</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">tr_TUR_cumhur</td>
-<td style="text-align: right;">13353</td>
+<td style="text-align: right;">128824</td>
 <td style="text-align: right;">2675</td>
-<td style="text-align: right;">20.03</td>
+<td style="text-align: right;">2.08</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">tr_TUR_yenisa</td>
-<td style="text-align: right;">14517</td>
+<td style="text-align: right;">92731</td>
 <td style="text-align: right;">2694</td>
-<td style="text-align: right;">18.56</td>
+<td style="text-align: right;">2.91</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Total</td>
-<td style="text-align: right;">128267</td>
+<td style="text-align: right;">920805</td>
 <td style="text-align: right;">20953</td>
-<td style="text-align: right;">16.34</td>
+<td style="text-align: right;">2.28</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<ul>
+<li><strong>Comment</strong> : We have found 20953 macroregional news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 2.3 % but with important variations between the newspapers, from 0.9 to 3.7%.</li>
+</ul>
 </section>
-<section id="percentage-of-countries-in-foreign-news" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="percentage-of-countries-in-foreign-news"><span class="header-section-number">7.5</span> Percentage of countries in foreign news</h2>
+<section id="state-news" class="level3" data-number="7.2.3">
+<h3 data-number="7.2.3" class="anchored" data-anchor-id="state-news"><span class="header-section-number">7.2.3</span> State news</h3>
+<p>We will define a <em>state news</em> as a news where at less one name of country or capital of country is present in the title. For the moment we do not control the fact that the country mentioned is the country where the media is located or not.</p>
 <div class="cell" data-warnings="false">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
-<caption>Share of international news mentioning a country</caption>
+<caption>Share of news mentioning a state</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Media</th>
@@ -306,93 +732,96 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ar_DZA_alnaha</td>
-<td style="text-align: right;">4676</td>
+<td style="text-align: right;">35146</td>
 <td style="text-align: right;">4094</td>
-<td style="text-align: right;">87.54</td>
+<td style="text-align: right;">11.65</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ar_DZA_elkahb</td>
-<td style="text-align: right;">4992</td>
+<td style="text-align: right;">56829</td>
 <td style="text-align: right;">4369</td>
-<td style="text-align: right;">87.51</td>
+<td style="text-align: right;">7.69</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">de_DEU_frankf</td>
-<td style="text-align: right;">11755</td>
+<td style="text-align: right;">88018</td>
 <td style="text-align: right;">10043</td>
-<td style="text-align: right;">85.44</td>
+<td style="text-align: right;">11.41</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">de_DEU_suddeu</td>
-<td style="text-align: right;">6311</td>
+<td style="text-align: right;">35356</td>
 <td style="text-align: right;">5462</td>
-<td style="text-align: right;">86.54</td>
+<td style="text-align: right;">15.45</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_GBR_guardi</td>
-<td style="text-align: right;">16991</td>
+<td style="text-align: right;">77025</td>
 <td style="text-align: right;">15681</td>
-<td style="text-align: right;">92.29</td>
+<td style="text-align: right;">20.36</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_GBR_telegr</td>
-<td style="text-align: right;">6701</td>
+<td style="text-align: right;">37892</td>
 <td style="text-align: right;">5897</td>
-<td style="text-align: right;">88.00</td>
+<td style="text-align: right;">15.56</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_IRL_irtime</td>
-<td style="text-align: right;">11492</td>
+<td style="text-align: right;">106721</td>
 <td style="text-align: right;">9258</td>
-<td style="text-align: right;">80.56</td>
+<td style="text-align: right;">8.68</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_NIR_beltel</td>
-<td style="text-align: right;">9370</td>
-<td style="text-align: right;">8473</td>
-<td style="text-align: right;">90.43</td>
+<td style="text-align: right;">99053</td>
+<td style="text-align: right;">14808</td>
+<td style="text-align: right;">14.95</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: right;">29737</td>
+<td style="text-align: right;">128220</td>
 <td style="text-align: right;">26921</td>
-<td style="text-align: right;">90.53</td>
+<td style="text-align: right;">21.00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_lmonde</td>
-<td style="text-align: right;">12712</td>
+<td style="text-align: right;">49517</td>
 <td style="text-align: right;">11250</td>
-<td style="text-align: right;">88.50</td>
+<td style="text-align: right;">22.72</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">tr_TUR_cumhur</td>
-<td style="text-align: right;">15927</td>
+<td style="text-align: right;">131405</td>
 <td style="text-align: right;">13212</td>
-<td style="text-align: right;">82.95</td>
+<td style="text-align: right;">10.05</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">tr_TUR_yenisa</td>
-<td style="text-align: right;">17891</td>
+<td style="text-align: right;">96113</td>
 <td style="text-align: right;">15187</td>
-<td style="text-align: right;">84.88</td>
+<td style="text-align: right;">15.80</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Total</td>
-<td style="text-align: right;">148555</td>
-<td style="text-align: right;">129846</td>
-<td style="text-align: right;">87.41</td>
+<td style="text-align: right;">941295</td>
+<td style="text-align: right;">136181</td>
+<td style="text-align: right;">14.47</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<ul>
+<li><strong>Comment</strong> : We have found 136181 state news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 14.5 % but with important variations between the newspapers, from 7.7 to 22.2%.</li>
+</ul>
 </section>
-<section id="joint-probability" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="joint-probability"><span class="header-section-number">7.6</span> Joint probability</h2>
+<section id="state-macroregional-news" class="level3" data-number="7.2.4">
+<h3 data-number="7.2.4" class="anchored" data-anchor-id="state-macroregional-news"><span class="header-section-number">7.2.4</span> State &amp; macroregional news</h3>
 <div class="cell" data-warnings="false">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
-<caption>Share of international news mentioning a macroregion and a state</caption>
+<caption>Share of news mentioning a macroregion and a state</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Media</th>
@@ -404,88 +833,92 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ar_DZA_alnaha</td>
-<td style="text-align: right;">3738</td>
+<td style="text-align: right;">34208</td>
 <td style="text-align: right;">110</td>
-<td style="text-align: right;">2.94</td>
+<td style="text-align: right;">0.32</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ar_DZA_elkahb</td>
-<td style="text-align: right;">4166</td>
+<td style="text-align: right;">56003</td>
 <td style="text-align: right;">109</td>
-<td style="text-align: right;">2.62</td>
+<td style="text-align: right;">0.19</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">de_DEU_frankf</td>
-<td style="text-align: right;">10568</td>
+<td style="text-align: right;">86828</td>
 <td style="text-align: right;">558</td>
-<td style="text-align: right;">5.28</td>
+<td style="text-align: right;">0.64</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">de_DEU_suddeu</td>
-<td style="text-align: right;">5800</td>
+<td style="text-align: right;">34844</td>
 <td style="text-align: right;">360</td>
-<td style="text-align: right;">6.21</td>
+<td style="text-align: right;">1.03</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_GBR_guardi</td>
-<td style="text-align: right;">15092</td>
+<td style="text-align: right;">75125</td>
 <td style="text-align: right;">425</td>
-<td style="text-align: right;">2.82</td>
+<td style="text-align: right;">0.57</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_GBR_telegr</td>
-<td style="text-align: right;">5963</td>
+<td style="text-align: right;">37152</td>
 <td style="text-align: right;">284</td>
-<td style="text-align: right;">4.76</td>
+<td style="text-align: right;">0.76</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_IRL_irtime</td>
-<td style="text-align: right;">9798</td>
+<td style="text-align: right;">104966</td>
 <td style="text-align: right;">547</td>
-<td style="text-align: right;">5.58</td>
+<td style="text-align: right;">0.52</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_NIR_beltel</td>
-<td style="text-align: right;">8258</td>
+<td style="text-align: right;">97908</td>
 <td style="text-align: right;">265</td>
-<td style="text-align: right;">3.21</td>
+<td style="text-align: right;">0.27</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: right;">25600</td>
+<td style="text-align: right;">124032</td>
 <td style="text-align: right;">1129</td>
-<td style="text-align: right;">4.41</td>
+<td style="text-align: right;">0.91</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_lmonde</td>
-<td style="text-align: right;">11128</td>
+<td style="text-align: right;">47898</td>
 <td style="text-align: right;">525</td>
-<td style="text-align: right;">4.72</td>
+<td style="text-align: right;">1.10</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">tr_TUR_cumhur</td>
-<td style="text-align: right;">13309</td>
+<td style="text-align: right;">128780</td>
 <td style="text-align: right;">753</td>
-<td style="text-align: right;">5.66</td>
+<td style="text-align: right;">0.58</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">tr_TUR_yenisa</td>
-<td style="text-align: right;">14459</td>
+<td style="text-align: right;">92673</td>
 <td style="text-align: right;">878</td>
-<td style="text-align: right;">6.07</td>
+<td style="text-align: right;">0.95</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Total</td>
-<td style="text-align: right;">127879</td>
+<td style="text-align: right;">920417</td>
 <td style="text-align: right;">5943</td>
-<td style="text-align: right;">4.65</td>
+<td style="text-align: right;">0.65</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<ul>
+<li><strong>Comment</strong> : We have found only 5943 news that fulfill both conditions of mentioning a state and a macroregion. The proportion is therefore equal to 0.65 % but with important variations between the newspapers, from 0.19 to 1.1%.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

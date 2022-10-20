@@ -21,8 +21,8 @@ We laod an **hypercube** where the text of news has been removed and where we ke
 
 ```{r}
 # Load Hypercube and select period
-hc_reg<-readRDS("hypercube/hc_reg_reg_month.RDS") %>% filter(where1 !="_no_")
-hc_reg %>% filter(is.na(when)==F, when < as.Date("2021-01-01"))
+hc_reg<-readRDS("hypercube/hc_reg_reg_day.RDS") %>% filter(where1 !="_no_")
+hc_reg %>% filter(is.na(when)==F, when < as.Date("2021-07-01"))
 
 
 # Define weights correction for equal contribution of media
@@ -90,12 +90,13 @@ res<-res[order(res$who, res$rnk),]
 tab1<-res[1:10,2]
 names(tab1) <- c("Rank")
 tab2<-res[1:10,c(3,4)]
-names(tab2)<-c(paste("FAZ","Region",sep="_"),paste("FAZ","pct",sep=" "))
+names(tab2)<-c(paste("Frankf. Allg. Zeit.","Region",sep="_"),paste("FAZ","pct",sep=" "))
 tab3<-res[11:20,c(3,4)]
 names(tab3)<-c(paste("Süd. Zeit.","Region",sep="_"),paste("Süd. Zeit.","pct",sep=" "))
 tab<-cbind(tab1,tab2,tab3)
 
-kable(tab,digits=1, row.names = F)
+kable(tab,digits=1, row.names = F, 
+      col.names = c("Rank","Frankf. Allg. Zeit.","index","Südeutsche Zeit.","index"))
 
 ```
 
@@ -123,7 +124,8 @@ tab3<-res[11:20,c(3,4)]
 names(tab3)<-c(paste("Le Monde","Region",sep="_"),paste("Le Monde","pct",sep=" "))
 tab<-cbind(tab1,tab2,tab3)
 
-kable(tab,digits=1, row.names = F)
+kable(tab,digits=1, row.names = F,
+      col.names = c("Rank","Le Figaro","index","Le Monde","index"))
 
 ```
 
@@ -151,7 +153,8 @@ tab3<-res[11:20,c(3,4)]
 names(tab3)<-c(paste("Daily Telegraph","Region",sep="_"),paste("Daily Telegraph","pct",sep=" "))
 tab<-cbind(tab1,tab2,tab3)
 
-kable(tab,digits=1, row.names = F)
+kable(tab,digits=1, row.names = F, 
+      col.names = c("Rank","The Guardian","index","The Daily Telegraph","index"))
 
 ```
 
@@ -179,7 +182,8 @@ tab3<-res[11:20,c(3,4)]
 names(tab3)<-c(paste("Belfast Telegraph","Region",sep="_"),paste("Belfast Telegraph","pct",sep=" "))
 tab<-cbind(tab1,tab2,tab3)
 
-kable(tab,digits=1, row.names = F)
+kable(tab,digits=1, row.names = F, 
+      col.names = c("Rank","Irish Times","index","Belfast Telegraph","index"),)
 
 ```
 
@@ -213,7 +217,8 @@ tab3<-res[11:20,c(3,4)]
 names(tab3)<-c(paste("Yeni Savak","Region",sep="_"),paste("Yeni Savak","pct",sep=" "))
 tab<-cbind(tab1,tab2,tab3)
 
-kable(tab,digits=1, row.names = F)
+kable(tab,digits=1, row.names = F, 
+      col.names = c("Rank","Cumhurryet","index","Yeni Savak","index"))
 
 ```
 
@@ -244,7 +249,8 @@ names(tab3)<-c("El Kahbar","pct2")
 tab<-cbind(tab1,tab2,tab3)
 
 
-kable(tab,digits=c(0,1,1,1,1,1), row.names = F)
+kable(tab,digits=c(0,1,1,1,1,1), row.names = F,
+      col.names = c("Rank","Al Nahar","index","El Khabar","index"))
 
 ```
 
