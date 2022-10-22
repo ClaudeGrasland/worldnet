@@ -16,6 +16,7 @@ book:
       - 04-Tags.qmd
       - 05-HyperCubes.qmd
       - 06-Macroregions.qmd
+      - 07-Agenda.qmd
 
 knitr:
   opts_chunk: 

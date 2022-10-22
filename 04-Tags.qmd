@@ -22,7 +22,7 @@ knitr::opts_chunk$set(cache = FALSE,
 The dictionary elaborated by automatic procedures has been manually corrected and the new version is upload. As an example, the table below present the labels used for the recognition of the Mediterranean Sea.
 
 ```{r}
-dict<-read.table("dict/worldgeo_dict_V6.csv", 
+dict<-read.table("dict/Imageun_world_geo_dict_V1.csv", 
                  header=T, 
                  sep=";",
                  encoding = "UTF-8",
@@ -115,9 +115,10 @@ qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
 
 frcomps<-c("Europe 1", "Atlantic city", 
            "Loire-Atlantique", "Pyrénées-Atlantique", "Pyrénées-Atlantiques",
-           "Alpes-de-Haute-Provence", "Hautes-Alpes", "Rhöne-Alpes","Alpes-Maritimes",
+           "Alpes-de-Haute-Provence", "Hautes-Alpes", "Rhône-Alpes","Alpes-Maritimes",
            "Chantiers de l'Atlantique", "TGV Atlantique",
-           "Bourse de Paris", "Paris SG", "Ville de Paris", "Grand Paris")
+           "Bourse de Paris", "Paris SG", "Ville de Paris", "Grand Paris", "Ile de France",
+           "Ile-de-France","Rhône Alpes")
 
 qd <- extract_tags (qd = qd,
                      lang="fr",
@@ -165,9 +166,10 @@ qd<-corpus_subset(qd,duplicated(as.character(qd))==FALSE)
 
 frcomps<-c("Europe 1", "Atlantic city", 
            "Loire-Atlantique", "Pyrénées-Atlantique", "Pyrénées-Atlantiques",
-           "Alpes-de-Haute-Provence", "Hautes-Alpes", "Rhöne-Alpes","Alpes-Maritimes",
+           "Alpes-de-Haute-Provence", "Hautes-Alpes", "Rhône-Alpes","Alpes-Maritimes",
            "Chantiers de l'Atlantique", "TGV Atlantique",
-           "Bourse de Paris", "Paris SG", "Ville de Paris", "Grand Paris")
+           "Bourse de Paris", "Paris SG", "Ville de Paris", "Grand Paris", "Ile de France",
+           "Ile-de-France","Rhône Alpes")
 
 qd <- extract_tags (qd = qd,
                      lang="fr",
@@ -408,7 +410,7 @@ qd <- extract_tags (qd = qd,
                      tolow = FALSE)
 
 qd$inter<-qd$tags !=""
-qd$inter[qd$tags %in% c("ST_IRL","CA_IRL", "ST_IRL CA_IRL", "CA_IRL ST_IRL")]<-FALSE
+qd$inter[qd$tags %in% c("ST_GBR_NIR","ST_GBR", "ST_GBR_NIR ST_GBR", "ST_GBR ST_GBR_NIR")]<-FALSE
 
 saveRDS(qd,"quanteda/en_NIR_beltel_geo.RDS")
 

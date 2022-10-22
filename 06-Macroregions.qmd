@@ -22,7 +22,7 @@ We laod an **hypercube** where the text of news has been removed and where we ke
 ```{r}
 # Load Hypercube and select period
 hc_reg<-readRDS("hypercube/hc_reg_reg_day.RDS") %>% filter(where1 !="_no_")
-hc_reg %>% filter(is.na(when)==F, when < as.Date("2021-07-01"))
+hc_reg<-hc_reg %>% filter(is.na(when)==F, when < as.Date("2021-07-01"))
 
 
 # Define weights correction for equal contribution of media
@@ -32,9 +32,11 @@ hc_reg<-left_join(hc_reg,wgt)
 hc_reg$news_wgt<-hc_reg$news*hc_reg$coeff
 
 # Load table of label and choose language
-reg_def<-read.table("dict/worldgeo_def_V2.csv", sep=";",quote = '"', encoding = "UTF-8",header=T)
+reg_def<-read.table("dict/Imageun_world_geo_def_V1.csv", sep=";",quote = '"', encoding = "UTF-8",header=T)
 tab_def<-reg_def %>% filter(lang=="en") %>% select(code,type,label)
 tab_def<-tab_def[duplicated(tab_def$label)==F,]
+
+
 ```
 
 ## Top 50 regions in full corpus
@@ -238,11 +240,11 @@ df_sel<-merge(df_sel,tab_def,by.x="where1",by.y="code")
 
 res <- df_sel %>% filter(rnk < 11) %>% select(who, rnk,label, pct) %>% mutate(who=substr(who,4,12))
 res<-res[order(res$who, res$rnk),]
-tab1<-res[1:11,2]
+tab1<-res[1:10,2]
 names(tab1) <- c("Rank")
-tab2<-res[1:11,c(3,4)]
+tab2<-res[1:10,c(3,4)]
 names(tab2)<-c("Al Nahar ","pct1")
-tab3<-res[12:22,c(3,4)]
+tab3<-res[11:20,c(3,4)]
 names(tab3)<-c("El Kahbar","pct2")
 
 
@@ -293,10 +295,10 @@ afc <- CA(sel, graph = F)
 #explor(afc)
 res <- explor::prepare_results(afc)
 explor::CA_var_plot(res, xax = 1, yax = 2, lev_sup = FALSE, var_sup = FALSE,
-    var_sup_choice = , var_hide = "None", var_lab_min_contrib = 4, col_var = "Position",
+    var_sup_choice = , var_hide = "None", var_lab_min_contrib = 2, col_var = "Position",
     symbol_var = NULL, size_var = "Contrib", size_range = c(52.5, 700), labels_size = 10,
-    point_size = 56, transitions = FALSE, labels_positions = "auto", xlim = c(-2,
-        1), ylim = c(-1, 2))
+    point_size = 56, transitions = FALSE, labels_positions = "auto", xlim = c(-2.2,
+        1.2), ylim = c(-1.2, 2.2))
 
 ```
 
@@ -305,9 +307,9 @@ explor::CA_var_plot(res, xax = 1, yax = 2, lev_sup = FALSE, var_sup = FALSE,
 ```{r}
 res <- explor::prepare_results(afc)
 explor::CA_var_plot(res, xax = 3, yax = 4, lev_sup = FALSE, var_sup = FALSE,
-    var_sup_choice = , var_hide = "None", var_lab_min_contrib = 4, col_var = "Position",
+    var_sup_choice = , var_hide = "None", var_lab_min_contrib = 2, col_var = "Position",
     symbol_var = NULL, size_var = "Contrib", size_range = c(52.5, 700), labels_size = 10,
-    point_size = 56, transitions = FALSE, labels_positions = "auto", xlim = c(-0.924,
+    point_size = 56, transitions = FALSE, labels_positions = "auto", xlim = c(-1.5,
         2.01), ylim = c(-1.5, 1.43))
 ```
 
@@ -321,7 +323,7 @@ plot.HCPC(cah1,choice="tree")
 ### Cluster analysis (medias)
 
 ```{r}
-cah2 <- HCPC(afc,nb.clust = 4,graph = FALSE,cluster.CA = "columns")
+cah2 <- HCPC(afc,nb.clust = 6,graph = FALSE,cluster.CA = "columns")
 plot.HCPC(cah2,choice="tree")
 ```
 

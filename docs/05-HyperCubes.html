@@ -196,6 +196,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./06-Macroregions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">MacroRegions</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-Agenda.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Agenda</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -256,41 +261,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>qd<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">"quanteda/corpus_worldgeo.RDS"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract regs</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span>qd<span class="sc">$</span>tags</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"ST_..."</span>,<span class="st">""</span>,qd<span class="sc">$</span>tags)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"CA_..."</span>,<span class="st">""</span>,qd<span class="sc">$</span>regs)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>nbregs<span class="ot">&lt;-</span><span class="fu">ntoken</span>(<span class="fu">tokens</span>(<span class="fu">as.character</span>(qd<span class="sc">$</span>regs)))</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract states</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span>qd<span class="sc">$</span>tags</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"RE_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"CO_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"OR_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"LA_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"SE_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"ST_"</span>, <span class="st">""</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"CA_"</span>, <span class="st">""</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>nbsta<span class="ot">&lt;-</span><span class="fu">ntoken</span>(<span class="fu">tokens</span>(<span class="fu">as.character</span>(qd<span class="sc">$</span>sta)))</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(qd,<span class="st">"quanteda/corpus_worldgeo.RDS"</span>)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">docvars</span>(qd))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># take a decision on ambiguous cases ...</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>tags<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"XX_America"</span>,<span class="st">"ST_USA"</span>, qd<span class="sc">$</span>tags)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>tags<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"XX_Congo"</span>,<span class="st">"ST_COD"</span>,qd<span class="sc">$</span>tags)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>tags<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"XX_Brussels"</span>,<span class="st">"OR_EU"</span>,qd<span class="sc">$</span>tags)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract regs</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span>qd<span class="sc">$</span>tags</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>regs, <span class="st">"ST_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>regs, <span class="st">"CA_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>regs<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>regs, <span class="st">"XX_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>nbregs<span class="ot">&lt;-</span><span class="fu">ntoken</span>(<span class="fu">tokens</span>(<span class="fu">as.character</span>(qd<span class="sc">$</span>regs)))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract states</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span>qd<span class="sc">$</span>tags</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"RE_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"CO_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"OR_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"LA_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"SE_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"CU_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"XX_[[:alpha:]_]+"</span>, <span class="st">""</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"ST_"</span>, <span class="st">""</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>sta<span class="ot">&lt;-</span><span class="fu">str_replace_all</span>(qd<span class="sc">$</span>sta, <span class="st">"CA_"</span>, <span class="st">""</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>qd<span class="sc">$</span>nbsta<span class="ot">&lt;-</span><span class="fu">ntoken</span>(<span class="fu">tokens</span>(<span class="fu">as.character</span>(qd<span class="sc">$</span>sta)))</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(qd,<span class="st">"quanteda/corpus_worldgeo_tags.RDS"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">docvars</span>(qd))</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(qd,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The result of the transformation is a table where we can analyze separately the geotags related to states and the geotags related to macroregions :</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <colgroup>
-<col style="width: 12%">
+<col style="width: 20%">
+<col style="width: 16%">
 <col style="width: 10%">
-<col style="width: 28%">
-<col style="width: 6%">
-<col style="width: 5%">
-<col style="width: 17%">
-<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 8%">
 <col style="width: 7%">
+<col style="width: 10%">
 <col style="width: 5%">
+<col style="width: 8%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -308,36 +326,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: left;">2019-02-27</td>
-<td style="text-align: left;">CA_VNM ST_USA CO_EUR CO_ASI</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: left;">CO_EUR CO_ASI</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">VNM USA</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: left;">2019-01-01</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: left;">2020-08-13</td>
-<td style="text-align: left;">SE_medit CO_EUR ST_GRC ST_TUR</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: left;">2019-01-01</td>
+<td style="text-align: left;">CA_JPN</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: left;">TRUE</td>
-<td style="text-align: left;">SE_medit CO_EUR</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">GRC TUR</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">JPN</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: left;">2020-09-03</td>
-<td style="text-align: left;">SE_medit ST_GRC ST_TUR OR_NATO</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: left;">2019-01-01</td>
+<td style="text-align: left;">ST_THA</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: left;">TRUE</td>
-<td style="text-align: left;">SE_medit OR_NATO</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">GRC TUR</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">THA</td>
+<td style="text-align: right;">1</td>
 </tr>
 </tbody>
 </table>
@@ -498,11 +516,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell-output cell-output-stdout">
 <pre><code>             who       when where1 where2 tags news
 1: fr_FRA_figaro 2019-06-18    TUR  OR_EU    1  0.5
-2: fr_FRA_figaro 2019-07-16    TUR  OR_EU    1  0.5
-3: fr_FRA_figaro 2019-10-19    TUR  OR_EU    1  0.5
-4: fr_FRA_figaro 2020-02-28    TUR  OR_EU    1  1.0
-5: fr_FRA_figaro 2020-03-03    TUR  OR_EU    1  0.5
-6: fr_FRA_figaro 2020-03-04    TUR  OR_EU    1  1.0</code></pre>
+2: fr_FRA_figaro 2019-07-16    TUR  OR_EU    2  1.5
+3: fr_FRA_figaro 2019-10-07    TUR  OR_EU    1  0.5
+4: fr_FRA_figaro 2019-10-19    TUR  OR_EU    1  0.5
+5: fr_FRA_figaro 2020-01-19    TUR  OR_EU    1  0.5
+6: fr_FRA_figaro 2020-02-28    TUR  OR_EU    1  1.0</code></pre>
 </div>
 </div>
 </section>
@@ -529,87 +547,87 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td style="text-align: left;">ar_DZA_alnaha</td>
 <td style="text-align: right;">35152</td>
-<td style="text-align: right;">6187</td>
-<td style="text-align: right;">17.60</td>
+<td style="text-align: right;">6525</td>
+<td style="text-align: right;">18.56</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ar_DZA_elkahb</td>
 <td style="text-align: right;">56836</td>
-<td style="text-align: right;">7586</td>
-<td style="text-align: right;">13.35</td>
+<td style="text-align: right;">7936</td>
+<td style="text-align: right;">13.96</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">de_DEU_frankf</td>
 <td style="text-align: right;">88071</td>
-<td style="text-align: right;">13601</td>
-<td style="text-align: right;">15.44</td>
+<td style="text-align: right;">13810</td>
+<td style="text-align: right;">15.68</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">de_DEU_suddeu</td>
 <td style="text-align: right;">35397</td>
-<td style="text-align: right;">7110</td>
-<td style="text-align: right;">20.09</td>
+<td style="text-align: right;">7242</td>
+<td style="text-align: right;">20.46</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_GBR_guardi</td>
 <td style="text-align: right;">77046</td>
-<td style="text-align: right;">17602</td>
-<td style="text-align: right;">22.85</td>
+<td style="text-align: right;">18808</td>
+<td style="text-align: right;">24.41</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_GBR_telegr</td>
 <td style="text-align: right;">37904</td>
-<td style="text-align: right;">7682</td>
-<td style="text-align: right;">20.27</td>
+<td style="text-align: right;">8915</td>
+<td style="text-align: right;">23.52</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_IRL_irtime</td>
 <td style="text-align: right;">106753</td>
-<td style="text-align: right;">19761</td>
-<td style="text-align: right;">18.51</td>
+<td style="text-align: right;">20991</td>
+<td style="text-align: right;">19.66</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_NIR_beltel</td>
 <td style="text-align: right;">99060</td>
-<td style="text-align: right;">15712</td>
-<td style="text-align: right;">15.86</td>
+<td style="text-align: right;">19473</td>
+<td style="text-align: right;">19.66</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
 <td style="text-align: right;">128289</td>
-<td style="text-align: right;">36332</td>
-<td style="text-align: right;">28.32</td>
+<td style="text-align: right;">37300</td>
+<td style="text-align: right;">29.07</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_lmonde</td>
 <td style="text-align: right;">49555</td>
-<td style="text-align: right;">15773</td>
-<td style="text-align: right;">31.83</td>
+<td style="text-align: right;">16116</td>
+<td style="text-align: right;">32.52</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">tr_TUR_cumhur</td>
 <td style="text-align: right;">131449</td>
-<td style="text-align: right;">19572</td>
-<td style="text-align: right;">14.89</td>
+<td style="text-align: right;">20569</td>
+<td style="text-align: right;">15.65</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">tr_TUR_yenisa</td>
 <td style="text-align: right;">96171</td>
-<td style="text-align: right;">21624</td>
-<td style="text-align: right;">22.48</td>
+<td style="text-align: right;">22532</td>
+<td style="text-align: right;">23.43</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Total</td>
 <td style="text-align: right;">941683</td>
-<td style="text-align: right;">188542</td>
-<td style="text-align: right;">20.02</td>
+<td style="text-align: right;">200217</td>
+<td style="text-align: right;">21.26</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <ul>
-<li><strong>Comment</strong> : We have found 188542 international news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 20 % but with important variations between the newspapers, from 13 to 32%.</li>
+<li><strong>Comment</strong> : We have found 200217 international news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 21.2 % but with important variations between the newspapers, from 14 to 32%.</li>
 </ul>
 </section>
 <section id="macroregional-news" class="level3" data-number="7.2.2">
@@ -630,88 +648,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ar_DZA_alnaha</td>
-<td style="text-align: right;">34214</td>
-<td style="text-align: right;">525</td>
-<td style="text-align: right;">1.53</td>
+<td style="text-align: right;">34191</td>
+<td style="text-align: right;">613</td>
+<td style="text-align: right;">1.79</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ar_DZA_elkahb</td>
-<td style="text-align: right;">56010</td>
-<td style="text-align: right;">509</td>
-<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">55963</td>
+<td style="text-align: right;">610</td>
+<td style="text-align: right;">1.09</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">de_DEU_frankf</td>
-<td style="text-align: right;">86881</td>
-<td style="text-align: right;">2148</td>
-<td style="text-align: right;">2.47</td>
+<td style="text-align: right;">86884</td>
+<td style="text-align: right;">2345</td>
+<td style="text-align: right;">2.70</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">de_DEU_suddeu</td>
-<td style="text-align: right;">34885</td>
-<td style="text-align: right;">1170</td>
-<td style="text-align: right;">3.35</td>
+<td style="text-align: right;">34877</td>
+<td style="text-align: right;">1277</td>
+<td style="text-align: right;">3.66</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_GBR_guardi</td>
-<td style="text-align: right;">75146</td>
-<td style="text-align: right;">1693</td>
-<td style="text-align: right;">2.25</td>
+<td style="text-align: right;">74783</td>
+<td style="text-align: right;">2170</td>
+<td style="text-align: right;">2.90</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_GBR_telegr</td>
-<td style="text-align: right;">37164</td>
-<td style="text-align: right;">964</td>
-<td style="text-align: right;">2.59</td>
+<td style="text-align: right;">36591</td>
+<td style="text-align: right;">1154</td>
+<td style="text-align: right;">3.15</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_IRL_irtime</td>
-<td style="text-align: right;">104998</td>
-<td style="text-align: right;">2211</td>
-<td style="text-align: right;">2.11</td>
+<td style="text-align: right;">104330</td>
+<td style="text-align: right;">2533</td>
+<td style="text-align: right;">2.43</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_NIR_beltel</td>
-<td style="text-align: right;">97915</td>
-<td style="text-align: right;">1169</td>
-<td style="text-align: right;">1.19</td>
+<td style="text-align: right;">96395</td>
+<td style="text-align: right;">1385</td>
+<td style="text-align: right;">1.44</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: right;">124101</td>
-<td style="text-align: right;">3404</td>
-<td style="text-align: right;">2.74</td>
+<td style="text-align: right;">123951</td>
+<td style="text-align: right;">4281</td>
+<td style="text-align: right;">3.45</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_lmonde</td>
-<td style="text-align: right;">47936</td>
-<td style="text-align: right;">1791</td>
-<td style="text-align: right;">3.74</td>
+<td style="text-align: right;">47820</td>
+<td style="text-align: right;">2070</td>
+<td style="text-align: right;">4.33</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">tr_TUR_cumhur</td>
-<td style="text-align: right;">128824</td>
-<td style="text-align: right;">2675</td>
-<td style="text-align: right;">2.08</td>
+<td style="text-align: right;">128664</td>
+<td style="text-align: right;">2926</td>
+<td style="text-align: right;">2.27</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">tr_TUR_yenisa</td>
-<td style="text-align: right;">92731</td>
-<td style="text-align: right;">2694</td>
-<td style="text-align: right;">2.91</td>
+<td style="text-align: right;">92566</td>
+<td style="text-align: right;">3057</td>
+<td style="text-align: right;">3.30</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Total</td>
-<td style="text-align: right;">920805</td>
-<td style="text-align: right;">20953</td>
-<td style="text-align: right;">2.28</td>
+<td style="text-align: right;">917015</td>
+<td style="text-align: right;">24421</td>
+<td style="text-align: right;">2.66</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <ul>
-<li><strong>Comment</strong> : We have found 20953 macroregional news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 2.3 % but with important variations between the newspapers, from 0.9 to 3.7%.</li>
+<li><strong>Comment</strong> : We have found 24421 macroregional news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 2.7 % but with important variations between the newspapers, from 1.1 to 4.4%.</li>
 </ul>
 </section>
 <section id="state-news" class="level3" data-number="7.2.3">
@@ -732,88 +750,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ar_DZA_alnaha</td>
-<td style="text-align: right;">35146</td>
-<td style="text-align: right;">4094</td>
-<td style="text-align: right;">11.65</td>
+<td style="text-align: right;">35141</td>
+<td style="text-align: right;">4106</td>
+<td style="text-align: right;">11.68</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ar_DZA_elkahb</td>
-<td style="text-align: right;">56829</td>
-<td style="text-align: right;">4369</td>
-<td style="text-align: right;">7.69</td>
+<td style="text-align: right;">56824</td>
+<td style="text-align: right;">4418</td>
+<td style="text-align: right;">7.77</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">de_DEU_frankf</td>
-<td style="text-align: right;">88018</td>
-<td style="text-align: right;">10043</td>
-<td style="text-align: right;">11.41</td>
+<td style="text-align: right;">87995</td>
+<td style="text-align: right;">10091</td>
+<td style="text-align: right;">11.47</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">de_DEU_suddeu</td>
-<td style="text-align: right;">35356</td>
-<td style="text-align: right;">5462</td>
-<td style="text-align: right;">15.45</td>
+<td style="text-align: right;">35332</td>
+<td style="text-align: right;">5501</td>
+<td style="text-align: right;">15.57</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_GBR_guardi</td>
-<td style="text-align: right;">77025</td>
-<td style="text-align: right;">15681</td>
-<td style="text-align: right;">20.36</td>
+<td style="text-align: right;">76998</td>
+<td style="text-align: right;">16261</td>
+<td style="text-align: right;">21.12</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_GBR_telegr</td>
-<td style="text-align: right;">37892</td>
-<td style="text-align: right;">5897</td>
-<td style="text-align: right;">15.56</td>
+<td style="text-align: right;">37871</td>
+<td style="text-align: right;">6816</td>
+<td style="text-align: right;">18.00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_IRL_irtime</td>
-<td style="text-align: right;">106721</td>
-<td style="text-align: right;">9258</td>
-<td style="text-align: right;">8.68</td>
+<td style="text-align: right;">106697</td>
+<td style="text-align: right;">10520</td>
+<td style="text-align: right;">9.86</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_NIR_beltel</td>
-<td style="text-align: right;">99053</td>
-<td style="text-align: right;">14808</td>
-<td style="text-align: right;">14.95</td>
+<td style="text-align: right;">99036</td>
+<td style="text-align: right;">18038</td>
+<td style="text-align: right;">18.21</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: right;">128220</td>
-<td style="text-align: right;">26921</td>
-<td style="text-align: right;">21.00</td>
+<td style="text-align: right;">128159</td>
+<td style="text-align: right;">27332</td>
+<td style="text-align: right;">21.33</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_lmonde</td>
-<td style="text-align: right;">49517</td>
-<td style="text-align: right;">11250</td>
-<td style="text-align: right;">22.72</td>
+<td style="text-align: right;">49484</td>
+<td style="text-align: right;">11368</td>
+<td style="text-align: right;">22.97</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">tr_TUR_cumhur</td>
-<td style="text-align: right;">131405</td>
-<td style="text-align: right;">13212</td>
-<td style="text-align: right;">10.05</td>
+<td style="text-align: right;">131396</td>
+<td style="text-align: right;">14135</td>
+<td style="text-align: right;">10.76</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">tr_TUR_yenisa</td>
-<td style="text-align: right;">96113</td>
-<td style="text-align: right;">15187</td>
-<td style="text-align: right;">15.80</td>
+<td style="text-align: right;">96100</td>
+<td style="text-align: right;">15968</td>
+<td style="text-align: right;">16.62</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Total</td>
-<td style="text-align: right;">941295</td>
-<td style="text-align: right;">136181</td>
-<td style="text-align: right;">14.47</td>
+<td style="text-align: right;">941033</td>
+<td style="text-align: right;">144553</td>
+<td style="text-align: right;">15.36</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <ul>
-<li><strong>Comment</strong> : We have found 136181 state news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 14.5 % but with important variations between the newspapers, from 7.7 to 22.2%.</li>
+<li><strong>Comment</strong> : We have found 1424553 state news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 15 % but with important variations between the newspapers, from 7.8 to 22.3%.</li>
 </ul>
 </section>
 <section id="state-macroregional-news" class="level3" data-number="7.2.4">
@@ -833,88 +851,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">ar_DZA_alnaha</td>
-<td style="text-align: right;">34208</td>
-<td style="text-align: right;">110</td>
-<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">34180</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">0.41</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ar_DZA_elkahb</td>
-<td style="text-align: right;">56003</td>
-<td style="text-align: right;">109</td>
-<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">55951</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">0.25</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">de_DEU_frankf</td>
-<td style="text-align: right;">86828</td>
-<td style="text-align: right;">558</td>
-<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">86808</td>
+<td style="text-align: right;">597</td>
+<td style="text-align: right;">0.69</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">de_DEU_suddeu</td>
-<td style="text-align: right;">34844</td>
-<td style="text-align: right;">360</td>
-<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">34812</td>
+<td style="text-align: right;">374</td>
+<td style="text-align: right;">1.07</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_GBR_guardi</td>
-<td style="text-align: right;">75125</td>
-<td style="text-align: right;">425</td>
-<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">74735</td>
+<td style="text-align: right;">621</td>
+<td style="text-align: right;">0.83</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_GBR_telegr</td>
-<td style="text-align: right;">37152</td>
-<td style="text-align: right;">284</td>
-<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">36558</td>
+<td style="text-align: right;">336</td>
+<td style="text-align: right;">0.92</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">en_IRL_irtime</td>
-<td style="text-align: right;">104966</td>
-<td style="text-align: right;">547</td>
-<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">104274</td>
+<td style="text-align: right;">661</td>
+<td style="text-align: right;">0.63</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">en_NIR_beltel</td>
-<td style="text-align: right;">97908</td>
-<td style="text-align: right;">265</td>
-<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">96371</td>
+<td style="text-align: right;">341</td>
+<td style="text-align: right;">0.35</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fr_FRA_figaro</td>
-<td style="text-align: right;">124032</td>
-<td style="text-align: right;">1129</td>
-<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">123821</td>
+<td style="text-align: right;">1623</td>
+<td style="text-align: right;">1.31</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fr_FRA_lmonde</td>
-<td style="text-align: right;">47898</td>
-<td style="text-align: right;">525</td>
-<td style="text-align: right;">1.10</td>
+<td style="text-align: right;">47749</td>
+<td style="text-align: right;">687</td>
+<td style="text-align: right;">1.44</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">tr_TUR_cumhur</td>
-<td style="text-align: right;">128780</td>
-<td style="text-align: right;">753</td>
-<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">128611</td>
+<td style="text-align: right;">905</td>
+<td style="text-align: right;">0.70</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">tr_TUR_yenisa</td>
-<td style="text-align: right;">92673</td>
-<td style="text-align: right;">878</td>
-<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">92495</td>
+<td style="text-align: right;">1095</td>
+<td style="text-align: right;">1.18</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Total</td>
-<td style="text-align: right;">920417</td>
-<td style="text-align: right;">5943</td>
-<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">916365</td>
+<td style="text-align: right;">7520</td>
+<td style="text-align: right;">0.82</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <ul>
-<li><strong>Comment</strong> : We have found only 5943 news that fulfill both conditions of mentioning a state and a macroregion. The proportion is therefore equal to 0.65 % but with important variations between the newspapers, from 0.19 to 1.1%.</li>
+<li><strong>Comment</strong> : We have found only 7520 news that fulfill both conditions of mentioning a state and a macroregion. The proportion is therefore equal to 0.82 % but with important variations between the newspapers, from 0.25 to 1.18%.</li>
 </ul>
 
 

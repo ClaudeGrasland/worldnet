@@ -35,11 +35,19 @@ We proceed firstly to the creation of new columns of geotags where we introduce 
 qd<-readRDS("quanteda/corpus_worldgeo.RDS")
 
 
+# take a decision on ambiguous cases ...
+qd$tags<-gsub("XX_America","ST_USA", qd$tags)
+qd$tags<-gsub("XX_Congo","ST_COD",qd$tags)
+qd$tags<-gsub("XX_Brussels","OR_EU",qd$tags)
+
 # Extract regs
 qd$regs<-qd$tags
-qd$regs<-gsub("ST_...","",qd$tags)
-qd$regs<-gsub("CA_...","",qd$regs)
+qd$regs<-str_replace_all(qd$regs, "ST_[[:alpha:]_]+", "")
+qd$regs<-str_replace_all(qd$regs, "CA_[[:alpha:]_]+", "")
+qd$regs<-str_replace_all(qd$regs, "XX_[[:alpha:]_]+", "")
+
 qd$nbregs<-ntoken(tokens(as.character(qd$regs)))
+
 
 # Extract states
 qd$sta<-qd$tags
@@ -48,21 +56,25 @@ qd$sta<-str_replace_all(qd$sta, "CO_[[:alpha:]_]+", "")
 qd$sta<-str_replace_all(qd$sta, "OR_[[:alpha:]_]+", "")
 qd$sta<-str_replace_all(qd$sta, "LA_[[:alpha:]_]+", "")
 qd$sta<-str_replace_all(qd$sta, "SE_[[:alpha:]_]+", "")
+qd$sta<-str_replace_all(qd$sta, "CU_[[:alpha:]_]+", "")
+qd$sta<-str_replace_all(qd$sta, "XX_[[:alpha:]_]+", "")
+
 qd$sta<-str_replace_all(qd$sta, "ST_", "")
 qd$sta<-str_replace_all(qd$sta, "CA_", "")
 
+
 qd$nbsta<-ntoken(tokens(as.character(qd$sta)))
-saveRDS(qd,"quanteda/corpus_worldgeo.RDS")
+saveRDS(qd,"quanteda/corpus_worldgeo_tags.RDS")
 
 head(docvars(qd))
+summary(qd,2)
 
 ```
 
 The result of the transformation is a table where we can analyze separately the geotags related to states and the geotags related to macroregions : 
 
 ```{r, echo=FALSE, eval=TRUE}
-qd<-readRDS("quanteda/corpus_worldgeo.RDS")
-qd<-qd[qd$nbregs>1 & qd$nbsta >1,]
+qd<-readRDS("quanteda/corpus_worldgeo_tags.RDS")
 
 kable(head(docvars(qd),3))
 ```
@@ -268,15 +280,16 @@ tot$Pourcentage<-100*tot$Frequence/tot$Total
 tabres<-rbind(med,tot)
 kable(tabres,digits=c(0,0,0,2),caption = "Share of international news")
 ```
-- **Comment** : We have found 188542 international news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 20 % but with important variations between the newspapers, from 13 to 32%. 
+- **Comment** : We have found 200217 international news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 21.2 % but with important variations between the newspapers, from 14 to 32%. 
 
 
 ###  Macroregional news
 
 A news will be defined as  *macroregional* if we can find at less a name of macroregion (continent, organization, ocean) in the title. 
 
+
 ```{r, warnings=F, message=FALSE}
-hc<-readRDS("hypercube/hc_reg_reg_day.RDS")
+hc<-readRDS("hypercube/hc_reg_reg_day.RDS") 
 
 
 hc$OK<-as.factor(hc$where1!="_no_") 
@@ -301,7 +314,7 @@ kable(tabres,digits=c(0,0,0,2),caption = "Share of  news mentionning a macroregi
 ```
 
  
-- **Comment** : We have found 20953 macroregional news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 2.3 % but with important variations between the newspapers, from 0.9 to 3.7%. 
+- **Comment** : We have found 24421 macroregional news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 2.7 % but with important variations between the newspapers, from 1.1 to 4.4%. 
 
 
 ### State news
@@ -334,7 +347,7 @@ tabres<-rbind(med,tot)
 kable(tabres,digits=c(0,0,0,2),caption = "Share of news mentioning a state")
 ```
 
-- **Comment** : We have found 136181 state news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 14.5 % but with important variations between the newspapers, from 7.7 to 22.2%. 
+- **Comment** : We have found 1424553 state news on the total of 941683 titles of news present in the corpus. The proportion is therefore equal to 15 % but with important variations between the newspapers, from 7.8 to 22.3%. 
 
 
 
@@ -365,5 +378,5 @@ kable(tabres,digits=c(0,0,0,2),caption = "Share of
       news mentioning a macroregion and a state")
 ```
 
-- **Comment** : We have found only 5943 news that fulfill both conditions of mentioning a state and a macroregion. The proportion is therefore equal to 0.65 % but with important variations between the newspapers, from 0.19 to 1.1%. 
+- **Comment** : We have found only 7520 news that fulfill both conditions of mentioning a state and a macroregion. The proportion is therefore equal to 0.82 % but with important variations between the newspapers, from 0.25 to 1.18%. 
 
