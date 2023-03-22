@@ -238,11 +238,17 @@ div.csl-indent {
    
   <ul>
   <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective"><span class="toc-section-number">10.1</span>  Objective</a></li>
-  <li><a href="#states-x-macroregion" id="toc-states-x-macroregion" class="nav-link" data-scroll-target="#states-x-macroregion"><span class="toc-section-number">10.2</span>  STATES x MACROREGION</a>
+  <li><a href="#network-creation" id="toc-network-creation" class="nav-link" data-scroll-target="#network-creation"><span class="toc-section-number">10.2</span>  NETWORK CREATION</a>
   <ul class="collapse">
   <li><a href="#import-hypercube" id="toc-import-hypercube" class="nav-link" data-scroll-target="#import-hypercube"><span class="toc-section-number">10.2.1</span>  Import hypercube</a></li>
   <li><a href="#transform-in-incidence-matrix" id="toc-transform-in-incidence-matrix" class="nav-link" data-scroll-target="#transform-in-incidence-matrix"><span class="toc-section-number">10.2.2</span>  Transform in incidence matrix</a></li>
   <li><a href="#import-to-igraph" id="toc-import-to-igraph" class="nav-link" data-scroll-target="#import-to-igraph"><span class="toc-section-number">10.2.3</span>  Import to igraph</a></li>
+  <li><a href="#store-network" id="toc-store-network" class="nav-link" data-scroll-target="#store-network"><span class="toc-section-number">10.2.4</span>  Store network</a></li>
+  </ul></li>
+  <li><a href="#subnetworks-analysis" id="toc-subnetworks-analysis" class="nav-link" data-scroll-target="#subnetworks-analysis"><span class="toc-section-number">10.3</span>  SUBNETWORKS ANALYSIS</a>
+  <ul class="collapse">
+  <li><a href="#ego_networks" id="toc-ego_networks" class="nav-link" data-scroll-target="#ego_networks"><span class="toc-section-number">10.3.1</span>  Ego_networks</a></li>
+  <li><a href="#macroregion-comparison" id="toc-macroregion-comparison" class="nav-link" data-scroll-target="#macroregion-comparison"><span class="toc-section-number">10.3.2</span>  Macroregion comparison</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -279,94 +285,95 @@ div.csl-indent {
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># function</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>hc_filter <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">don =</span> hc,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                      <span class="at">who =</span> <span class="st">"who"</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">when =</span> <span class="st">"when"</span>,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where1 =</span> <span class="st">"where1"</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where2 =</span> <span class="st">"where2"</span>,</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                      <span class="at">wgt =</span> <span class="st">"tags"</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                      <span class="at">self =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                      <span class="at">when_start =</span> <span class="cn">NA</span>,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                      <span class="at">when_end =</span> <span class="cn">NA</span>,</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>                      <span class="at">who_exc =</span> <span class="cn">NA</span>,</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                      <span class="at">who_inc =</span> <span class="cn">NA</span>,</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where1_exc =</span> <span class="cn">NA</span>,</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where1_inc =</span> <span class="cn">NA</span>,</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where2_exc =</span> <span class="cn">NA</span>,</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where2_inc =</span> <span class="cn">NA</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>{                          </span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span><span class="fu">data.table</span>(<span class="at">who =</span> don[[who]],</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                 <span class="at">when =</span> don[[when]],</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                 <span class="at">where1 =</span> don[[where1]],</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>                 <span class="at">where2 =</span> don[[where2]],</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>                 <span class="at">wgt =</span> don[[wgt]])</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># function</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>hc_filter <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">don =</span> hc,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">who =</span> <span class="st">"who"</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                      <span class="at">when =</span> <span class="st">"when"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where1 =</span> <span class="st">"where1"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where2 =</span> <span class="st">"where2"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                      <span class="at">wgt =</span> <span class="st">"tags"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                      <span class="at">self =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                      <span class="at">when_start =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>                      <span class="at">when_end =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                      <span class="at">who_exc =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                      <span class="at">who_inc =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where1_exc =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where1_inc =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where2_exc =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>                      <span class="at">where2_inc =</span> <span class="cn">NA</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>{                          </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span><span class="fu">data.table</span>(<span class="at">who =</span> don[[who]],</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                 <span class="at">when =</span> don[[when]],</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>                 <span class="at">where1 =</span> don[[where1]],</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>                 <span class="at">where2 =</span> don[[where2]],</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                 <span class="at">wgt =</span> don[[wgt]])</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select time period</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(when_start[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[when <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(when_start), ]}</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(when_end[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[when <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(when_end), ]}</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select who</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(who_exc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[<span class="sc">!</span>(who <span class="sc">%in%</span> who_exc), ]}</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(who_inc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(who <span class="sc">%in%</span> who_inc), ]}</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select where1</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where1_exc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[<span class="sc">!</span>(where1 <span class="sc">%in%</span> where1_exc), ]}</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where1_inc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(where1 <span class="sc">%in%</span> where1_inc), ]}</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select where2</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where2_exc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[<span class="sc">!</span>(where2 <span class="sc">%in%</span> where2_exc), ]}</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where2_inc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(where2 <span class="sc">%in%</span> where2_inc), ]}</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># eliminate internal links</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (self<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(where1 <span class="sc">!=</span> where2), ]}</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Application</span></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select time period</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(when_start[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[when <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(when_start), ]}</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(when_end[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[when <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(when_end), ]}</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select who</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(who_exc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[<span class="sc">!</span>(who <span class="sc">%in%</span> who_exc), ]}</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(who_inc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(who <span class="sc">%in%</span> who_inc), ]}</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select where1</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where1_exc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[<span class="sc">!</span>(where1 <span class="sc">%in%</span> where1_exc), ]}</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where1_inc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(where1 <span class="sc">%in%</span> where1_inc), ]}</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select where2</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where2_exc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[<span class="sc">!</span>(where2 <span class="sc">%in%</span> where2_exc), ]}</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(where2_inc[<span class="dv">1</span>])<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(where2 <span class="sc">%in%</span> where2_inc), ]}</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  <span class="co"># eliminate internal links</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (self<span class="sc">==</span><span class="cn">FALSE</span>) { </span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df[(where1 <span class="sc">!=</span> where2), ]}</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Application</span></span>
 <span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="do">######## Create complete interaction matrix ########</span></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>build_int <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">don =</span> don,       <span class="co"># a dataframe with columns i, j , Fij</span></span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>                      <span class="at">i =</span> <span class="st">"where1"</span>,</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>                      <span class="at">j =</span> <span class="st">"where2"</span>,</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Fij =</span> <span class="st">"wgt"</span>,</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>                      <span class="at">s1 =</span> <span class="dv">5</span>,</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>                      <span class="at">s2 =</span> <span class="dv">5</span>,</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n1 =</span> <span class="dv">3</span>,</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n2 =</span> <span class="dv">3</span>,</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>                      <span class="at">k =</span> <span class="dv">0</span>)</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="co"># Function </span></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>{  </span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span><span class="fu">data.table</span>(<span class="at">i=</span>don[[i]],<span class="at">j=</span>don[[j]],<span class="at">Fij=</span>don[[Fij]])</span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>  <span class="co">#</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  int <span class="ot">&lt;-</span>df[,.(<span class="at">Fij=</span><span class="fu">sum</span>(Fij)),.(i,j)]</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>  int<span class="ot">&lt;-</span><span class="fu">dcast</span>(int,<span class="at">formula =</span> i<span class="sc">~</span>j,<span class="at">fill =</span> <span class="dv">0</span>)</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">&lt;-</span><span class="fu">as.matrix</span>(int[,<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row.names</span>(mat)<span class="ot">&lt;-</span>int<span class="sc">$</span>i</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">&lt;-</span>mat[<span class="fu">apply</span>(mat,<span class="dv">1</span>,sum)<span class="sc">&gt;=</span>s1,<span class="fu">apply</span>(mat,<span class="dv">2</span>,sum)<span class="sc">&gt;=</span>s2 ]</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  m0<span class="ot">&lt;-</span>mat</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  m0[m0<span class="sc">&lt;</span>k]<span class="ot">&lt;-</span><span class="dv">0</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  m0[m0<span class="sc">&gt;=</span>k]<span class="ot">&lt;-</span><span class="dv">1</span></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">&lt;-</span>mat[<span class="fu">apply</span>(m0,<span class="dv">1</span>,sum)<span class="sc">&gt;=</span>n1,<span class="fu">apply</span>(m0,<span class="dv">2</span>,sum)<span class="sc">&gt;=</span>n2 ]</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  int<span class="ot">&lt;-</span>reshape2<span class="sc">::</span><span class="fu">melt</span>(mat)</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(int) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"i"</span>,<span class="st">"j"</span>,<span class="st">"Fij"</span>)</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(int)</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="do">######## Create complete interaction matrix ########</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>build_int <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">don =</span> don,       <span class="co"># a dataframe with columns i, j , Fij</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>                      <span class="at">i =</span> <span class="st">"where1"</span>,</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>                      <span class="at">j =</span> <span class="st">"where2"</span>,</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>                      <span class="at">Fij =</span> <span class="st">"wgt"</span>,</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>                      <span class="at">s1 =</span> <span class="dv">5</span>,</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>                      <span class="at">s2 =</span> <span class="dv">5</span>,</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n1 =</span> <span class="dv">3</span>,</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n2 =</span> <span class="dv">3</span>,</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>                      <span class="at">k =</span> <span class="dv">0</span>)</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Function </span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>{  </span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>  df<span class="ot">&lt;-</span><span class="fu">data.table</span>(<span class="at">i=</span>don[[i]],<span class="at">j=</span>don[[j]],<span class="at">Fij=</span>don[[Fij]])</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  <span class="co">#</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>  int <span class="ot">&lt;-</span>df[,.(<span class="at">Fij=</span><span class="fu">sum</span>(Fij)),.(i,j)]</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  int<span class="ot">&lt;-</span><span class="fu">dcast</span>(int,<span class="at">formula =</span> i<span class="sc">~</span>j,<span class="at">fill =</span> <span class="dv">0</span>)</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">&lt;-</span><span class="fu">as.matrix</span>(int[,<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row.names</span>(mat)<span class="ot">&lt;-</span>int<span class="sc">$</span>i</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">&lt;-</span>mat[<span class="fu">apply</span>(mat,<span class="dv">1</span>,sum)<span class="sc">&gt;=</span>s1,<span class="fu">apply</span>(mat,<span class="dv">2</span>,sum)<span class="sc">&gt;=</span>s2 ]</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  m0<span class="ot">&lt;-</span>mat</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  m0[m0<span class="sc">&lt;</span>k]<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  m0[m0<span class="sc">&gt;=</span>k]<span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">&lt;-</span>mat[<span class="fu">apply</span>(m0,<span class="dv">1</span>,sum)<span class="sc">&gt;=</span>n1,<span class="fu">apply</span>(m0,<span class="dv">2</span>,sum)<span class="sc">&gt;=</span>n2 ]</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  int<span class="ot">&lt;-</span>reshape2<span class="sc">::</span><span class="fu">melt</span>(mat)</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(int) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"i"</span>,<span class="st">"j"</span>,<span class="st">"Fij"</span>)</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(int)</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="objective" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="objective"><span class="header-section-number">10.1</span> Objective</h2>
@@ -374,8 +381,8 @@ div.csl-indent {
 <p>It appears therefore more relevant to proceed no to an opposite approach where we will use <code>igraph</code> package for the exploration of networks in statistical and mathematical sense i.e.&nbsp;computation of relevant indexes describing the whole network (e.g.&nbsp;fragmentation), the vertices and the edges (e.g.&nbsp;centrality, betweeness, …). An output of the analysis will typically be the storage of subgraphs in the format of <code>igraph</code> as it is very clear that all networks packages available in R use today these format as reference and can import or export it. Having stored networks in igraph format make normally easy the use of any kind of visualization tools (VisNetwork, ggraph, gephi, …).</p>
 <p>Other packages should also be considered in this section like <code>backbone</code>which is a high level tool of reduction of networks based on interesting conceptual hypothesis <span class="citation" data-cites="serrano2009a">Serrano, Boguñá, and Vespignani (<a href="#ref-serrano2009a" role="doc-biblioref">2009</a>)</span>.</p>
 </section>
-<section id="states-x-macroregion" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="states-x-macroregion"><span class="header-section-number">10.2</span> STATES x MACROREGION</h2>
+<section id="network-creation" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="network-creation"><span class="header-section-number">10.2</span> NETWORK CREATION</h2>
 <p>We start by the example of a matrix linking states and macro-region that will create a <strong>dual-mode network</strong> also called <strong>bipartite graph</strong>.</p>
 <section id="import-hypercube" class="level3" data-number="10.2.1">
 <h3 data-number="10.2.1" class="anchored" data-anchor-id="import-hypercube"><span class="header-section-number">10.2.1</span> Import hypercube</h3>
@@ -1012,23 +1019,22 @@ div.csl-indent {
 <p>It is easy to transform this matrix into igraph with the function <code>graph_from_incidence_matrix()</code> and some aditionnal parameters.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>net<span class="ot">&lt;-</span><span class="fu">graph_from_incidence_matrix</span>(<span class="at">incidence =</span> mat,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">directed =</span> T,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">mode =</span> <span class="st">"in"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">weighted =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">add.names =</span> <span class="st">"name"</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">directed =</span> F,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">weighted =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">add.names =</span> <span class="st">"name"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>net</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&gt; IGRAPH a255208 DNWB 41 143 -- 
+<pre><code>&gt; IGRAPH 8d74868 UNWB 41 143 -- 
 &gt; + attr: type (v/l), name (v/c), weight (e/n)
-&gt; + edges from a255208 (vertex names):
-&gt;  [1] Council of Europe-&gt;Afghanistan Europe           -&gt;Afghanistan
-&gt;  [3] European Union   -&gt;Afghanistan NATO             -&gt;Afghanistan
-&gt;  [5] Sahel            -&gt;Afghanistan United Nations   -&gt;Afghanistan
-&gt;  [7] Africa           -&gt;Algeria     European Union   -&gt;Algeria    
-&gt;  [9] Sahara           -&gt;Algeria     Sahel            -&gt;Algeria    
-&gt; [11] United Nations   -&gt;Algeria     Council of Europe-&gt;Belarus    
-&gt; [13] Europe           -&gt;Belarus     European Union   -&gt;Belarus    
-&gt; [15] NATO             -&gt;Belarus     United Nations   -&gt;Belarus    
+&gt; + edges from 8d74868 (vertex names):
+&gt;  [1] Afghanistan--Council of Europe Afghanistan--Europe           
+&gt;  [3] Afghanistan--European Union    Afghanistan--NATO             
+&gt;  [5] Afghanistan--Sahel             Afghanistan--United Nations   
+&gt;  [7] Algeria    --Africa            Algeria    --European Union   
+&gt;  [9] Algeria    --Sahara            Algeria    --Sahel            
+&gt; [11] Algeria    --United Nations    Belarus    --Council of Europe
+&gt; [13] Belarus    --Europe            Belarus    --European Union   
+&gt; [15] Belarus    --NATO              Belarus    --United Nations   
 &gt; + ... omitted several edges</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(net)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1048,8 +1054,1179 @@ div.csl-indent {
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">visNetwork</span>(<span class="at">nodes =</span> data<span class="sc">$</span>nodes, <span class="at">edges =</span> data<span class="sc">$</span>edges,) <span class="sc">%&gt;%</span> <span class="fu">visOptions</span>(<span class="at">highlightNearest =</span> <span class="fu">list</span>(<span class="at">enabled=</span>T, <span class="at">degree=</span><span class="fu">list</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">1</span>)),</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">nodesIdSelection =</span> <span class="cn">TRUE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="visNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-a4a36495255f6a9e6aa2" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-a4a36495255f6a9e6aa2">{"x":{"nodes":{"id":["Afghanistan","Algeria","Belarus","Brazil","Chine","Cyprus","Germany","Greece","Iran","Iraq","Israel","Italy","Libya","Mali","Morocco","Poland","Russia","Spain","Sudan","Syria","Turkey","Ukraine","United Kingdom","USA","Venezuela","Africa","African Union","Arctic","Asia","Black Sea","China Sea","Council of Europe","Europe","European Union","Eurovision","Mediterranean Sea","Middle East","NATO","Sahara","Sahel","United Nations "],"type":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"label":["Afghanistan","Algeria","Belarus","Brazil","Chine","Cyprus","Germany","Greece","Iran","Iraq","Israel","Italy","Libya","Mali","Morocco","Poland","Russia","Spain","Sudan","Syria","Turkey","Ukraine","United Kingdom","USA","Venezuela","Africa","African Union","Arctic","Asia","Black Sea","China Sea","Council of Europe","Europe","European Union","Eurovision","Mediterranean Sea","Middle East","NATO","Sahara","Sahel","United Nations "],"color":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":[5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]},"edges":{"from":["Council of Europe","Europe","European Union","NATO","Sahel","United Nations ","Africa","European Union","Sahara","Sahel","United Nations ","Council of Europe","Europe","European Union","NATO","United Nations ","Europe","European Union","United Nations ","Africa","Arctic","Asia","China Sea","Europe","European Union","NATO","United Nations ","Europe","European Union","Eurovision","Mediterranean Sea","United Nations ","Arctic","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","United Nations ","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","Europe","European Union","Mediterranean Sea","Middle East","NATO","United Nations ","NATO","United Nations ","African Union","European Union","Eurovision","Mediterranean Sea","Middle East","United Nations ","Europe","European Union","Eurovision","Mediterranean Sea","Europe","European Union","Mediterranean Sea","NATO","United Nations ","African Union","European Union","Sahel","United Nations ","Europe","Mediterranean Sea","Sahara","United Nations ","Council of Europe","Europe","European Union","NATO","United Nations ","Africa","Arctic","Asia","Black Sea","Council of Europe","Europe","European Union","Mediterranean Sea","Middle East","NATO","Sahel","United Nations ","Africa","Council of Europe","Europe","European Union","Mediterranean Sea","Sahara","Africa","African Union","European Union","United Nations ","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","United Nations ","Black Sea","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","United Nations ","Black Sea","Council of Europe","Europe","European Union","Eurovision","NATO","United Nations ","Africa","Black Sea","Europe","European Union","NATO","United Nations ","Africa","Arctic","Asia","Black Sea","China Sea","Europe","European Union","Mediterranean Sea","Middle East","NATO","Sahara","United Nations ","Europe","European Union","United Nations "],"to":["Afghanistan","Afghanistan","Afghanistan","Afghanistan","Afghanistan","Afghanistan","Algeria","Algeria","Algeria","Algeria","Algeria","Belarus","Belarus","Belarus","Belarus","Belarus","Brazil","Brazil","Brazil","Chine","Chine","Chine","Chine","Chine","Chine","Chine","Chine","Cyprus","Cyprus","Cyprus","Cyprus","Cyprus","Germany","Germany","Germany","Germany","Germany","Germany","Germany","Greece","Greece","Greece","Greece","Greece","Iran","Iran","Iran","Iran","Iran","Iran","Iraq","Iraq","Israel","Israel","Israel","Israel","Israel","Israel","Italy","Italy","Italy","Italy","Libya","Libya","Libya","Libya","Libya","Mali","Mali","Mali","Mali","Morocco","Morocco","Morocco","Morocco","Poland","Poland","Poland","Poland","Poland","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Spain","Spain","Spain","Spain","Spain","Spain","Sudan","Sudan","Sudan","Sudan","Syria","Syria","Syria","Syria","Syria","Syria","Turkey","Turkey","Turkey","Turkey","Turkey","Turkey","Turkey","Ukraine","Ukraine","Ukraine","Ukraine","Ukraine","Ukraine","Ukraine","United Kingdom","United Kingdom","United Kingdom","United Kingdom","United Kingdom","United Kingdom","USA","USA","USA","USA","USA","USA","USA","USA","USA","USA","USA","USA","Venezuela","Venezuela","Venezuela"],"weight":[1,3,11,11,1,21,1,3,2,2,1,2,6,28,4,6,2,2,5,2,1,4,4,19,31,3,28,2,8,2,4,2,1,1,18,20,3,3,6,4,7,14,18,6,7,11,2,10,1,25,4,6,1,7,3,1,3,11,18,16,1,2,5,11,6,1,37,2,1,4,9,2,2,5,1,2,2,18,1,1,5,3,1,2,9,12,30,1,1,8,2,15,2,1,8,6,1,1,2,2,5,7,2,2,9,1,2,36,2,2,16,34,27,12,2,2,1,1,8,1,2,2,1,1,19,83,2,7,1,2,5,2,2,27,37,2,3,3,1,44,4,15,20],"width":[2,2.73205080756888,4.3166247903554,4.3166247903554,2,5.58257569495584,2,2.73205080756888,2.41421356237309,2.41421356237309,2,2.41421356237309,3.44948974278318,6.29150262212918,3,3.44948974278318,2.41421356237309,2.41421356237309,3.23606797749979,2.41421356237309,2,3,3,5.35889894354067,6.56776436283002,2.73205080756888,6.29150262212918,2.41421356237309,3.82842712474619,2.41421356237309,3,2.41421356237309,2,2,5.24264068711928,5.47213595499958,2.73205080756888,2.73205080756888,3.44948974278318,3,3.64575131106459,4.74165738677394,5.24264068711928,3.44948974278318,3.64575131106459,4.3166247903554,2.41421356237309,4.16227766016838,2,6,3,3.44948974278318,2,3.64575131106459,2.73205080756888,2,2.73205080756888,4.3166247903554,5.24264068711928,5,2,2.41421356237309,3.23606797749979,4.3166247903554,3.44948974278318,2,7.08276253029822,2.41421356237309,2,3,4,2.41421356237309,2.41421356237309,3.23606797749979,2,2.41421356237309,2.41421356237309,5.24264068711928,2,2,3.23606797749979,2.73205080756888,2,2.41421356237309,4,4.46410161513775,6.47722557505166,2,2,3.82842712474619,2.41421356237309,4.87298334620742,2.41421356237309,2,3.82842712474619,3.44948974278318,2,2,2.41421356237309,2.41421356237309,3.23606797749979,3.64575131106459,2.41421356237309,2.41421356237309,4,2,2.41421356237309,7,2.41421356237309,2.41421356237309,5,6.8309518948453,6.19615242270663,4.46410161513775,2.41421356237309,2.41421356237309,2,2,3.82842712474619,2,2.41421356237309,2.41421356237309,2,2,5.35889894354067,10.1104335791443,2.41421356237309,3.64575131106459,2,2.41421356237309,3.23606797749979,2.41421356237309,2.41421356237309,6.19615242270663,7.08276253029822,2.41421356237309,2.73205080756888,2.73205080756888,2,7.6332495807108,3,4.87298334620742,5.47213595499958],"color":["orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":true,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":1,"to":1},"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":false,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"}},"evals":[],"jsHooks":[]}</script>
+<div class="visNetwork html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b8ed48b2fdaea02893b8" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-b8ed48b2fdaea02893b8">{"x":{"nodes":{"id":["Afghanistan","Algeria","Belarus","Brazil","Chine","Cyprus","Germany","Greece","Iran","Iraq","Israel","Italy","Libya","Mali","Morocco","Poland","Russia","Spain","Sudan","Syria","Turkey","Ukraine","United Kingdom","USA","Venezuela","Africa","African Union","Arctic","Asia","Black Sea","China Sea","Council of Europe","Europe","European Union","Eurovision","Mediterranean Sea","Middle East","NATO","Sahara","Sahel","United Nations "],"type":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"label":["Afghanistan","Algeria","Belarus","Brazil","Chine","Cyprus","Germany","Greece","Iran","Iraq","Israel","Italy","Libya","Mali","Morocco","Poland","Russia","Spain","Sudan","Syria","Turkey","Ukraine","United Kingdom","USA","Venezuela","Africa","African Union","Arctic","Asia","Black Sea","China Sea","Council of Europe","Europe","European Union","Eurovision","Mediterranean Sea","Middle East","NATO","Sahara","Sahel","United Nations "],"color":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":[5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]},"edges":{"from":["Afghanistan","Afghanistan","Afghanistan","Afghanistan","Afghanistan","Afghanistan","Algeria","Algeria","Algeria","Algeria","Algeria","Belarus","Belarus","Belarus","Belarus","Belarus","Brazil","Brazil","Brazil","Chine","Chine","Chine","Chine","Chine","Chine","Chine","Chine","Cyprus","Cyprus","Cyprus","Cyprus","Cyprus","Germany","Germany","Germany","Germany","Germany","Germany","Germany","Greece","Greece","Greece","Greece","Greece","Iran","Iran","Iran","Iran","Iran","Iran","Iraq","Iraq","Israel","Israel","Israel","Israel","Israel","Israel","Italy","Italy","Italy","Italy","Libya","Libya","Libya","Libya","Libya","Mali","Mali","Mali","Mali","Morocco","Morocco","Morocco","Morocco","Poland","Poland","Poland","Poland","Poland","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Russia","Spain","Spain","Spain","Spain","Spain","Spain","Sudan","Sudan","Sudan","Sudan","Syria","Syria","Syria","Syria","Syria","Syria","Turkey","Turkey","Turkey","Turkey","Turkey","Turkey","Turkey","Ukraine","Ukraine","Ukraine","Ukraine","Ukraine","Ukraine","Ukraine","United Kingdom","United Kingdom","United Kingdom","United Kingdom","United Kingdom","United Kingdom","USA","USA","USA","USA","USA","USA","USA","USA","USA","USA","USA","USA","Venezuela","Venezuela","Venezuela"],"to":["Council of Europe","Europe","European Union","NATO","Sahel","United Nations ","Africa","European Union","Sahara","Sahel","United Nations ","Council of Europe","Europe","European Union","NATO","United Nations ","Europe","European Union","United Nations ","Africa","Arctic","Asia","China Sea","Europe","European Union","NATO","United Nations ","Europe","European Union","Eurovision","Mediterranean Sea","United Nations ","Arctic","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","United Nations ","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","Europe","European Union","Mediterranean Sea","Middle East","NATO","United Nations ","NATO","United Nations ","African Union","European Union","Eurovision","Mediterranean Sea","Middle East","United Nations ","Europe","European Union","Eurovision","Mediterranean Sea","Europe","European Union","Mediterranean Sea","NATO","United Nations ","African Union","European Union","Sahel","United Nations ","Europe","Mediterranean Sea","Sahara","United Nations ","Council of Europe","Europe","European Union","NATO","United Nations ","Africa","Arctic","Asia","Black Sea","Council of Europe","Europe","European Union","Mediterranean Sea","Middle East","NATO","Sahel","United Nations ","Africa","Council of Europe","Europe","European Union","Mediterranean Sea","Sahara","Africa","African Union","European Union","United Nations ","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","United Nations ","Black Sea","Council of Europe","Europe","European Union","Mediterranean Sea","NATO","United Nations ","Black Sea","Council of Europe","Europe","European Union","Eurovision","NATO","United Nations ","Africa","Black Sea","Europe","European Union","NATO","United Nations ","Africa","Arctic","Asia","Black Sea","China Sea","Europe","European Union","Mediterranean Sea","Middle East","NATO","Sahara","United Nations ","Europe","European Union","United Nations "],"weight":[1,3,11,11,1,21,1,3,2,2,1,2,6,28,4,6,2,2,5,2,1,4,4,19,31,3,28,2,8,2,4,2,1,1,18,20,3,3,6,4,7,14,18,6,7,11,2,10,1,25,4,6,1,7,3,1,3,11,18,16,1,2,5,11,6,1,37,2,1,4,9,2,2,5,1,2,2,18,1,1,5,3,1,2,9,12,30,1,1,8,2,15,2,1,8,6,1,1,2,2,5,7,2,2,9,1,2,36,2,2,16,34,27,12,2,2,1,1,8,1,2,2,1,1,19,83,2,7,1,2,5,2,2,27,37,2,3,3,1,44,4,15,20],"width":[2,2.73205080756888,4.3166247903554,4.3166247903554,2,5.58257569495584,2,2.73205080756888,2.41421356237309,2.41421356237309,2,2.41421356237309,3.44948974278318,6.29150262212918,3,3.44948974278318,2.41421356237309,2.41421356237309,3.23606797749979,2.41421356237309,2,3,3,5.35889894354067,6.56776436283002,2.73205080756888,6.29150262212918,2.41421356237309,3.82842712474619,2.41421356237309,3,2.41421356237309,2,2,5.24264068711928,5.47213595499958,2.73205080756888,2.73205080756888,3.44948974278318,3,3.64575131106459,4.74165738677394,5.24264068711928,3.44948974278318,3.64575131106459,4.3166247903554,2.41421356237309,4.16227766016838,2,6,3,3.44948974278318,2,3.64575131106459,2.73205080756888,2,2.73205080756888,4.3166247903554,5.24264068711928,5,2,2.41421356237309,3.23606797749979,4.3166247903554,3.44948974278318,2,7.08276253029822,2.41421356237309,2,3,4,2.41421356237309,2.41421356237309,3.23606797749979,2,2.41421356237309,2.41421356237309,5.24264068711928,2,2,3.23606797749979,2.73205080756888,2,2.41421356237309,4,4.46410161513775,6.47722557505166,2,2,3.82842712474619,2.41421356237309,4.87298334620742,2.41421356237309,2,3.82842712474619,3.44948974278318,2,2,2.41421356237309,2.41421356237309,3.23606797749979,3.64575131106459,2.41421356237309,2.41421356237309,4,2,2.41421356237309,7,2.41421356237309,2.41421356237309,5,6.8309518948453,6.19615242270663,4.46410161513775,2.41421356237309,2.41421356237309,2,2,3.82842712474619,2,2.41421356237309,2.41421356237309,2,2,5.35889894354067,10.1104335791443,2.41421356237309,3.64575131106459,2,2.41421356237309,3.23606797749979,2.41421356237309,2.41421356237309,6.19615242270663,7.08276253029822,2.41421356237309,2.73205080756888,2.73205080756888,2,7.6332495807108,3,4.87298334620742,5.47213595499958],"color":["orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange","orange"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot"},"manipulation":{"enabled":false}},"groups":null,"width":null,"height":null,"idselection":{"enabled":true,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":1,"to":1},"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":false,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="store-network" class="level3" data-number="10.2.4">
+<h3 data-number="10.2.4" class="anchored" data-anchor-id="store-network"><span class="header-section-number">10.2.4</span> Store network</h3>
+<p>We can store our network in two principle formats :</p>
+<ul>
+<li>as an incidence matrix</li>
+<li>as an igraph object</li>
+</ul>
+<p>We do not decide immediately on the best solution and adopt the two formats.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(mat,<span class="st">"networks/Figaro_sta_reg_mat.RDS"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(net,<span class="st">"networks/Figaro_sta_reg_net.RDS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="subnetworks-analysis" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="subnetworks-analysis"><span class="header-section-number">10.3</span> SUBNETWORKS ANALYSIS</h2>
+<p>We propose here a list of simple analysis based on the extraction of subnetworks of interest. We will use a list of simple tools based on igraph and described by Katya Ognyanova on her website :</p>
+<p>https://kateto.net/network-visualization</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>net <span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">"networks/Figaro_sta_reg_net.RDS"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(net, <span class="at">vertex.shape=</span><span class="st">"none"</span>, <span class="at">vertex.label=</span><span class="fu">V</span>(net)<span class="sc">$</span>name,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.color=</span><span class="fu">V</span>(net)<span class="sc">$</span>type<span class="sc">+</span><span class="dv">1</span>, <span class="at">vertex.label.font=</span><span class="dv">2</span>, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.cex=</span>.<span class="dv">6</span>, <span class="at">edge.color=</span><span class="st">"gray70"</span>,  <span class="at">edge.width=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="08-Network-Analysis_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(net)<span class="sc">$</span>name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&gt;  [1] "Afghanistan"       "Algeria"           "Belarus"          
+&gt;  [4] "Brazil"            "Chine"             "Cyprus"           
+&gt;  [7] "Germany"           "Greece"            "Iran"             
+&gt; [10] "Iraq"              "Israel"            "Italy"            
+&gt; [13] "Libya"             "Mali"              "Morocco"          
+&gt; [16] "Poland"            "Russia"            "Spain"            
+&gt; [19] "Sudan"             "Syria"             "Turkey"           
+&gt; [22] "Ukraine"           "United Kingdom"    "USA"              
+&gt; [25] "Venezuela"         "Africa"            "African Union"    
+&gt; [28] "Arctic"            "Asia"              "Black Sea"        
+&gt; [31] "China Sea"         "Council of Europe" "Europe"           
+&gt; [34] "European Union"    "Eurovision"        "Mediterranean Sea"
+&gt; [37] "Middle East"       "NATO"              "Sahara"           
+&gt; [40] "Sahel"             "United Nations "</code></pre>
+</div>
+</div>
+<section id="ego_networks" class="level3" data-number="10.3.1">
+<h3 data-number="10.3.1" class="anchored" data-anchor-id="ego_networks"><span class="header-section-number">10.3.1</span> Ego_networks</h3>
+<p>It is relatively easy to extract egonetworks i.e.&nbsp;subnetworks associated located at a given distance from a macroregion. For example, immediate neighbors are the states associated to a macroregion.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">3</span>,<span class="dv">0</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "Mediterranean Sea" = 36</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>egonet<span class="ot">&lt;-</span><span class="fu">make_ego_graph</span>(net,<span class="at">order=</span><span class="dv">1</span>,<span class="at">nodes =</span><span class="fu">c</span>(<span class="dv">36</span>), <span class="at">mode=</span><span class="st">"all"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(egonet, <span class="at">main=</span><span class="st">"Mediterranean Sea"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.shape=</span><span class="st">"none"</span>, </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label=</span><span class="fu">substr</span>(<span class="fu">V</span>(egonet)<span class="sc">$</span>name,<span class="dv">1</span>,<span class="dv">4</span>),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.color=</span><span class="fu">V</span>(egonet)<span class="sc">$</span>type<span class="sc">+</span><span class="dv">1</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.font=</span><span class="dv">2</span>, </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.cex=</span>.<span class="dv">6</span>, </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.color=</span><span class="st">"gray70"</span>, </span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width=</span><span class="dv">1</span><span class="sc">+</span><span class="dv">10</span><span class="sc">*</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight))</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># "NATO" = 38</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>egonet<span class="ot">&lt;-</span><span class="fu">make_ego_graph</span>(net,<span class="at">order=</span><span class="dv">1</span>,<span class="at">nodes =</span><span class="fu">c</span>(<span class="dv">38</span>), <span class="at">mode=</span><span class="st">"all"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(egonet, <span class="at">main=</span><span class="st">"NATO"</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.shape=</span><span class="st">"none"</span>, </span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label=</span><span class="fu">substr</span>(<span class="fu">V</span>(egonet)<span class="sc">$</span>name,<span class="dv">1</span>,<span class="dv">4</span>),</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.color=</span><span class="fu">V</span>(egonet)<span class="sc">$</span>type<span class="sc">+</span><span class="dv">1</span>,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.font=</span><span class="dv">2</span>, </span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.cex=</span>.<span class="dv">6</span>, </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.color=</span><span class="st">"gray70"</span>, </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width=</span><span class="dv">1</span><span class="sc">+</span><span class="dv">10</span><span class="sc">*</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight))</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co"># "Europe" = 33</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>egonet<span class="ot">&lt;-</span><span class="fu">make_ego_graph</span>(net,<span class="at">order=</span><span class="dv">1</span>,<span class="at">nodes =</span><span class="fu">c</span>(<span class="dv">33</span>), <span class="at">mode=</span><span class="st">"all"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(egonet, <span class="at">main=</span><span class="st">"Europe"</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.shape=</span><span class="st">"none"</span>, </span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label=</span><span class="fu">substr</span>(<span class="fu">V</span>(egonet)<span class="sc">$</span>name,<span class="dv">1</span>,<span class="dv">4</span>),</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.color=</span><span class="fu">V</span>(egonet)<span class="sc">$</span>type<span class="sc">+</span><span class="dv">1</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.font=</span><span class="dv">2</span>, </span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.cex=</span>.<span class="dv">6</span>, </span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.color=</span><span class="st">"gray70"</span>, </span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width=</span><span class="dv">1</span><span class="sc">+</span><span class="dv">10</span><span class="sc">*</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight))</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="co"># "EU" = 34</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>egonet<span class="ot">&lt;-</span><span class="fu">make_ego_graph</span>(net,<span class="at">order=</span><span class="dv">1</span>,<span class="at">nodes =</span><span class="fu">c</span>(<span class="dv">34</span>), <span class="at">mode=</span><span class="st">"all"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(egonet, <span class="at">main=</span><span class="st">"European Union"</span>,<span class="at">cex.main=</span><span class="fl">0.3</span>,</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.shape=</span><span class="st">"none"</span>, </span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label=</span><span class="fu">substr</span>(<span class="fu">V</span>(egonet)<span class="sc">$</span>name,<span class="dv">1</span>,<span class="dv">4</span>),</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.color=</span><span class="fu">V</span>(egonet)<span class="sc">$</span>type<span class="sc">+</span><span class="dv">1</span>,</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.font=</span><span class="dv">2</span>, </span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.cex=</span>.<span class="dv">6</span>, </span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.color=</span><span class="st">"gray70"</span>, </span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width=</span><span class="dv">1</span><span class="sc">+</span><span class="dv">10</span><span class="sc">*</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="08-Network-Analysis_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can do the same for an higher order of contiguity. For example with a degred of 2, we can see what are the macroregions sharing links with the same states.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">3</span>,<span class="dv">0</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "Mediterranean Sea" = 36</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>egonet<span class="ot">&lt;-</span><span class="fu">make_ego_graph</span>(net,<span class="at">order=</span><span class="dv">2</span>,<span class="at">nodes =</span><span class="fu">c</span>(<span class="dv">36</span>), <span class="at">mode=</span><span class="st">"all"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(egonet, <span class="at">main=</span><span class="st">"Mediterranean Sea / Order 2"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.shape=</span><span class="st">"none"</span>, </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label=</span><span class="fu">substr</span>(<span class="fu">V</span>(egonet)<span class="sc">$</span>name,<span class="dv">1</span>,<span class="dv">9</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.color=</span><span class="fu">V</span>(egonet)<span class="sc">$</span>type<span class="sc">+</span><span class="dv">1</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.font=</span><span class="dv">2</span>, </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.label.cex=</span>.<span class="dv">6</span>, </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.color=</span><span class="st">"gray70"</span>, </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width=</span><span class="dv">1</span><span class="sc">+</span><span class="dv">10</span><span class="sc">*</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">E</span>(egonet)<span class="sc">$</span>weight))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="08-Network-Analysis_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="macroregion-comparison" class="level3" data-number="10.3.2">
+<h3 data-number="10.3.2" class="anchored" data-anchor-id="macroregion-comparison"><span class="header-section-number">10.3.2</span> Macroregion comparison</h3>
+<p>Let’s now consider another problem which is the comparison of two macroregions for which we want to examine the equivalence or difference of connexion with states. We take as example the case of EU and European Union</p>
+<section id="chi-square-dual-choice" class="level4" data-number="10.3.2.1">
+<h4 data-number="10.3.2.1" class="anchored" data-anchor-id="chi-square-dual-choice"><span class="header-section-number">10.3.2.1</span> chi-square =&gt; dual choice</h4>
+<p>we can start from a purely statistical approach before to move to the problem of visualization. We select the states associated to one of the unit a minimum of 5 times and we obtain a classical contingency table with two columns and as many lines as country with weight greater or equal to five.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">"networks/Figaro_sta_reg_mat.RDS"</span>) </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">&lt;-</span>mat[,<span class="fu">c</span>(<span class="st">"Europe"</span>,<span class="st">"European Union"</span>)]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Europe"</span>,<span class="st">"EU"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">&lt;-</span>mat[<span class="fu">apply</span>(mat,<span class="dv">1</span>,sum)<span class="sc">&gt;=</span><span class="dv">5</span>,]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">addmargins</span>(mat), <span class="at">caption =</span> <span class="st">"Contingency table"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Contingency table</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Europe</th>
+<th style="text-align: right;">EU</th>
+<th style="text-align: right;">Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chine</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">38</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iran</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Syria</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">102</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USA</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Venezuela</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sum</td>
+<td style="text-align: right;">176</td>
+<td style="text-align: right;">402</td>
+<td style="text-align: right;">578</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>As EU is more frequently mentionned than Europe, we observe in the majority of case that the highest probability of association of states is with EU and they are only two exceptions in the case of Spain and Italy :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pct<span class="ot">&lt;-</span><span class="fu">round</span>(<span class="dv">100</span><span class="sc">*</span><span class="fu">addmargins</span>(<span class="fu">prop.table</span>(<span class="fu">addmargins</span>(mat,<span class="dv">1</span>),<span class="dv">1</span>),<span class="dv">2</span>),<span class="dv">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(pct, <span class="at">caption=</span><span class="st">"Probability of association"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Probability of association</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Europe</th>
+<th style="text-align: right;">EU</th>
+<th style="text-align: right;">Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">21.4</td>
+<td style="text-align: right;">78.6</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">17.6</td>
+<td style="text-align: right;">82.4</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chine</td>
+<td style="text-align: right;">38.0</td>
+<td style="text-align: right;">62.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">20.0</td>
+<td style="text-align: right;">80.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">47.4</td>
+<td style="text-align: right;">52.6</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">33.3</td>
+<td style="text-align: right;">66.7</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iran</td>
+<td style="text-align: right;">38.9</td>
+<td style="text-align: right;">61.1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">52.9</td>
+<td style="text-align: right;">47.1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">31.2</td>
+<td style="text-align: right;">68.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">90.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">28.6</td>
+<td style="text-align: right;">71.4</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">57.1</td>
+<td style="text-align: right;">42.9</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Syria</td>
+<td style="text-align: right;">18.2</td>
+<td style="text-align: right;">81.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">32.0</td>
+<td style="text-align: right;">68.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">88.9</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">18.6</td>
+<td style="text-align: right;">81.4</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USA</td>
+<td style="text-align: right;">42.2</td>
+<td style="text-align: right;">57.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Venezuela</td>
+<td style="text-align: right;">21.1</td>
+<td style="text-align: right;">78.9</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sum</td>
+<td style="text-align: right;">30.4</td>
+<td style="text-align: right;">69.6</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>An obvious solution is to use a chi-square test on the contingency table in order to discover the most significant deviation in favour of one or the other candidates for association. The use of standardized residuals make possible to visualize the states that are more likely to be associated to Europe or to EU</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>chi2 <span class="ot">&lt;-</span><span class="fu">chisq.test</span>(mat)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>chi2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&gt; 
+&gt;   Pearson's Chi-squared test
+&gt; 
+&gt; data:  mat
+&gt; X-squared = 47.08, df = 19, p-value = 0.0003479</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span>chi2<span class="sc">$</span>residuals</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span>res[<span class="fu">order</span>(res[,<span class="dv">1</span>]),]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(res, <span class="at">caption =</span> <span class="st">"Standardized residuals"</span>, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Standardized residuals</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Europe</th>
+<th style="text-align: right;">EU</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">-2.16</td>
+<td style="text-align: right;">1.43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">-1.66</td>
+<td style="text-align: right;">1.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">-1.46</td>
+<td style="text-align: right;">0.97</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">-1.35</td>
+<td style="text-align: right;">0.90</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">-1.23</td>
+<td style="text-align: right;">0.82</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">-1.05</td>
+<td style="text-align: right;">0.70</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Venezuela</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Syria</td>
+<td style="text-align: right;">-0.74</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">-0.61</td>
+<td style="text-align: right;">0.40</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">0.40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">-0.22</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">-0.04</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">-0.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">-0.16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iran</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">-0.43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chine</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">-0.64</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USA</td>
+<td style="text-align: right;">1.70</td>
+<td style="text-align: right;">-1.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">1.81</td>
+<td style="text-align: right;">-1.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">1.89</td>
+<td style="text-align: right;">-1.25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">2.38</td>
+<td style="text-align: right;">-1.57</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The fact to sort the table by the standardized residuals make possible to order the states by levels of affinity and suggest clearly here that U.K is significantly more associated to EU than to Europe (p &lt; 0.05) and Italy is significantly more associate to Europe than to EU (p &lt;0.05). But the other states are associated to standardized values belonging to [-2 ; +2] which means that we can not necessarily demonstrate a significant level of specialization. We can nevertheless try to propose a classification based on the residuals which will logically identify degree of preferental association to on of the macroregions :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(<span class="at">mat=</span>res, <span class="at">cutree_rows =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="08-Network-Analysis_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The question however is to ask if the chi-square test is really the right solution from conceptual point of view. One of the most important issue is related to the pact that we have eliminated the alternative associations of states with other macroregion and we have in a sense “obliged” the states to choose between the two alternatives of EU and Europe.</p>
+</section>
+<section id="chi-square-dual-choice-other" class="level4" data-number="10.3.2.2">
+<h4 data-number="10.3.2.2" class="anchored" data-anchor-id="chi-square-dual-choice-other"><span class="header-section-number">10.3.2.2</span> chi-square =&gt; dual choice + other</h4>
+<p>Let’s just consider an alternative procedure where we keep the two competing macroregions but agregate the other possible choices in a third column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">"networks/Figaro_sta_reg_mat.RDS"</span>) </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>mat1<span class="ot">&lt;-</span>mat[,<span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">9</span>)]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>mat2<span class="ot">&lt;-</span><span class="fu">apply</span>(mat[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">9</span>)],<span class="dv">1</span>,sum)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">&lt;-</span><span class="fu">cbind</span>(mat1,mat2)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Europe"</span>,<span class="st">"EU"</span>,<span class="st">"Other"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">&lt;-</span>mat[<span class="fu">apply</span>(mat,<span class="dv">1</span>,sum)<span class="sc">&gt;=</span><span class="dv">5</span>,]</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">addmargins</span>(mat), <span class="at">caption =</span> <span class="st">"Contingency table"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Contingency table</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Europe</th>
+<th style="text-align: right;">EU</th>
+<th style="text-align: right;">Other</th>
+<th style="text-align: right;">Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">46</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chine</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">92</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">52</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iran</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iraq</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">37</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mali</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">89</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Syria</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">52</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">95</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">113</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USA</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">129</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Venezuela</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sum</td>
+<td style="text-align: right;">180</td>
+<td style="text-align: right;">408</td>
+<td style="text-align: right;">543</td>
+<td style="text-align: right;">1131</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>With the new contingency table, we can introduce some countries that was previously eliminated because of non sufficient sample size in our dual selection like Iraq. But we notice also that new informations has been added and the probability for a country is defined now in a completely different way as we can see on table below :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pct<span class="ot">&lt;-</span><span class="fu">round</span>(<span class="dv">100</span><span class="sc">*</span><span class="fu">addmargins</span>(<span class="fu">prop.table</span>(<span class="fu">addmargins</span>(mat,<span class="dv">1</span>),<span class="dv">1</span>),<span class="dv">2</span>),<span class="dv">1</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(pct, <span class="at">caption=</span><span class="st">"Probability of association"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Probability of association</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Europe</th>
+<th style="text-align: right;">EU</th>
+<th style="text-align: right;">Other</th>
+<th style="text-align: right;">Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">6.2</td>
+<td style="text-align: right;">22.9</td>
+<td style="text-align: right;">70.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">33.3</td>
+<td style="text-align: right;">66.7</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">13.0</td>
+<td style="text-align: right;">60.9</td>
+<td style="text-align: right;">26.1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">55.6</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chine</td>
+<td style="text-align: right;">20.7</td>
+<td style="text-align: right;">33.7</td>
+<td style="text-align: right;">45.7</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">11.1</td>
+<td style="text-align: right;">44.4</td>
+<td style="text-align: right;">44.4</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">34.6</td>
+<td style="text-align: right;">38.5</td>
+<td style="text-align: right;">26.9</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">14.3</td>
+<td style="text-align: right;">28.6</td>
+<td style="text-align: right;">57.1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iran</td>
+<td style="text-align: right;">12.5</td>
+<td style="text-align: right;">19.6</td>
+<td style="text-align: right;">67.9</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iraq</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">26.9</td>
+<td style="text-align: right;">73.1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">48.6</td>
+<td style="text-align: right;">43.2</td>
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">8.3</td>
+<td style="text-align: right;">18.3</td>
+<td style="text-align: right;">73.3</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mali</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">6.2</td>
+<td style="text-align: right;">93.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: right;">20.0</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">80.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">8.3</td>
+<td style="text-align: right;">75.0</td>
+<td style="text-align: right;">16.7</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">13.5</td>
+<td style="text-align: right;">33.7</td>
+<td style="text-align: right;">52.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">42.1</td>
+<td style="text-align: right;">31.6</td>
+<td style="text-align: right;">26.3</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">31.2</td>
+<td style="text-align: right;">68.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Syria</td>
+<td style="text-align: right;">3.8</td>
+<td style="text-align: right;">17.3</td>
+<td style="text-align: right;">78.8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">16.8</td>
+<td style="text-align: right;">35.8</td>
+<td style="text-align: right;">47.4</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">5.9</td>
+<td style="text-align: right;">47.1</td>
+<td style="text-align: right;">47.1</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">16.8</td>
+<td style="text-align: right;">73.5</td>
+<td style="text-align: right;">9.7</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">USA</td>
+<td style="text-align: right;">20.9</td>
+<td style="text-align: right;">28.7</td>
+<td style="text-align: right;">50.4</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Venezuela</td>
+<td style="text-align: right;">10.3</td>
+<td style="text-align: right;">38.5</td>
+<td style="text-align: right;">51.3</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sum</td>
+<td style="text-align: right;">15.9</td>
+<td style="text-align: right;">36.1</td>
+<td style="text-align: right;">48.0</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Our interpretation of the results is modified because we are now obliged to ask our question of preferences in two steps :</p>
+<ul>
+<li><ol type="1">
+<li><em>“Is the country mainly associated to one of the two selected macroregions ?”</em>: Looking at the probability of “Other” we can cleary say that <em>Syria</em> is mainly associated to other macroregions (78.8 %) and the fact that EU is more frequently mentionned than Europe is not an information of major interest. On the contrary, Italy is associated to “Other” in less than 8.1% of case and the fact that Europe is a bit more mentionned than EU is one more time a detail.</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><em>“What is the most likely choice between EU and Europe when one of the two macroregions is mentionned ?”</em> : The question that we answered before is now a conditional probability i.e.&nbsp;a question that make sense only if we control the role of the “other” choices and are ready to neglect it.</li>
+</ol></li>
+</ul>
+<p>The effect of the addition of the other is much more clear when we compute the new distribution of residuals :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>chi2 <span class="ot">&lt;-</span><span class="fu">chisq.test</span>(mat)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>chi2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&gt; 
+&gt;   Pearson's Chi-squared test
+&gt; 
+&gt; data:  mat
+&gt; X-squared = 282.97, df = 48, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span>chi2<span class="sc">$</span>residuals</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>res<span class="ot">&lt;-</span>res[<span class="fu">order</span>(res[,<span class="dv">3</span>]),]</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(res, <span class="at">caption =</span> <span class="st">"Standardized residuals"</span>, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Standardized residuals</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Europe</th>
+<th style="text-align: right;">EU</th>
+<th style="text-align: right;">Other</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">6.62</td>
+<td style="text-align: right;">-5.87</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">4.99</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: right;">-3.50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: right;">-0.93</td>
+<td style="text-align: right;">3.17</td>
+<td style="text-align: right;">-2.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">3.38</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">-2.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Belarus</td>
+<td style="text-align: right;">-0.49</td>
+<td style="text-align: right;">2.80</td>
+<td style="text-align: right;">-2.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">2.86</td>
+<td style="text-align: right;">-0.33</td>
+<td style="text-align: right;">-1.36</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chine</td>
+<td style="text-align: right;">1.14</td>
+<td style="text-align: right;">-0.38</td>
+<td style="text-align: right;">-0.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cyprus</td>
+<td style="text-align: right;">-0.51</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">-0.22</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turkey</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">-0.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ukraine</td>
+<td style="text-align: right;">-1.04</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">-0.06</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Venezuela</td>
+<td style="text-align: right;">-0.89</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">0.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USA</td>
+<td style="text-align: right;">1.43</td>
+<td style="text-align: right;">-1.40</td>
+<td style="text-align: right;">0.39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">-0.37</td>
+<td style="text-align: right;">0.65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: right;">-1.20</td>
+<td style="text-align: right;">-0.14</td>
+<td style="text-align: right;">0.81</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: right;">-0.29</td>
+<td style="text-align: right;">-0.87</td>
+<td style="text-align: right;">0.92</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sudan</td>
+<td style="text-align: right;">-1.60</td>
+<td style="text-align: right;">-0.32</td>
+<td style="text-align: right;">1.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Morocco</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">-1.90</td>
+<td style="text-align: right;">1.46</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: right;">-2.03</td>
+<td style="text-align: right;">-0.78</td>
+<td style="text-align: right;">1.84</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iran</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">-2.05</td>
+<td style="text-align: right;">2.14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: right;">-1.68</td>
+<td style="text-align: right;">-1.52</td>
+<td style="text-align: right;">2.28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iraq</td>
+<td style="text-align: right;">-1.26</td>
+<td style="text-align: right;">-1.90</td>
+<td style="text-align: right;">2.37</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mali</td>
+<td style="text-align: right;">-1.60</td>
+<td style="text-align: right;">-1.99</td>
+<td style="text-align: right;">2.64</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Libya</td>
+<td style="text-align: right;">-1.47</td>
+<td style="text-align: right;">-2.29</td>
+<td style="text-align: right;">2.83</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Syria</td>
+<td style="text-align: right;">-2.18</td>
+<td style="text-align: right;">-2.25</td>
+<td style="text-align: right;">3.21</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Looking at the distribution of standardized residuals located outside the confidence interval [-2,2] we observe a much greater diversity of situations because of the introduction of the “other” possibilities :</p>
+<ul>
+<li><em>United Kingdom</em> : this states remains very significantly associated to EU but much more than in the dual model (t=6.62, p &lt; 0.000) because it is significantly less associated to the “Other” macroregions (t= -5.87, p &lt;0.001) and is independent as regard to Europe (t=0.24 p&gt;0.10). The right conclusion is therefore not to say that UK is more associated to EU than to Europe but rather that UK is more associated to EU than to other macroregions.</li>
+<li><em>Germany and Italy</em> : this country present the same situation but with a significant association with Europe as compare to other macroregions and a positive but not significant association with EU. This two country are therefore clear members of “EUrope” but more freqhently associated to “Europe”.</li>
+<li><em>Iran</em> is the case of a country that is clearly more associated to “other” macroregions rather than EU or Europe (t=2.14, p &lt; 0.05). But the low level of association is significant for EU (t=-2.05, p &lt; 0.05) but not for Europe. In other words, the media can eventually associate Iran to “Europe” but certainly not to “EU”.</li>
+<li><em>Syria</em> is the case of a country that is significantly less associated to both EU and Europe than expected by a random model and is significantly more associated to other macroregions. It is out of “EUrope” …</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(<span class="at">mat=</span>res, <span class="at">cutree_rows =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="08-Network-Analysis_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
@@ -1059,6 +2236,7 @@ div.csl-indent {
 Serrano, M. Ángeles, Marián Boguñá, and Alessandro Vespignani. 2009. <span>“Extracting the Multiscale Backbone of Complex Weighted Networks.”</span> <em>Proceedings of the National Academy of Sciences</em> 106 (16): 6483–88. <a href="https://doi.org/10.1073/pnas.0808904106">https://doi.org/10.1073/pnas.0808904106</a>.
 </div>
 </div>
+</section>
 </section>
 </section>
 

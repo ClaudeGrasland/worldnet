@@ -18,6 +18,7 @@ library(data.table)
 library(dplyr)
 library(reshape2)
 library(igraph)
+library(pheatmap)
 
 
 
@@ -122,7 +123,7 @@ It appears therefore more relevant to proceed no to an opposite approach where w
 Other packages should also be considered in this section like `backbone`which is a high level tool of reduction of networks based on interesting conceptual hypothesis @serrano2009a.
 
 
-## STATES x MACROREGION
+## NETWORK CREATION
 
 We start by the example of a matrix linking states and macro-region that will create a **dual-mode network** also called **bipartite graph**.
 
@@ -239,8 +240,7 @@ It is easy to transform this matrix into igraph with the function  `graph_from_i
 ```{r}
 
 net<-graph_from_incidence_matrix(incidence = mat,
-                     directed = T,
-                     mode = "in",
+                     directed = F,
                      weighted = TRUE,
                      add.names = "name")
 net
@@ -248,8 +248,6 @@ plot(net)
 ```
 
 The igraph visualization is absolutely horrible but it is not a problem as it is possible at any moment to import igraph network toward other packages of visualisation. 
-
-
 
 ```{r}
 library(visNetwork)
@@ -265,6 +263,205 @@ visNetwork(nodes = data$nodes, edges = data$edges,) %>% visOptions(highlightNear
 
 ```
 
+### Store network
+
+We can store our network in two principle formats :
+
+- as an incidence matrix
+- as an igraph object
+
+We do not decide immediately on the best solution and adopt the two formats.
+
+```{r}
+saveRDS(mat,"networks/Figaro_sta_reg_mat.RDS")
+saveRDS(net,"networks/Figaro_sta_reg_net.RDS")
+```
+
+## SUBNETWORKS ANALYSIS
+
+We propose here a list of simple analysis based on the extraction of subnetworks of interest. We will use a list of simple tools based on igraph and described by Katya Ognyanova on her website :
+
+https://kateto.net/network-visualization
 
 
+```{r}
+net <-readRDS("networks/Figaro_sta_reg_net.RDS")
+plot(net, vertex.shape="none", vertex.label=V(net)$name,
+     vertex.label.color=V(net)$type+1, vertex.label.font=2, 
+     vertex.label.cex=.6, edge.color="gray70",  edge.width=2)
+V(net)$name
+```
+
+
+### Ego_networks
+
+It is relatively easy to extract egonetworks i.e. subnetworks associated located at a given distance from a macroregion. For example, immediate neighbors are the states associated to a macroregion.
+
+```{r}
+
+
+par(mfrow=c(2,2),mar=c(0,0,3,0))
+
+# "Mediterranean Sea" = 36
+egonet<-make_ego_graph(net,order=1,nodes =c(36), mode="all")[[1]]
+plot(egonet, main="Mediterranean Sea",
+     vertex.shape="none", 
+     vertex.label=substr(V(egonet)$name,1,4),
+     vertex.label.color=V(egonet)$type+1,
+     vertex.label.font=2, 
+     vertex.label.cex=.6, 
+     edge.color="gray70", 
+     edge.width=1+10*(E(egonet)$weight)/sum(E(egonet)$weight))
+
+# "NATO" = 38
+egonet<-make_ego_graph(net,order=1,nodes =c(38), mode="all")[[1]]
+plot(egonet, main="NATO",
+     vertex.shape="none", 
+     vertex.label=substr(V(egonet)$name,1,4),
+     vertex.label.color=V(egonet)$type+1,
+     vertex.label.font=2, 
+     vertex.label.cex=.6, 
+     edge.color="gray70", 
+     edge.width=1+10*(E(egonet)$weight)/sum(E(egonet)$weight))
+
+# "Europe" = 33
+egonet<-make_ego_graph(net,order=1,nodes =c(33), mode="all")[[1]]
+plot(egonet, main="Europe",
+     vertex.shape="none", 
+     vertex.label=substr(V(egonet)$name,1,4),
+     vertex.label.color=V(egonet)$type+1,
+     vertex.label.font=2, 
+     vertex.label.cex=.6, 
+     edge.color="gray70", 
+     edge.width=1+10*(E(egonet)$weight)/sum(E(egonet)$weight))
+
+# "EU" = 34
+egonet<-make_ego_graph(net,order=1,nodes =c(34), mode="all")[[1]]
+plot(egonet, main="European Union",cex.main=0.3,
+     vertex.shape="none", 
+     vertex.label=substr(V(egonet)$name,1,4),
+     vertex.label.color=V(egonet)$type+1,
+     vertex.label.font=2, 
+     vertex.label.cex=.6, 
+     edge.color="gray70", 
+     edge.width=1+10*(E(egonet)$weight)/sum(E(egonet)$weight))
+
+
+
+
+```
+
+We can do the same for an higher order of contiguity. For example with a degred of 2, we can see what are the macroregions sharing links with the same states.
+
+
+```{r}
+par(mfrow=c(1,1),mar=c(0,0,3,0))
+
+# "Mediterranean Sea" = 36
+egonet<-make_ego_graph(net,order=2,nodes =c(36), mode="all")[[1]]
+
+plot(egonet, main="Mediterranean Sea / Order 2",
+     vertex.shape="none", 
+     vertex.label=substr(V(egonet)$name,1,9),
+     vertex.label.color=V(egonet)$type+1,
+     vertex.label.font=2, 
+     vertex.label.cex=.6, 
+     edge.color="gray70", 
+     edge.width=1+10*(E(egonet)$weight)/sum(E(egonet)$weight))
+
+
+```
+
+### Macroregion comparison
+
+Let's now consider another problem which is the comparison of two macroregions for which we want to examine the equivalence or difference of connexion with states. We take as example the case of EU and European Union 
+
+#### chi-square => dual choice
+
+we can start from a purely statistical approach before to move to the problem of visualization. We select the states associated to one of the unit a minimum of 5 times and we obtain a classical contingency table with two columns and as many lines as country with weight greater or equal to five.
+
+```{r}
+mat<-readRDS("networks/Figaro_sta_reg_mat.RDS") 
+mat<-mat[,c("Europe","European Union")]
+colnames(mat)<-c("Europe","EU")
+mat<-mat[apply(mat,1,sum)>=5,]
+kable(addmargins(mat), caption = "Contingency table")
+```
+As EU is more frequently mentionned than Europe, we observe in the majority of case that the highest probability of association of states is with EU and they are only two exceptions in the case of Spain and Italy : 
+
+```{r}
+pct<-round(100*addmargins(prop.table(addmargins(mat,1),1),2),1)
+kable(pct, caption="Probability of association")
+```
+
+An obvious solution is to use a chi-square test on the contingency table in order to discover the most significant deviation in favour of one or the other candidates for association. The use of standardized residuals make possible to visualize the states that are more likely to be associated to Europe or to EU
+
+```{r}
+chi2 <-chisq.test(mat)
+chi2
+res<-chi2$residuals
+res<-res[order(res[,1]),]
+kable(res, caption = "Standardized residuals", digits=2)
+```
+
+The fact to sort the table by the standardized residuals make possible to order the states by levels of affinity and suggest clearly here that U.K is significantly more associated to EU than to Europe (p < 0.05) and Italy is significantly more associate to Europe than to EU (p <0.05). But the other states are associated to standardized values belonging to [-2 ; +2] which means that we can not necessarily demonstrate a significant level of specialization.  We can nevertheless try to propose a classification based on the residuals which will logically identify degree of preferental association to on of the macroregions : 
+
+
+```{r}
+
+pheatmap(mat=res, cutree_rows = 3)
+```
+
+The question however is to ask if the chi-square test is really the right solution from conceptual point of view. One of the most important issue is related to the pact that we have eliminated the alternative associations of states with other macroregion and we have in a sense "obliged" the states to choose between the two alternatives of EU and Europe. 
+
+#### chi-square => dual choice + other
+
+Let's just consider an alternative procedure where we keep the two competing macroregions but agregate the other possible choices in a third column.
+
+```{r}
+mat<-readRDS("networks/Figaro_sta_reg_mat.RDS") 
+mat1<-mat[,c(8,9)]
+mat2<-apply(mat[,-c(8,9)],1,sum)
+mat<-cbind(mat1,mat2)
+colnames(mat)<-c("Europe","EU","Other")
+mat<-mat[apply(mat,1,sum)>=5,]
+kable(addmargins(mat), caption = "Contingency table")
+```
+With the new contingency table, we can introduce some countries that was previously eliminated because of non sufficient sample size in our dual selection like Iraq. But we notice also that new informations has been added and the probability for a country is defined now in a completely different way as we can see on table below : 
+
+
+```{r}
+pct<-round(100*addmargins(prop.table(addmargins(mat,1),1),2),1)
+kable(pct, caption="Probability of association")
+```
+
+Our interpretation of the results is modified because we are now obliged to ask our question of preferences in two steps :
+
+- 1. *"Is the country mainly associated to one of the two selected macroregions ?"*: Looking at the probability of "Other" we can cleary say that *Syria* is mainly associated to other macroregions (78.8 %) and the fact that EU is more frequently mentionned than Europe is not an information of major interest. On the contrary, Italy is associated to "Other" in less than 8.1% of case and the fact that Europe is a bit more mentionned than EU is one more time a detail.
+- 2. *"What is the most likely choice between EU and Europe when one of the two macroregions is mentionned ?"* : The question that we answered before is now a conditional probability i.e. a question that make sense only if we control the role of the "other" choices and are ready to neglect it.
+
+The effect of the addition of the other is much more clear when we compute the new distribution of residuals :
+
+
+```{r}
+chi2 <-chisq.test(mat)
+chi2
+res<-chi2$residuals
+res<-res[order(res[,3]),]
+kable(res, caption = "Standardized residuals", digits=2)
+```
+
+Looking at the distribution of standardized residuals located outside the confidence interval [-2,2] we observe a much greater diversity of situations because of the introduction of the "other" possibilities :
+
+- *United Kingdom* : this states remains very significantly associated to EU but much more than in the dual model (t=6.62, p < 0.000) because it is significantly less associated to the "Other" macroregions (t= -5.87, p <0.001) and is independent as regard to Europe (t=0.24 p>0.10). The right conclusion is therefore not to say that UK is more associated to EU than to Europe but rather that UK is more associated to EU than to other macroregions. 
+- *Germany and Italy* : this country present the same situation but with a significant association with Europe as compare to other macroregions and a positive but not significant association with EU. This two country are therefore clear members of "EUrope" but more freqhently associated to "Europe".
+- *Iran* is the case of a country that is clearly more associated to "other" macroregions rather than EU or Europe (t=2.14, p < 0.05). But the low level of association is significant for EU (t=-2.05, p < 0.05) but not for Europe. In other words, the media can eventually associate Iran to "Europe" but certainly not to "EU".
+- *Syria* is the case of a country that is significantly less associated to both EU and Europe than expected by a random model and is significantly more associated to other macroregions. It is out of "EUrope" ...
+
+
+
+```{r}
+
+pheatmap(mat=res, cutree_rows = 7)
+```
 
