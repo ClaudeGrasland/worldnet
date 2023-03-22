@@ -19,6 +19,7 @@ library(dplyr)
 library(reshape2)
 library(igraph)
 library(pheatmap)
+library(RColorBrewer)
 
 
 
@@ -249,7 +250,7 @@ plot(net)
 
 The igraph visualization is absolutely horrible but it is not a problem as it is possible at any moment to import igraph network toward other packages of visualisation. 
 
-```{r}
+```{r, echo=F}
 library(visNetwork)
 data <- toVisNetworkData(net)
 data$nodes$color<-as.factor(data$nodes$type)
@@ -258,7 +259,9 @@ data$nodes$size<-5
 data$edges$width<-1+sqrt(data$edges$weight)
 data$edges$color = "orange"
 visNetwork(nodes = data$nodes, edges = data$edges,) %>% visOptions(highlightNearest = list(enabled=T, degree=list(from=1,to=1)),
-               nodesIdSelection = TRUE) 
+               nodesIdSelection = TRUE)  %>% visInteraction(navigationButtons = TRUE) %>%
+    #      visLegend() %>%
+    visIgraphLayout(layout ="layout.fruchterman.reingold",smooth = TRUE)
 
 
 ```
@@ -458,10 +461,46 @@ Looking at the distribution of standardized residuals located outside the confid
 - *Iran* is the case of a country that is clearly more associated to "other" macroregions rather than EU or Europe (t=2.14, p < 0.05). But the low level of association is significant for EU (t=-2.05, p < 0.05) but not for Europe. In other words, the media can eventually associate Iran to "Europe" but certainly not to "EU".
 - *Syria* is the case of a country that is significantly less associated to both EU and Europe than expected by a random model and is significantly more associated to other macroregions. It is out of "EUrope" ...
 
-
+On peut visualiser les résidus sous la forme d'une heatmap associé à une double classification :
 
 ```{r}
 
 pheatmap(mat=res, cutree_rows = 7)
 ```
+
+Mais on peut aussi représenter les résultats sous la forme d'un graphe conservant les relations positives les plus significatives.
+
+
+```{r, echo=F}
+net<-graph_from_incidence_matrix(incidence = mat,
+                     directed = F,
+                     weighted = TRUE,
+                     add.names = "name")
+res<-chi2$residuals
+res[mat==0]<-0
+netres<-graph_from_incidence_matrix(incidence = res,
+                     directed = F,
+                     weighted = TRUE,
+                     add.names = "name")
+E(net)$res<-E(netres)$weight
+
+
+data <- toVisNetworkData(net)
+data$nodes$color<-as.factor(data$nodes$type)
+levels(data$nodes$color)<-c("gray80","black")
+data$nodes$size<-10
+
+data$edges$width<-1+10*(data$edges$weight/max(data$edges$weight))
+data$edges<-data$edges[data$edges$res >0,]
+mypal<-brewer.pal(8,"YlOrRd")[4:8]
+data$edges$color = cut(data$edges$res, breaks=c(0,1,2,3,4,10))
+levels(data$edges$color)<-mypal
+
+visNetwork(nodes = data$nodes, edges = data$edges,) %>% visOptions(highlightNearest = list(enabled=T, degree=list(from=1,to=1)),
+               nodesIdSelection = TRUE)    %>% visInteraction(navigationButtons = TRUE) %>%
+    #      visLegend() %>%
+    visIgraphLayout(layout ="layout.fruchterman.reingold",smooth = TRUE)
+
+```
+
 
